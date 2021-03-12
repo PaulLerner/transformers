@@ -128,12 +128,7 @@ class BartAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
     def __init__(
-        self,
-        embed_dim: int,
-        num_heads: int,
-        dropout: float = 0.0,
-        is_decoder: bool = False,
-        bias: bool = True,
+        self, embed_dim: int, num_heads: int, dropout: float = 0.0, is_decoder: bool = False, bias: bool = True
     ):
         super().__init__()
         self.embed_dim = embed_dim
@@ -271,9 +266,7 @@ class BartEncoderLayer(nn.Module):
         super().__init__()
         self.embed_dim = config.d_model
         self.self_attn = BartAttention(
-            embed_dim=self.embed_dim,
-            num_heads=config.encoder_attention_heads,
-            dropout=config.attention_dropout,
+            embed_dim=self.embed_dim, num_heads=config.encoder_attention_heads, dropout=config.attention_dropout
         )
         self.self_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.dropout = config.dropout
@@ -351,10 +344,7 @@ class BartDecoderLayer(nn.Module):
 
         self.self_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.encoder_attn = BartAttention(
-            self.embed_dim,
-            config.decoder_attention_heads,
-            dropout=config.attention_dropout,
-            is_decoder=True,
+            self.embed_dim, config.decoder_attention_heads, dropout=config.attention_dropout, is_decoder=True
         )
         self.encoder_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.fc1 = nn.Linear(self.embed_dim, config.decoder_ffn_dim)
@@ -453,13 +443,7 @@ class BartDecoderLayer(nn.Module):
 class BartClassificationHead(nn.Module):
     """Head for sentence-level classification tasks."""
 
-    def __init__(
-        self,
-        input_dim: int,
-        inner_dim: int,
-        num_classes: int,
-        pooler_dropout: float,
-    ):
+    def __init__(self, input_dim: int, inner_dim: int, num_classes: int, pooler_dropout: float):
         super().__init__()
         self.dense = nn.Linear(input_dim, inner_dim)
         self.dropout = nn.Dropout(p=pooler_dropout)
@@ -493,10 +477,7 @@ class BartPretrainedModel(PreTrainedModel):
     def dummy_inputs(self):
         pad_token = self.config.pad_token_id
         input_ids = torch.tensor([[0, 6, 10, 4, 2], [0, 8, 12, 2, pad_token]], device=self.device)
-        dummy_inputs = {
-            "attention_mask": input_ids.ne(pad_token),
-            "input_ids": input_ids,
-        }
+        dummy_inputs = {"attention_mask": input_ids.ne(pad_token), "input_ids": input_ids}
         return dummy_inputs
 
 
@@ -672,10 +653,7 @@ class BartEncoder(BartPretrainedModel):
         else:
             self.embed_tokens = nn.Embedding(config.vocab_size, embed_dim, self.padding_idx)
 
-        self.embed_positions = BartLearnedPositionalEmbedding(
-            config.max_position_embeddings,
-            embed_dim,
-        )
+        self.embed_positions = BartLearnedPositionalEmbedding(config.max_position_embeddings, embed_dim)
         self.layers = nn.ModuleList([BartEncoderLayer(config) for _ in range(config.encoder_layers)])
         self.layernorm_embedding = nn.LayerNorm(embed_dim)
 
@@ -834,10 +812,7 @@ class BartDecoder(BartPretrainedModel):
         else:
             self.embed_tokens = nn.Embedding(config.vocab_size, config.d_model, self.padding_idx)
 
-        self.embed_positions = BartLearnedPositionalEmbedding(
-            config.max_position_embeddings,
-            config.d_model,
-        )
+        self.embed_positions = BartLearnedPositionalEmbedding(config.max_position_embeddings, config.d_model)
         self.layers = nn.ModuleList([BartDecoderLayer(config) for _ in range(config.decoder_layers)])
         self.layernorm_embedding = nn.LayerNorm(config.d_model)
 
@@ -1078,8 +1053,7 @@ class BartDecoder(BartPretrainedModel):
 
 
 @add_start_docstrings(
-    "The bare BART Model outputting raw hidden-states without any specific head on top.",
-    BART_START_DOCSTRING,
+    "The bare BART Model outputting raw hidden-states without any specific head on top.", BART_START_DOCSTRING
 )
 class BartModel(BartPretrainedModel):
     def __init__(self, config: BartConfig):
@@ -1325,7 +1299,7 @@ class BartForConditionalGeneration(BartPretrainedModel):
         head_mask=None,
         use_cache=None,
         encoder_outputs=None,
-        **kwargs
+        **kwargs,
     ):
         # cut decoder_input_ids if past is used
         if past is not None:
@@ -1367,10 +1341,7 @@ class BartForSequenceClassification(BartPretrainedModel):
         super().__init__(config, **kwargs)
         self.model = BartModel(config)
         self.classification_head = BartClassificationHead(
-            config.d_model,
-            config.d_model,
-            config.num_labels,
-            config.classifier_dropout,
+            config.d_model, config.d_model, config.num_labels, config.classifier_dropout
         )
         self.model._init_weights(self.classification_head.dense)
         self.model._init_weights(self.classification_head.out_proj)
@@ -1560,10 +1531,7 @@ class BartForQuestionAnswering(BartPretrainedModel):
             total_loss = (start_loss + end_loss) / 2
 
         if not return_dict:
-            output = (
-                start_logits,
-                end_logits,
-            ) + outputs[1:]
+            output = (start_logits, end_logits) + outputs[1:]
             return ((total_loss,) + output) if total_loss is not None else output
 
         return Seq2SeqQuestionAnsweringModelOutput(

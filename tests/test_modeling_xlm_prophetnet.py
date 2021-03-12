@@ -59,10 +59,7 @@ class XLMProphetNetModelIntegrationTest(unittest.TestCase):
         self.assertTrue(torch.allclose(encoder_outputs[:, :3, :3], expected_encoder_outputs_slice, atol=1e-4))
 
         # decoder outputs
-        decoder_outputs = model.prophetnet.decoder(
-            decoder_prev_ids,
-            encoder_hidden_states=encoder_outputs,
-        )
+        decoder_outputs = model.prophetnet.decoder(decoder_prev_ids, encoder_hidden_states=encoder_outputs)
         predicting_streams = decoder_outputs[1].view(1, model.config.ngram, 14, -1)
         predicting_streams_logits = model.lm_head(predicting_streams)
         next_first_stream_logits = predicting_streams_logits[:, 0]
@@ -120,10 +117,7 @@ class XLMProphetNetModelIntegrationTest(unittest.TestCase):
         EXPECTED_TITLE_EN = "Microsoft to end Windows 7 free support after January 14, 2020"
         EXPECTED_TITLE_RU = "Microsoft намерена прекратить бесплатную поддержку Windows 7 после 14 января 2020 года"
         EXPECTED_TITLE_ZH = "微软打算终止对Windows 7操作系统的免费支持"
-        self.assertListEqual(
-            [EXPECTED_TITLE_EN, EXPECTED_TITLE_RU, EXPECTED_TITLE_ZH],
-            generated_titles,
-        )
+        self.assertListEqual([EXPECTED_TITLE_EN, EXPECTED_TITLE_RU, EXPECTED_TITLE_ZH], generated_titles)
 
         summary_ids_beam1 = model.generate(
             input_ids, num_beams=1, length_penalty=1.0, no_repeat_ngram_size=3, early_stopping=True

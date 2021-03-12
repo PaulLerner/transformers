@@ -327,12 +327,7 @@ class ConvBertSelfAttention(nn.Module):
         return x.permute(0, 2, 1, 3)
 
     def forward(
-        self,
-        hidden_states,
-        attention_mask=None,
-        head_mask=None,
-        encoder_hidden_states=None,
-        output_attentions=False,
+        self, hidden_states, attention_mask=None, head_mask=None, encoder_hidden_states=None, output_attentions=False
     ):
         mixed_query_layer = self.query(hidden_states)
         batch_size = hidden_states.size(0)
@@ -446,20 +441,9 @@ class ConvBertAttention(nn.Module):
         self.pruned_heads = self.pruned_heads.union(heads)
 
     def forward(
-        self,
-        hidden_states,
-        attention_mask=None,
-        head_mask=None,
-        encoder_hidden_states=None,
-        output_attentions=False,
+        self, hidden_states, attention_mask=None, head_mask=None, encoder_hidden_states=None, output_attentions=False
     ):
-        self_outputs = self.self(
-            hidden_states,
-            attention_mask,
-            head_mask,
-            encoder_hidden_states,
-            output_attentions,
-        )
+        self_outputs = self.self(hidden_states, attention_mask, head_mask, encoder_hidden_states, output_attentions)
         attention_output = self.output(self_outputs[0], hidden_states)
         outputs = (attention_output,) + self_outputs[1:]  # add attentions if we output them
         return outputs
@@ -550,10 +534,7 @@ class ConvBertLayer(nn.Module):
         output_attentions=False,
     ):
         self_attention_outputs = self.attention(
-            hidden_states,
-            attention_mask,
-            head_mask,
-            output_attentions=output_attentions,
+            hidden_states, attention_mask, head_mask, output_attentions=output_attentions
         )
         attention_output = self_attention_outputs[0]
         outputs = self_attention_outputs[1:]  # add self attentions if we output attention weights
@@ -563,11 +544,7 @@ class ConvBertLayer(nn.Module):
                 self, "crossattention"
             ), f"If `encoder_hidden_states` are passed, {self} has to be instantiated with cross-attention layers by setting `config.add_cross_attention=True`"
             cross_attention_outputs = self.crossattention(
-                attention_output,
-                encoder_attention_mask,
-                head_mask,
-                encoder_hidden_states,
-                output_attentions,
+                attention_output, encoder_attention_mask, head_mask, encoder_hidden_states, output_attentions
             )
             attention_output = cross_attention_outputs[0]
             outputs = outputs + cross_attention_outputs[1:]  # add cross attentions if we output attention weights
@@ -1025,10 +1002,7 @@ class ConvBertForSequenceClassification(ConvBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return SequenceClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 
@@ -1118,10 +1092,7 @@ class ConvBertForMultipleChoice(ConvBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return MultipleChoiceModelOutput(
-            loss=loss,
-            logits=reshaped_logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=reshaped_logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 
@@ -1206,10 +1177,7 @@ class ConvBertForTokenClassification(ConvBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return TokenClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 

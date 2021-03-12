@@ -39,10 +39,7 @@ if is_tf_available():
 
 
 class TFXLNetModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7
@@ -196,8 +193,7 @@ class TFXLNetModelTester:
         )
         self.parent.assertEqual(all_logits_2.shape, (self.batch_size, self.seq_length, self.vocab_size))
         self.parent.assertListEqual(
-            [mem.shape for mem in mems_2],
-            [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers,
+            [mem.shape for mem in mems_2], [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers
         )
 
     def create_and_check_xlnet_qa(

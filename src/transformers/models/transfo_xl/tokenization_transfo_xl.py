@@ -47,18 +47,12 @@ VOCAB_FILES_NAMES = {
 }
 
 PRETRAINED_VOCAB_FILES_MAP = {
-    "pretrained_vocab_file": {
-        "transfo-xl-wt103": "https://huggingface.co/transfo-xl-wt103/resolve/main/vocab.pkl",
-    }
+    "pretrained_vocab_file": {"transfo-xl-wt103": "https://huggingface.co/transfo-xl-wt103/resolve/main/vocab.pkl"}
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "transfo-xl-wt103": None,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"transfo-xl-wt103": None}
 
-PRETRAINED_CORPUS_ARCHIVE_MAP = {
-    "transfo-xl-wt103": "https://huggingface.co/transfo-xl-wt103/resolve/main/corpus.bin",
-}
+PRETRAINED_CORPUS_ARCHIVE_MAP = {"transfo-xl-wt103": "https://huggingface.co/transfo-xl-wt103/resolve/main/corpus.bin"}
 CORPUS_NAME = "corpus.bin"
 
 MATCH_NUMBERS = r"(?<=\d)[,.](?=\d)", r" @\g<0>@ "
@@ -167,7 +161,7 @@ class TransfoXLTokenizer(PreTrainedTokenizer):
         eos_token="<eos>",
         additional_special_tokens=["<formula>"],
         language="en",
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             special=special,
@@ -260,7 +254,7 @@ class TransfoXLTokenizer(PreTrainedTokenizer):
         sents = []
         with open(path, "r", encoding="utf-8") as f:
             for idx, line in enumerate(f):
-                if verbose and idx > 0 and idx % 500000 == 0:
+                if verbose and idx > 0 and idx % 500_000 == 0:
                     logger.info("    line {}".format(idx))
                 symbols = self.tokenize(line, add_eos=add_eos)
                 self.counter.update(symbols)
@@ -275,7 +269,7 @@ class TransfoXLTokenizer(PreTrainedTokenizer):
         if verbose:
             logger.info("counting {} sents ...".format(len(sents)))
         for idx, symbols in enumerate(sents):
-            if verbose and idx > 0 and idx % 500000 == 0:
+            if verbose and idx > 0 and idx % 500_000 == 0:
                 logger.info("    line {}".format(idx))
             self.counter.update(symbols)
 
@@ -334,7 +328,7 @@ class TransfoXLTokenizer(PreTrainedTokenizer):
         encoded = []
         with open(path, "r", encoding="utf-8") as f:
             for idx, line in enumerate(f):
-                if verbose and idx > 0 and idx % 500000 == 0:
+                if verbose and idx > 0 and idx % 500_000 == 0:
                     logger.info("    line {}".format(idx))
                 symbols = self.tokenize(line, add_eos=add_eos, add_double_eos=add_double_eos)
                 encoded.append(self.convert_to_tensor(symbols))
@@ -350,7 +344,7 @@ class TransfoXLTokenizer(PreTrainedTokenizer):
             logger.info("encoding {} sents ...".format(len(sents)))
         encoded = []
         for idx, symbols in enumerate(sents):
-            if verbose and idx > 0 and idx % 500000 == 0:
+            if verbose and idx > 0 and idx % 500_000 == 0:
                 logger.info("    line {}".format(idx))
             encoded.append(self.convert_to_tensor(symbols))
 

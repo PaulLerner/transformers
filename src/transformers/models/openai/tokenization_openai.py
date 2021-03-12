@@ -27,19 +27,14 @@ from ..bert.tokenization_bert import BasicTokenizer
 
 logger = logging.get_logger(__name__)
 
-VOCAB_FILES_NAMES = {
-    "vocab_file": "vocab.json",
-    "merges_file": "merges.txt",
-}
+VOCAB_FILES_NAMES = {"vocab_file": "vocab.json", "merges_file": "merges.txt"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
     "vocab_file": {"openai-gpt": "https://huggingface.co/openai-gpt/resolve/main/vocab.json"},
     "merges_file": {"openai-gpt": "https://huggingface.co/openai-gpt/resolve/main/merges.txt"},
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "openai-gpt": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"openai-gpt": 512}
 
 
 def get_pairs(word):

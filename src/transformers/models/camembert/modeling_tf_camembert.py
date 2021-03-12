@@ -85,10 +85,7 @@ class TFCamembertModel(TFRobertaModel):
     config_class = CamembertConfig
 
 
-@add_start_docstrings(
-    """CamemBERT Model with a `language modeling` head on top. """,
-    CAMEMBERT_START_DOCSTRING,
-)
+@add_start_docstrings("""CamemBERT Model with a `language modeling` head on top. """, CAMEMBERT_START_DOCSTRING)
 class TFCamembertForMaskedLM(TFRobertaForMaskedLM):
     """
     This class overrides :class:`~transformers.TFRobertaForMaskedLM`. Please check the superclass for the appropriate

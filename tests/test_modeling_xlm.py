@@ -41,10 +41,7 @@ if is_torch_available():
 
 
 class XLMModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7
@@ -414,12 +411,7 @@ class XLMModelTest(ModelTesterMixin, GenerationTesterMixin, unittest.TestCase):
             tgt_len = min_length + idx + 1
             src_len = min_length + idx + 1
 
-            expected_shape = (
-                batch_size * num_beam_groups,
-                config.num_attention_heads,
-                tgt_len,
-                src_len,
-            )
+            expected_shape = (batch_size * num_beam_groups, config.num_attention_heads, tgt_len, src_len)
             # check attn size
             self.assertListEqual(
                 [layer_attention.shape for layer_attention in iter_attentions], [expected_shape] * len(iter_attentions)

@@ -36,11 +36,7 @@ if is_torch_available():
 
 
 def prepare_m2m_100_inputs_dict(
-    config,
-    input_ids,
-    decoder_input_ids,
-    attention_mask=None,
-    decoder_attention_mask=None,
+    config, input_ids, decoder_input_ids, attention_mask=None, decoder_attention_mask=None
 ):
     if attention_mask is None:
         attention_mask = input_ids.ne(config.pad_token_id)
@@ -206,14 +202,7 @@ class M2M100ModelTester:
 
 @require_torch
 class M2M100ModelTest(ModelTesterMixin, GenerationTesterMixin, unittest.TestCase):
-    all_model_classes = (
-        (
-            M2M100Model,
-            M2M100ForConditionalGeneration,
-        )
-        if is_torch_available()
-        else ()
-    )
+    all_model_classes = (M2M100Model, M2M100ForConditionalGeneration) if is_torch_available() else ()
     all_generative_model_classes = (M2M100ForConditionalGeneration,) if is_torch_available() else ()
     is_encoder_decoder = True
     test_pruning = False

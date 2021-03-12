@@ -338,10 +338,7 @@ def init_deepspeed(trainer, num_training_steps):
         optimizer = "AdamW"
 
         config["zero_allow_untested_optimizer"] = True
-        config["optimizer"] = {
-            "type": optimizer,
-            "params": optimizer_configs[optimizer],
-        }
+        config["optimizer"] = {"type": optimizer, "params": optimizer_configs[optimizer]}
 
     # DS schedulers (deepspeed/runtime/lr_schedules.py):
     #
@@ -367,18 +364,11 @@ def init_deepspeed(trainer, num_training_steps):
             }
         elif args.lr_scheduler_type == SchedulerType.CONSTANT_WITH_WARMUP:
             scheduler = "WarmupLR"
-            params = {
-                "warmup_min_lr": 0,
-                "warmup_max_lr": args.learning_rate,
-                "warmup_num_steps": args.warmup_steps,
-            }
+            params = {"warmup_min_lr": 0, "warmup_max_lr": args.learning_rate, "warmup_num_steps": args.warmup_steps}
         else:
             raise ValueError(f"{args.lr_scheduler_type} scheduler type is not supported by DeepSpeed")
 
-        config["scheduler"] = {
-            "type": scheduler,
-            "params": params,
-        }
+        config["scheduler"] = {"type": scheduler, "params": params}
 
     # fp16
     if trainer.fp16_backend is not None:
@@ -391,19 +381,14 @@ def init_deepspeed(trainer, num_training_steps):
                     f"Keeping the `amp` config from {ds_config_file} intact, ignoring any amp-specific cl args"
                 )
             else:
-                config["amp"] = {
-                    "enabled": True,
-                    "opt_level": args.fp16_opt_level,
-                }
+                config["amp"] = {"enabled": True, "opt_level": args.fp16_opt_level}
         elif trainer.fp16_backend == "amp":
             if "fp16" in config:
                 logger.info(
                     f"Keeping the `fp16` config from {ds_config_file} intact, ignoring any fp16-specific cl args"
                 )
             else:
-                config["fp16"] = {
-                    "enabled": True,
-                }
+                config["fp16"] = {"enabled": True}
 
     # for clarity extract the specific cl args that are being passed to deepspeed
     ds_args = dict(local_rank=args.local_rank)

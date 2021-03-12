@@ -21,9 +21,7 @@ from typing import TYPE_CHECKING
 from ...file_utils import _BaseLazyModule, is_tokenizers_available, is_torch_available
 
 
-_import_structure = {
-    "configuration_ibert": ["IBERT_PRETRAINED_CONFIG_ARCHIVE_MAP", "IBertConfig"],
-}
+_import_structure = {"configuration_ibert": ["IBERT_PRETRAINED_CONFIG_ARCHIVE_MAP", "IBertConfig"]}
 
 if is_torch_available():
     _import_structure["modeling_ibert"] = [

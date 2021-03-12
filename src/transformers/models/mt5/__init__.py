@@ -37,9 +37,7 @@ if is_tokenizers_available():
 
     MT5TokenizerFast = T5TokenizerFast
 
-_import_structure = {
-    "configuration_mt5": ["MT5Config"],
-}
+_import_structure = {"configuration_mt5": ["MT5Config"]}
 
 if is_torch_available():
     _import_structure["modeling_mt5"] = ["MT5EncoderModel", "MT5ForConditionalGeneration", "MT5Model"]

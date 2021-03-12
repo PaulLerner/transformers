@@ -263,18 +263,14 @@ def main():
         if data_args.max_train_samples is not None:
             train_dataset = train_dataset.select(range(data_args.max_train_samples))
         train_dataset = train_dataset.map(
-            preprocess_function,
-            batched=True,
-            load_from_cache_file=not data_args.overwrite_cache,
+            preprocess_function, batched=True, load_from_cache_file=not data_args.overwrite_cache
         )
 
     if training_args.do_eval:
         if data_args.max_val_samples is not None:
             eval_dataset = eval_dataset.select(range(data_args.max_val_samples))
         eval_dataset = eval_dataset.map(
-            preprocess_function,
-            batched=True,
-            load_from_cache_file=not data_args.overwrite_cache,
+            preprocess_function, batched=True, load_from_cache_file=not data_args.overwrite_cache
         )
 
     # Log a few random samples from the training set:

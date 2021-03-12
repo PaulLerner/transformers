@@ -22,7 +22,7 @@ from ...utils import logging
 logger = logging.get_logger(__name__)
 
 TRANSFO_XL_PRETRAINED_CONFIG_ARCHIVE_MAP = {
-    "transfo-xl-wt103": "https://huggingface.co/transfo-xl-wt103/resolve/main/config.json",
+    "transfo-xl-wt103": "https://huggingface.co/transfo-xl-wt103/resolve/main/config.json"
 }
 
 
@@ -109,8 +109,8 @@ class TransfoXLConfig(PretrainedConfig):
 
     def __init__(
         self,
-        vocab_size=267735,
-        cutoffs=[20000, 40000, 200000],
+        vocab_size=267_735,
+        cutoffs=[20000, 40000, 200_000],
         d_model=1024,
         d_embed=1024,
         n_head=16,
@@ -135,7 +135,7 @@ class TransfoXLConfig(PretrainedConfig):
         init_std=0.02,
         layer_norm_epsilon=1e-5,
         eos_token_id=0,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(eos_token_id=eos_token_id, **kwargs)
         self.vocab_size = vocab_size

@@ -43,10 +43,7 @@ if is_torch_available():
 
 @require_torch
 class ModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.src_vocab_size = 99
         self.tgt_vocab_size = 99
@@ -72,9 +69,7 @@ class ModelTester:
         self.vocab_size = self.src_vocab_size
 
     def prepare_config_and_inputs(self):
-        input_ids = ids_tensor([self.batch_size, self.seq_length], self.src_vocab_size).clamp(
-            3,
-        )
+        input_ids = ids_tensor([self.batch_size, self.seq_length], self.src_vocab_size).clamp(3)
         input_ids[:, -1] = 2  # Eos Token
 
         config = FSMTConfig(
@@ -107,13 +102,7 @@ class ModelTester:
         return config, inputs_dict
 
 
-def prepare_fsmt_inputs_dict(
-    config,
-    input_ids,
-    attention_mask=None,
-    head_mask=None,
-    decoder_head_mask=None,
-):
+def prepare_fsmt_inputs_dict(config, input_ids, attention_mask=None, head_mask=None, decoder_head_mask=None):
     if attention_mask is None:
         attention_mask = input_ids.ne(config.pad_token_id)
     if head_mask is None:
@@ -139,11 +128,7 @@ class FSMTModelTest(ModelTesterMixin, GenerationTesterMixin, unittest.TestCase):
     def setUp(self):
         self.model_tester = ModelTester(self)
         self.langs = ["en", "ru"]
-        config = {
-            "langs": self.langs,
-            "src_vocab_size": 10,
-            "tgt_vocab_size": 20,
-        }
+        config = {"langs": self.langs, "src_vocab_size": 10, "tgt_vocab_size": 20}
         # XXX: hack to appease to all other models requiring `vocab_size`
         config["vocab_size"] = 99  # no such thing in FSMT
         self.config_tester = ConfigTester(self, config_class=FSMTConfig, **config)
@@ -378,12 +363,7 @@ def _long_tensor(tok_lst):
 TOLERANCE = 1e-4
 
 
-pairs = [
-    ["en-ru"],
-    ["ru-en"],
-    ["en-de"],
-    ["de-en"],
-]
+pairs = [["en-ru"], ["ru-en"], ["en-de"], ["de-en"]]
 
 
 @require_torch
@@ -508,8 +488,8 @@ class TestSinusoidalPositionalEmbeddings(unittest.TestCase):
         desired_weights = torch.tensor(
             [
                 [0, 0, 0, 0, 0],
-                [0.84147096, 0.82177866, 0.80180490, 0.78165019, 0.76140374],
-                [0.90929741, 0.93651021, 0.95829457, 0.97505713, 0.98720258],
+                [0.841_470_96, 0.821_778_66, 0.801_804_90, 0.781_650_19, 0.761_403_74],
+                [0.909_297_41, 0.936_510_21, 0.958_294_57, 0.975_057_13, 0.987_202_58],
             ]
         )
         emb1 = SinusoidalPositionalEmbedding(num_positions=512, embedding_dim=512, padding_idx=self.padding_idx).to(

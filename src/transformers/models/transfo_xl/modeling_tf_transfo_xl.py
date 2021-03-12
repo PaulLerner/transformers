@@ -127,7 +127,7 @@ class TFRelPartialLearnableMultiHeadAttn(tf.keras.layers.Layer):
         layer_norm_epsilon=1e-5,
         init_std=0.02,
         output_attentions=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
 
@@ -280,7 +280,7 @@ class TFRelPartialLearnableDecoderLayer(tf.keras.layers.Layer):
         layer_norm_epsilon=1e-5,
         init_std=0.02,
         output_attentions=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(**kwargs)
 
@@ -327,9 +327,7 @@ class TFTransfoEmbeddings(tf.keras.layers.Layer):
 
     def build(self, input_shape):
         self.weight = self.add_weight(
-            shape=(self.vocab_size, self.emb_size),
-            initializer=get_initializer(self.init_std),
-            name="embeddings",
+            shape=(self.vocab_size, self.emb_size), initializer=get_initializer(self.init_std), name="embeddings"
         )
 
         super().build(input_shape)
@@ -364,12 +362,7 @@ class TFAdaptiveEmbedding(tf.keras.layers.Layer):
                 l_idx, r_idx = self.cutoff_ends[i], self.cutoff_ends[i + 1]
                 d_emb_i = d_embed // (div_val ** i)
                 self.emb_layers.append(
-                    TFTransfoEmbeddings(
-                        r_idx - l_idx,
-                        d_emb_i,
-                        init_std,
-                        name="emb_layers_._{}".format(i),
-                    )
+                    TFTransfoEmbeddings(r_idx - l_idx, d_emb_i, init_std, name="emb_layers_._{}".format(i))
                 )
 
     def build(self, input_shape):
@@ -669,10 +662,7 @@ class TFTransfoXLMainLayer(tf.keras.layers.Layer):
             return tuple(v for v in [core_out, new_mems, hids, attentions] if v is not None)
 
         return TFTransfoXLModelOutput(
-            last_hidden_state=core_out,
-            mems=new_mems,
-            hidden_states=hids,
-            attentions=attentions,
+            last_hidden_state=core_out, mems=new_mems, hidden_states=hids, attentions=attentions
         )
 
 
@@ -685,13 +675,7 @@ class TFTransfoXLPreTrainedModel(TFPreTrainedModel):
     config_class = TransfoXLConfig
     base_model_prefix = "transformer"
 
-    @tf.function(
-        input_signature=[
-            {
-                "input_ids": tf.TensorSpec((None, None), tf.int32, name="input_ids"),
-            }
-        ]
-    )
+    @tf.function(input_signature=[{"input_ids": tf.TensorSpec((None, None), tf.int32, name="input_ids")}])
     def serving(self, inputs):
         output = self.call(inputs)
 
@@ -1079,10 +1063,7 @@ class TFTransfoXLForSequenceClassification(TFTransfoXLPreTrainedModel, TFSequenc
         super().__init__(config, *inputs, **kwargs)
         self.num_labels = config.num_labels
         self.score = tf.keras.layers.Dense(
-            config.num_labels,
-            kernel_initializer=get_initializer(config.init_range),
-            name="score",
-            use_bias=False,
+            config.num_labels, kernel_initializer=get_initializer(config.init_range), name="score", use_bias=False
         )
         self.transformer = TFTransfoXLMainLayer(config, name="transformer")
 

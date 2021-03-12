@@ -774,10 +774,7 @@ class TFDPRQuestionEncoder(TFDPRPretrainedQuestionEncoder):
         return TFDPRQuestionEncoderOutput(pooler_output=output.pooler_output, hidden_states=hs, attentions=attns)
 
 
-@add_start_docstrings(
-    "The bare DPRReader transformer outputting span predictions.",
-    TF_DPR_START_DOCSTRING,
-)
+@add_start_docstrings("The bare DPRReader transformer outputting span predictions.", TF_DPR_START_DOCSTRING)
 class TFDPRReader(TFDPRPretrainedReader):
     def __init__(self, config: DPRConfig, *args, **kwargs):
         super().__init__(config, *args, **kwargs)

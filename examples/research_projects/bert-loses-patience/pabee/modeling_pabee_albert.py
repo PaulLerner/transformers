@@ -46,9 +46,7 @@ class AlbertTransformerWithPabee(AlbertTransformer):
         group_idx = int(current_layer / (self.config.num_hidden_layers / self.config.num_hidden_groups))
 
         layer_group_output = self.albert_layer_groups[group_idx](
-            hidden_states,
-            attention_mask,
-            head_mask[group_idx * layers_per_group : (group_idx + 1) * layers_per_group],
+            hidden_states, attention_mask, head_mask[group_idx * layers_per_group : (group_idx + 1) * layers_per_group]
         )
         hidden_states = layer_group_output[0]
 
@@ -157,10 +155,7 @@ class AlbertModelWithPabee(AlbertModel):
             res = []
             for i in range(self.config.num_hidden_layers):
                 encoder_outputs = self.encoder.adaptive_forward(
-                    encoder_outputs,
-                    current_layer=i,
-                    attention_mask=extended_attention_mask,
-                    head_mask=head_mask,
+                    encoder_outputs, current_layer=i, attention_mask=extended_attention_mask, head_mask=head_mask
                 )
 
                 pooled_output = self.pooler_activation(self.pooler(encoder_outputs[0][:, 0]))
@@ -177,10 +172,7 @@ class AlbertModelWithPabee(AlbertModel):
             for i in range(self.config.num_hidden_layers):
                 calculated_layer_num += 1
                 encoder_outputs = self.encoder.adaptive_forward(
-                    encoder_outputs,
-                    current_layer=i,
-                    attention_mask=extended_attention_mask,
-                    head_mask=head_mask,
+                    encoder_outputs, current_layer=i, attention_mask=extended_attention_mask, head_mask=head_mask
                 )
 
                 pooled_output = self.pooler_activation(self.pooler(encoder_outputs[0][:, 0]))

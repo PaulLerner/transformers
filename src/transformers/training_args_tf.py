@@ -164,25 +164,13 @@ class TFTrainingArguments(TrainingArguments):
             Whether to activate the XLA compilation or not.
     """
 
-    tpu_name: str = field(
-        default=None,
-        metadata={"help": "Name of TPU"},
-    )
+    tpu_name: str = field(default=None, metadata={"help": "Name of TPU"})
 
-    tpu_zone: str = field(
-        default=None,
-        metadata={"help": "Zone of TPU"},
-    )
+    tpu_zone: str = field(default=None, metadata={"help": "Zone of TPU"})
 
-    gcp_project: str = field(
-        default=None,
-        metadata={"help": "Name of Cloud TPU-enabled project"},
-    )
+    gcp_project: str = field(default=None, metadata={"help": "Name of Cloud TPU-enabled project"})
 
-    poly_power: float = field(
-        default=1.0,
-        metadata={"help": "Power for the Polynomial decay LR scheduler."},
-    )
+    poly_power: float = field(default=1.0, metadata={"help": "Power for the Polynomial decay LR scheduler."})
 
     xla: bool = field(default=False, metadata={"help": "Whether to activate the XLA compilation or not"})
 

@@ -25,21 +25,17 @@ VOCAB_FILES_NAMES = {"vocab_file": "vocab.txt", "tokenizer_file": "tokenizer.jso
 
 PRETRAINED_VOCAB_FILES_MAP = {
     "vocab_file": {
-        "yjernite/retribert-base-uncased": "https://huggingface.co/yjernite/retribert-base-uncased/resolve/main/vocab.txt",
+        "yjernite/retribert-base-uncased": "https://huggingface.co/yjernite/retribert-base-uncased/resolve/main/vocab.txt"
     },
     "tokenizer_file": {
-        "yjernite/retribert-base-uncased": "https://huggingface.co/yjernite/retribert-base-uncased/resolve/main/tokenizer.json",
+        "yjernite/retribert-base-uncased": "https://huggingface.co/yjernite/retribert-base-uncased/resolve/main/tokenizer.json"
     },
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "yjernite/retribert-base-uncased": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"yjernite/retribert-base-uncased": 512}
 
 
-PRETRAINED_INIT_CONFIGURATION = {
-    "yjernite/retribert-base-uncased": {"do_lower_case": True},
-}
+PRETRAINED_INIT_CONFIGURATION = {"yjernite/retribert-base-uncased": {"do_lower_case": True}}
 
 
 class RetriBertTokenizerFast(BertTokenizerFast):

@@ -118,7 +118,7 @@ class QuestionAnsweringPipeline(Pipeline):
         framework: Optional[str] = None,
         device: int = -1,
         task: str = "",
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             model=model,
@@ -318,7 +318,7 @@ class QuestionAnsweringPipeline(Pipeline):
                         start, end = self.model(**fw_args)[:2]
                         start, end = start.cpu().numpy(), end.cpu().numpy()
 
-            min_null_score = 1000000  # large and positive
+            min_null_score = 1_000_000  # large and positive
             answers = []
             for (feature, start_, end_) in zip(features, start, end):
                 # Ensure padded tokens & question tokens cannot belong to the set of candidate answers.
@@ -481,8 +481,4 @@ class QuestionAnsweringPipeline(Pipeline):
             chars_idx += len(word) + 1
 
         # Join text with spaces
-        return {
-            "answer": " ".join(words),
-            "start": max(0, char_start_idx),
-            "end": min(len(text), char_end_idx),
-        }
+        return {"answer": " ".join(words), "start": max(0, char_start_idx), "end": min(len(text), char_end_idx)}

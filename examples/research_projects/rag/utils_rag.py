@@ -32,11 +32,7 @@ def encode_line(tokenizer, line, max_length, padding_side, pad_to_max_length=Tru
     )
 
 
-def trim_batch(
-    input_ids,
-    pad_token_id,
-    attention_mask=None,
-):
+def trim_batch(input_ids, pad_token_id, attention_mask=None):
     """Remove columns that are populated exclusively by pad_token_id"""
     keep_column_mask = input_ids.ne(pad_token_id).any(dim=0)
     if attention_mask is None:
@@ -99,11 +95,7 @@ class Seq2SeqDataset(Dataset):
         source_ids = source_inputs["input_ids"].squeeze()
         target_ids = target_inputs["input_ids"].squeeze()
         src_mask = source_inputs["attention_mask"].squeeze()
-        return {
-            "input_ids": source_ids,
-            "attention_mask": src_mask,
-            "decoder_input_ids": target_ids,
-        }
+        return {"input_ids": source_ids, "attention_mask": src_mask, "decoder_input_ids": target_ids}
 
     @staticmethod
     def get_char_lens(data_file):
@@ -125,11 +117,7 @@ class Seq2SeqDataset(Dataset):
         )
         y = trim_batch(target_ids, tgt_pad_token_id)
         source_ids, source_mask = trim_batch(input_ids, src_pad_token_id, attention_mask=masks)
-        batch = {
-            "input_ids": source_ids,
-            "attention_mask": source_mask,
-            "decoder_input_ids": y,
-        }
+        batch = {"input_ids": source_ids, "attention_mask": source_mask, "decoder_input_ids": y}
         return batch
 
 

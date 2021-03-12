@@ -294,11 +294,7 @@ def triu_onnx(x, diagonal=0):
 
 
 def _prepare_fsmt_decoder_inputs(
-    config,
-    input_ids,
-    decoder_input_ids=None,
-    decoder_padding_mask=None,
-    causal_mask_dtype=torch.float32,
+    config, input_ids, decoder_input_ids=None, decoder_padding_mask=None, causal_mask_dtype=torch.float32
 ):
     """
     Prepare masks that ignore padding tokens in the decoder and a causal mask for the decoder if none are provided.
@@ -340,10 +336,7 @@ class PretrainedFSMTModel(PreTrainedModel):
     def dummy_inputs(self):
         pad_token = self.config.pad_token_id
         input_ids = torch.tensor([[0, 6, 10, 4, 2], [0, 8, 12, 2, pad_token]], device=self.device)
-        dummy_inputs = {
-            "attention_mask": input_ids.ne(pad_token),
-            "input_ids": input_ids,
-        }
+        dummy_inputs = {"attention_mask": input_ids.ne(pad_token), "input_ids": input_ids}
         return dummy_inputs
 
 
@@ -538,9 +531,7 @@ class DecoderLayer(nn.Module):
         self.embed_dim = config.d_model
 
         self.self_attn = Attention(
-            embed_dim=self.embed_dim,
-            num_heads=config.decoder_attention_heads,
-            dropout=config.attention_dropout,
+            embed_dim=self.embed_dim, num_heads=config.decoder_attention_heads, dropout=config.attention_dropout
         )
         self.dropout = config.dropout
         self.activation_fn = ACT2FN[config.activation_function]
@@ -612,12 +603,7 @@ class DecoderLayer(nn.Module):
         x = F.dropout(x, p=self.dropout, training=self.training)
         x = residual + x
         x = self.final_layer_norm(x)
-        return (
-            x,
-            self_attn_weights,
-            layer_state,
-            cross_attn_weights,
-        )  # layer_state = cache for decoding
+        return (x, self_attn_weights, layer_state, cross_attn_weights)  # layer_state = cache for decoding
 
 
 class FSMTDecoder(nn.Module):
@@ -645,9 +631,7 @@ class FSMTDecoder(nn.Module):
         )  # type: List[DecoderLayer]
 
         self.output_projection = nn.Linear(
-            self.embed_tokens.weight.shape[1],
-            self.embed_tokens.weight.shape[0],
-            bias=False,
+            self.embed_tokens.weight.shape[1], self.embed_tokens.weight.shape[0], bias=False
         )
         self.output_projection.weight = self.embed_tokens.weight
 
@@ -798,12 +782,7 @@ class Attention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
     def __init__(
-        self,
-        embed_dim,
-        num_heads,
-        dropout=0.0,
-        bias=True,
-        encoder_decoder_attention=False,  # otherwise self_attention
+        self, embed_dim, num_heads, dropout=0.0, bias=True, encoder_decoder_attention=False  # otherwise self_attention
     ):
         super().__init__()
         self.embed_dim = embed_dim
@@ -887,10 +866,7 @@ class Attention(nn.Module):
         # This is part of a workaround to get around fork/join parallelism not supporting Optional types.
         if key_padding_mask is not None and key_padding_mask.dim() == 0:
             key_padding_mask = None
-        assert key_padding_mask is None or key_padding_mask.size()[:2] == (
-            bsz,
-            src_len,
-        )
+        assert key_padding_mask is None or key_padding_mask.size()[:2] == (bsz, src_len)
 
         if key_padding_mask is not None:  # don't attend to padding symbols
             attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
@@ -914,11 +890,7 @@ class Attention(nn.Module):
         else:
             attn_weights_reshaped = None
 
-        attn_probs = F.dropout(
-            attn_weights,
-            p=self.dropout,
-            training=self.training,
-        )
+        attn_probs = F.dropout(attn_weights, p=self.dropout, training=self.training)
 
         assert v is not None
         attn_output = torch.bmm(attn_probs, v)
@@ -971,8 +943,7 @@ def _get_shape(t):
 
 
 @add_start_docstrings(
-    "The bare FSMT Model outputting raw hidden-states without any specific head on top.",
-    FSMT_START_DOCSTRING,
+    "The bare FSMT Model outputting raw hidden-states without any specific head on top.", FSMT_START_DOCSTRING
 )
 class FSMTModel(PretrainedFSMTModel):
     def __init__(self, config: FSMTConfig):
@@ -1098,14 +1069,8 @@ class FSMTModel(PretrainedFSMTModel):
 )
 class FSMTForConditionalGeneration(PretrainedFSMTModel):
     base_model_prefix = "model"
-    _keys_to_ignore_on_load_missing = [
-        "model.encoder.embed_positions.weight",
-        "model.decoder.embed_positions.weight",
-    ]
-    _keys_to_ignore_on_save = [
-        "model.encoder.embed_positions.weight",
-        "model.decoder.embed_positions.weight",
-    ]
+    _keys_to_ignore_on_load_missing = ["model.encoder.embed_positions.weight", "model.decoder.embed_positions.weight"]
+    _keys_to_ignore_on_save = ["model.encoder.embed_positions.weight", "model.decoder.embed_positions.weight"]
 
     def __init__(self, config: FSMTConfig):
         super().__init__(config)
@@ -1289,12 +1254,7 @@ class SinusoidalPositionalEmbedding(nn.Embedding):
         mask = tensor.ne(padding_idx).int()
         return (torch.cumsum(mask, dim=1).type_as(mask) * mask).long() + padding_idx
 
-    def forward(
-        self,
-        input,
-        incremental_state: Optional[Any] = None,
-        timestep: Optional[Tensor] = None,
-    ):
+    def forward(self, input, incremental_state: Optional[Any] = None, timestep: Optional[Tensor] = None):
         """Input is expected to be of size [bsz x seqlen]."""
         bsz, seq_len = input.shape[:2]
         max_pos = self.padding_idx + 1 + seq_len

@@ -29,18 +29,12 @@ logger = logging.get_logger(__name__)
 VOCAB_FILES_NAMES = {"vocab_file": "vocab.txt"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
-    "vocab_file": {
-        "microsoft/mpnet-base": "https://huggingface.co/microsoft/mpnet-base/resolve/main/vocab.txt",
-    }
+    "vocab_file": {"microsoft/mpnet-base": "https://huggingface.co/microsoft/mpnet-base/resolve/main/vocab.txt"}
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "microsoft/mpnet-base": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"microsoft/mpnet-base": 512}
 
-PRETRAINED_INIT_CONFIGURATION = {
-    "microsoft/mpnet-base": {"do_lower_case": True},
-}
+PRETRAINED_INIT_CONFIGURATION = {"microsoft/mpnet-base": {"do_lower_case": True}}
 
 
 def load_vocab(vocab_file):
@@ -139,7 +133,7 @@ class MPNetTokenizer(PreTrainedTokenizer):
         mask_token="<mask>",
         tokenize_chinese_chars=True,
         strip_accents=None,
-        **kwargs
+        **kwargs,
     ):
         bos_token = AddedToken(bos_token, lstrip=False, rstrip=False) if isinstance(bos_token, str) else bos_token
         eos_token = AddedToken(eos_token, lstrip=False, rstrip=False) if isinstance(eos_token, str) else eos_token

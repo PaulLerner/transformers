@@ -63,11 +63,7 @@ class FSMTTokenizationTest(TokenizerTesterMixin, unittest.TestCase):
         merges = ["l o 123", "lo w 1456", "e r</w> 1789", ""]
 
         self.langs = ["en", "ru"]
-        config = {
-            "langs": self.langs,
-            "src_vocab_size": 10,
-            "tgt_vocab_size": 20,
-        }
+        config = {"langs": self.langs, "src_vocab_size": 10, "tgt_vocab_size": 20}
 
         self.src_vocab_file = os.path.join(self.tmpdirname, VOCAB_FILES_NAMES["src_vocab_file"])
         self.tgt_vocab_file = os.path.join(self.tmpdirname, VOCAB_FILES_NAMES["tgt_vocab_file"])

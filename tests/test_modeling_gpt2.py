@@ -255,8 +255,7 @@ class GPT2ModelTester:
         # append to next input_ids and attn_mask
         next_input_ids = torch.cat([input_ids, next_tokens], dim=-1)
         attn_mask = torch.cat(
-            [attn_mask, torch.ones((attn_mask.shape[0], 1), dtype=torch.long, device=torch_device)],
-            dim=1,
+            [attn_mask, torch.ones((attn_mask.shape[0], 1), dtype=torch.long, device=torch_device)], dim=1
         )
 
         # get two different outputs
@@ -379,11 +378,7 @@ class GPT2ModelTester:
             choice_labels,
         ) = config_and_inputs
 
-        inputs_dict = {
-            "input_ids": input_ids,
-            "token_type_ids": token_type_ids,
-            "head_mask": head_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "token_type_ids": token_type_ids, "head_mask": head_mask}
 
         return config, inputs_dict
 
@@ -476,10 +471,7 @@ class GPT2ModelTest(ModelTesterMixin, GenerationTesterMixin, unittest.TestCase):
         model.config.pad_token_id = model.config.eos_token_id
 
         # use different length sentences to test batching
-        sentences = [
-            "Hello, my dog is a little",
-            "Today, I",
-        ]
+        sentences = ["Hello, my dog is a little", "Today, I"]
 
         inputs = tokenizer(sentences, return_tensors="pt", padding=True)
         input_ids = inputs["input_ids"].to(torch_device)
@@ -491,10 +483,7 @@ class GPT2ModelTest(ModelTesterMixin, GenerationTesterMixin, unittest.TestCase):
             dim=-1,
         )
 
-        outputs = model.generate(
-            input_ids=input_ids,
-            attention_mask=inputs["attention_mask"].to(torch_device),
-        )
+        outputs = model.generate(input_ids=input_ids, attention_mask=inputs["attention_mask"].to(torch_device))
 
         outputs_tt = model.generate(
             input_ids=input_ids,
@@ -536,10 +525,7 @@ class GPT2ModelTest(ModelTesterMixin, GenerationTesterMixin, unittest.TestCase):
         model.config.pad_token_id = model.config.eos_token_id
 
         # use different length sentences to test batching
-        sentences = [
-            "Hello, my dog is a little",
-            "Today, I",
-        ]
+        sentences = ["Hello, my dog is a little", "Today, I"]
 
         inputs = tokenizer(sentences, return_tensors="pt", padding=True)
         input_ids = inputs["input_ids"].to(torch_device)
@@ -551,10 +537,7 @@ class GPT2ModelTest(ModelTesterMixin, GenerationTesterMixin, unittest.TestCase):
             dim=-1,
         )
 
-        outputs = model.generate(
-            input_ids=input_ids,
-            attention_mask=inputs["attention_mask"].to(torch_device),
-        )
+        outputs = model.generate(input_ids=input_ids, attention_mask=inputs["attention_mask"].to(torch_device))
 
         outputs_tt = model.generate(
             input_ids=input_ids,

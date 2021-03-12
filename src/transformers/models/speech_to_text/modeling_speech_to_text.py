@@ -211,12 +211,7 @@ class Speech2TextAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
     def __init__(
-        self,
-        embed_dim: int,
-        num_heads: int,
-        dropout: float = 0.0,
-        is_decoder: bool = False,
-        bias: bool = True,
+        self, embed_dim: int, num_heads: int, dropout: float = 0.0, is_decoder: bool = False, bias: bool = True
     ):
         super().__init__()
         self.embed_dim = embed_dim
@@ -354,9 +349,7 @@ class Speech2TextEncoderLayer(nn.Module):
         super().__init__()
         self.embed_dim = config.d_model
         self.self_attn = Speech2TextAttention(
-            embed_dim=self.embed_dim,
-            num_heads=config.encoder_attention_heads,
-            dropout=config.attention_dropout,
+            embed_dim=self.embed_dim, num_heads=config.encoder_attention_heads, dropout=config.attention_dropout
         )
         self.self_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.dropout = config.dropout
@@ -434,10 +427,7 @@ class Speech2TextDecoderLayer(nn.Module):
 
         self.self_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.encoder_attn = Speech2TextAttention(
-            self.embed_dim,
-            config.decoder_attention_heads,
-            dropout=config.attention_dropout,
-            is_decoder=True,
+            self.embed_dim, config.decoder_attention_heads, dropout=config.attention_dropout, is_decoder=True
         )
         self.encoder_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.fc1 = nn.Linear(self.embed_dim, config.decoder_ffn_dim)
@@ -688,9 +678,7 @@ class Speech2TextEncoder(Speech2TextPreTrainedModel):
         self.conv = Conv1dSubsampler(config)
 
         self.embed_positions = Speech2TextSinusoidalPositionalEmbedding(
-            self.max_source_positions,
-            embed_dim,
-            self.padding_idx,
+            self.max_source_positions, embed_dim, self.padding_idx
         )
         self.layers = nn.ModuleList([Speech2TextEncoderLayer(config) for _ in range(config.encoder_layers)])
         self.layer_norm = nn.LayerNorm(config.d_model)
@@ -839,9 +827,7 @@ class Speech2TextDecoder(Speech2TextPreTrainedModel):
         self.embed_tokens = nn.Embedding(config.vocab_size, config.d_model, self.padding_idx)
 
         self.embed_positions = Speech2TextSinusoidalPositionalEmbedding(
-            self.max_target_positions,
-            config.d_model,
-            self.padding_idx,
+            self.max_target_positions, config.d_model, self.padding_idx
         )
         self.layers = nn.ModuleList([Speech2TextDecoderLayer(config) for _ in range(config.decoder_layers)])
         self.layer_norm = nn.LayerNorm(config.d_model)
@@ -1198,10 +1184,7 @@ class Speech2TextForConditionalGeneration(Speech2TextPreTrainedModel):
         r"model.encoder.embed_positions.weights",
         r"model.decoder.embed_positions.weights",
     ]
-    _keys_to_ignore_on_save = [
-        r"model.encoder.embed_positions.weights",
-        r"model.decoder.embed_positions.weights",
-    ]
+    _keys_to_ignore_on_save = [r"model.encoder.embed_positions.weights", r"model.decoder.embed_positions.weights"]
 
     def __init__(self, config: Speech2TextConfig):
         super().__init__(config)
@@ -1330,7 +1313,7 @@ class Speech2TextForConditionalGeneration(Speech2TextPreTrainedModel):
         head_mask=None,
         use_cache=None,
         encoder_outputs=None,
-        **kwargs
+        **kwargs,
     ):
         # cut decoder_input_ids if past is used
         if past is not None:

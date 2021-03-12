@@ -215,11 +215,7 @@ def convert_fsmt_checkpoint_to_pytorch(fsmt_checkpoint_path, pytorch_dump_folder
     # tokenizer config
     fsmt_tokenizer_config_file = os.path.join(pytorch_dump_folder_path, TOKENIZER_CONFIG_FILE)
 
-    tokenizer_conf = {
-        "langs": [src_lang, tgt_lang],
-        "model_max_length": 1024,
-        "do_lower_case": do_lower_case,
-    }
+    tokenizer_conf = {"langs": [src_lang, tgt_lang], "model_max_length": 1024, "do_lower_case": do_lower_case}
 
     print(f"Generating {fsmt_tokenizer_config_file}")
     with open(fsmt_tokenizer_config_file, "w", encoding="utf-8") as f:

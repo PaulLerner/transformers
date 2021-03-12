@@ -38,10 +38,7 @@ if is_tf_available():
 
 
 class TFElectraModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7

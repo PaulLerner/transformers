@@ -50,10 +50,7 @@ class FillMaskPipelineTests(MonoInputPipelineCommonMixin, unittest.TestCase):
     small_models = ["sshleifer/tiny-distilroberta-base"]  # Models tested without the @slow decorator
     large_models = ["distilroberta-base"]  # Models tested with the @slow decorator
     mandatory_keys = {"sequence", "score", "token"}
-    valid_inputs = [
-        "My name is <mask>",
-        "The largest city in France is <mask>",
-    ]
+    valid_inputs = ["My name is <mask>", "The largest city in France is <mask>"]
     invalid_inputs = [
         "This is <mask> <mask>"  # More than 1 mask_token in the input is not supported
         "This is"  # No mask_token is not supported
@@ -107,19 +104,10 @@ class FillMaskPipelineTests(MonoInputPipelineCommonMixin, unittest.TestCase):
     @slow
     def test_torch_fill_mask_results(self):
         mandatory_keys = {"sequence", "score", "token"}
-        valid_inputs = [
-            "My name is <mask>",
-            "The largest city in France is <mask>",
-        ]
+        valid_inputs = ["My name is <mask>", "The largest city in France is <mask>"]
         valid_targets = [" Patrick", " Clara"]
         for model_name in self.large_models:
-            nlp = pipeline(
-                task="fill-mask",
-                model=model_name,
-                tokenizer=model_name,
-                framework="pt",
-                top_k=2,
-            )
+            nlp = pipeline(task="fill-mask", model=model_name, tokenizer=model_name, framework="pt", top_k=2)
 
             mono_result = nlp(valid_inputs[0], targets=valid_targets)
             self.assertIsInstance(mono_result, list)
@@ -180,10 +168,7 @@ class FillMaskPipelineTests(MonoInputPipelineCommonMixin, unittest.TestCase):
     @slow
     def test_tf_fill_mask_results(self):
         mandatory_keys = {"sequence", "score", "token"}
-        valid_inputs = [
-            "My name is <mask>",
-            "The largest city in France is <mask>",
-        ]
+        valid_inputs = ["My name is <mask>", "The largest city in France is <mask>"]
         valid_targets = [" Patrick", " Clara"]
         for model_name in self.large_models:
             nlp = pipeline(task="fill-mask", model=model_name, tokenizer=model_name, framework="tf", top_k=2)

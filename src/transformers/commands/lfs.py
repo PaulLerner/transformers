@@ -189,12 +189,7 @@ class LfsUploadCommand:
                 with FileSlice(filepath, seek_from=i * chunk_size, read_limit=chunk_size) as data:
                     r = requests.put(presigned_url, data=data)
                     r.raise_for_status()
-                    parts.append(
-                        {
-                            "etag": r.headers.get("etag"),
-                            "partNumber": i + 1,
-                        }
-                    )
+                    parts.append({"etag": r.headers.get("etag"), "partNumber": i + 1})
                     # In order to support progress reporting while data is uploading / downloading,
                     # the transfer process should post messages to stdout
                     write_msg(
@@ -207,13 +202,7 @@ class LfsUploadCommand:
                     )
                     # Not precise but that's ok.
 
-            r = requests.post(
-                completion_url,
-                json={
-                    "oid": oid,
-                    "parts": parts,
-                },
-            )
+            r = requests.post(completion_url, json={"oid": oid, "parts": parts})
             r.raise_for_status()
 
             write_msg({"event": "complete", "oid": oid})

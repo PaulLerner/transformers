@@ -44,9 +44,7 @@ _CHECKPOINT_FOR_DOC = "unc-nlp/lxmert-base-uncased"
 _CONFIG_FOR_DOC = "LxmertConfig"
 _TOKENIZER_FOR_DOC = "LxmertTokenizer"
 
-LXMERT_PRETRAINED_MODEL_ARCHIVE_LIST = [
-    "unc-nlp/lxmert-base-uncased",
-]
+LXMERT_PRETRAINED_MODEL_ARCHIVE_LIST = ["unc-nlp/lxmert-base-uncased"]
 
 
 class GeLU(nn.Module):
@@ -221,14 +219,7 @@ def load_tf_weights_in_lxmert(model, config, tf_checkpoint_path):
         # adam_v and adam_m are variables used in AdamWeightDecayOptimizer to calculated m and v
         # which are not required for using pretrained model
         if any(
-            n
-            in [
-                "adam_v",
-                "adam_m",
-                "AdamWeightDecayOptimizer",
-                "AdamWeightDecayOptimizer_1",
-                "global_step",
-            ]
+            n in ["adam_v", "adam_m", "AdamWeightDecayOptimizer", "AdamWeightDecayOptimizer_1", "global_step"]
             for n in name
         ):
             logger.info("Skipping {}".format("/".join(name)))
@@ -332,10 +323,7 @@ class LxmertAttention(nn.Module):
         self.dropout = nn.Dropout(config.attention_probs_dropout_prob)
 
     def transpose_for_scores(self, x):
-        new_x_shape = x.size()[:-1] + (
-            self.num_attention_heads,
-            self.attention_head_size,
-        )
+        new_x_shape = x.size()[:-1] + (self.num_attention_heads, self.attention_head_size)
         x = x.view(*new_x_shape)
         return x.permute(0, 2, 1, 3)
 
@@ -408,12 +396,7 @@ class LxmertSelfAttentionLayer(nn.Module):
 
     def forward(self, input_tensor, attention_mask, output_attentions=False):
         # Self attention attends to itself, thus keys and queries are the same (input_tensor).
-        output = self.self(
-            input_tensor,
-            input_tensor,
-            attention_mask,
-            output_attentions=output_attentions,
-        )
+        output = self.self(input_tensor, input_tensor, attention_mask, output_attentions=output_attentions)
         if output_attentions:
             attention_probs = output[1]
         attention_output = self.output(output[0], input_tensor)
@@ -480,25 +463,14 @@ class LxmertXLayer(nn.Module):
         self.visn_output = LxmertOutput(config)
 
     def cross_att(
-        self,
-        lang_input,
-        lang_attention_mask,
-        visual_input,
-        visual_attention_mask,
-        output_x_attentions=False,
+        self, lang_input, lang_attention_mask, visual_input, visual_attention_mask, output_x_attentions=False
     ):
         # Cross Attention
         lang_att_output = self.visual_attention(
-            lang_input,
-            visual_input,
-            ctx_att_mask=visual_attention_mask,
-            output_attentions=output_x_attentions,
+            lang_input, visual_input, ctx_att_mask=visual_attention_mask, output_attentions=output_x_attentions
         )
         visual_att_output = self.visual_attention(
-            visual_input,
-            lang_input,
-            ctx_att_mask=lang_attention_mask,
-            output_attentions=False,
+            visual_input, lang_input, ctx_att_mask=lang_attention_mask, output_attentions=False
         )
         return lang_att_output, visual_att_output
 
@@ -519,14 +491,7 @@ class LxmertXLayer(nn.Module):
 
         return lang_output, visual_output
 
-    def forward(
-        self,
-        lang_feats,
-        lang_attention_mask,
-        visual_feats,
-        visual_attention_mask,
-        output_attentions=False,
-    ):
+    def forward(self, lang_feats, lang_attention_mask, visual_feats, visual_attention_mask, output_attentions=False):
 
         lang_att_output, visual_att_output = self.cross_att(
             lang_input=lang_feats,
@@ -537,22 +502,11 @@ class LxmertXLayer(nn.Module):
         )
         attention_probs = lang_att_output[1:]
         lang_att_output, visual_att_output = self.self_att(
-            lang_att_output[0],
-            lang_attention_mask,
-            visual_att_output[0],
-            visual_attention_mask,
+            lang_att_output[0], lang_attention_mask, visual_att_output[0], visual_attention_mask
         )
 
         lang_output, visual_output = self.output_fc(lang_att_output, visual_att_output)
-        return (
-            (
-                lang_output,
-                visual_output,
-                attention_probs[0],
-            )
-            if output_attentions
-            else (lang_output, visual_output)
-        )
+        return (lang_output, visual_output, attention_probs[0]) if output_attentions else (lang_output, visual_output)
 
 
 class LxmertVisualFeatureEncoder(nn.Module):
@@ -649,19 +603,9 @@ class LxmertEncoder(nn.Module):
             language_hidden_states = language_hidden_states + (lang_feats,)
             if cross_encoder_attentions is not None:
                 cross_encoder_attentions = cross_encoder_attentions + (x_outputs[2],)
-        visual_encoder_outputs = (
-            vision_hidden_states,
-            vision_attentions if output_attentions else None,
-        )
-        lang_encoder_outputs = (
-            language_hidden_states,
-            language_attentions if output_attentions else None,
-        )
-        return (
-            visual_encoder_outputs,
-            lang_encoder_outputs,
-            cross_encoder_attentions if output_attentions else None,
-        )
+        visual_encoder_outputs = (vision_hidden_states, vision_attentions if output_attentions else None)
+        lang_encoder_outputs = (language_hidden_states, language_attentions if output_attentions else None)
+        return (visual_encoder_outputs, lang_encoder_outputs, cross_encoder_attentions if output_attentions else None)
 
 
 class LxmertPooler(nn.Module):
@@ -701,9 +645,7 @@ class LxmertLMPredictionHead(nn.Module):
         # The output weights are the same as the input embeddings, but there is
         # an output-only bias for each token.
         self.decoder = nn.Linear(
-            lxmert_model_embedding_weights.size(1),
-            lxmert_model_embedding_weights.size(0),
-            bias=False,
+            lxmert_model_embedding_weights.size(1), lxmert_model_embedding_weights.size(0), bias=False
         )
         self.decoder.weight = lxmert_model_embedding_weights
         self.bias = nn.Parameter(torch.zeros(lxmert_model_embedding_weights.size(0)))
@@ -740,10 +682,7 @@ class LxmertVisualObjHead(nn.Module):
         if config.visual_attr_loss:
             visual_losses["attr"] = {"shape": (-1,), "num": config.num_attr_labels}
         if config.visual_obj_loss:
-            visual_losses["feat"] = {
-                "shape": (-1, config.visual_feat_dim),
-                "num": config.visual_feat_dim,
-            }
+            visual_losses["feat"] = {"shape": (-1, config.visual_feat_dim), "num": config.visual_feat_dim}
         self.visual_losses = visual_losses
 
         # The output weights are the same as the input embeddings, but there is
@@ -990,11 +929,7 @@ class LxmertModel(LxmertPreTrainedModel):
             language_attentions = lang_encoder_outputs[1]
             vision_attentions = visual_encoder_outputs[1]
             cross_encoder_attentions = encoder_outputs[2]
-            all_attentions = (
-                language_attentions,
-                vision_attentions,
-                cross_encoder_attentions,
-            )
+            all_attentions = (language_attentions, vision_attentions, cross_encoder_attentions)
 
         hidden_states = (language_hidden_states, vision_hidden_states) if output_hidden_states else ()
 
@@ -1017,10 +952,7 @@ class LxmertModel(LxmertPreTrainedModel):
         )
 
 
-@add_start_docstrings(
-    """Lxmert Model with a specified pretraining head on top. """,
-    LXMERT_START_DOCSTRING,
-)
+@add_start_docstrings("""Lxmert Model with a specified pretraining head on top. """, LXMERT_START_DOCSTRING)
 class LxmertForPreTraining(LxmertPreTrainedModel):
     def __init__(self, config):
         super().__init__(config)
@@ -1057,17 +989,9 @@ class LxmertForPreTraining(LxmertPreTrainedModel):
 
         visual_losses = {}
         if config.visual_obj_loss:
-            visual_losses["obj"] = {
-                "shape": (-1,),
-                "num": config.num_object_labels,
-                "loss": "visual_ce",
-            }
+            visual_losses["obj"] = {"shape": (-1,), "num": config.num_object_labels, "loss": "visual_ce"}
         if config.visual_attr_loss:
-            visual_losses["attr"] = {
-                "shape": (-1,),
-                "num": config.num_attr_labels,
-                "loss": "visual_ce",
-            }
+            visual_losses["attr"] = {"shape": (-1,), "num": config.num_attr_labels, "loss": "visual_ce"}
         if config.visual_obj_loss:
             visual_losses["feat"] = {
                 "shape": (-1, config.visual_feat_dim),
@@ -1213,11 +1137,7 @@ class LxmertForPreTraining(LxmertPreTrainedModel):
             return_dict=return_dict,
         )
 
-        lang_output, visual_output, pooled_output = (
-            lxmert_output[0],
-            lxmert_output[1],
-            lxmert_output[2],
-        )
+        lang_output, visual_output, pooled_output = (lxmert_output[0], lxmert_output[1], lxmert_output[2])
         lang_prediction_scores, cross_relationship_score = self.cls(lang_output, pooled_output)
         if self.task_qa:
             answer_score = self.answer_head(pooled_output)
@@ -1231,8 +1151,7 @@ class LxmertForPreTraining(LxmertPreTrainedModel):
         )
         if labels is not None and self.task_mask_lm:
             masked_lm_loss = self.loss_fcts["ce"](
-                lang_prediction_scores.view(-1, self.config.vocab_size),
-                labels.view(-1),
+                lang_prediction_scores.view(-1, self.config.vocab_size), labels.view(-1)
             )
             total_loss += masked_lm_loss
         if matched_label is not None and self.task_matched:
@@ -1249,10 +1168,7 @@ class LxmertForPreTraining(LxmertPreTrainedModel):
                 weight = self.visual_loss_normalizer
                 visual_loss_fct = self.loss_fcts[loss_fct_name]
                 visual_prediction_scores = visual_prediction_scores_dict[key]
-                visual_loss = visual_loss_fct(
-                    visual_prediction_scores.view(-1, output_dim),
-                    label.view(*label_shape),
-                )
+                visual_loss = visual_loss_fct(visual_prediction_scores.view(-1, output_dim), label.view(*label_shape))
                 if visual_loss.dim() > 1:  # Regression Losses
                     visual_loss = visual_loss.mean(1)
                 visual_loss = (visual_loss * mask_conf.view(-1)).mean() * weight
@@ -1263,11 +1179,7 @@ class LxmertForPreTraining(LxmertPreTrainedModel):
             total_loss += answer_loss
 
         if not return_dict:
-            output = (
-                lang_prediction_scores,
-                cross_relationship_score,
-                answer_score,
-            ) + lxmert_output[3:]
+            output = (lang_prediction_scores, cross_relationship_score, answer_score) + lxmert_output[3:]
             return ((total_loss,) + output) if total_loss is not None else output
 
         return LxmertForPreTrainingOutput(
@@ -1284,8 +1196,7 @@ class LxmertForPreTraining(LxmertPreTrainedModel):
 
 
 @add_start_docstrings(
-    """Lxmert Model with a visual-answering head on top for downstream QA tasks""",
-    LXMERT_START_DOCSTRING,
+    """Lxmert Model with a visual-answering head on top for downstream QA tasks""", LXMERT_START_DOCSTRING
 )
 class LxmertForQuestionAnswering(LxmertPreTrainedModel):
     def __init__(self, config):

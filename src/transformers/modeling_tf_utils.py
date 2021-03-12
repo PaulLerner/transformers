@@ -437,12 +437,7 @@ def input_processing(func, config, input_ids, **kwargs):
         if k in ["return_dict", "output_attentions", "output_hidden_states", "use_cache"]
     }
 
-    output.update(
-        booleans_processing(
-            config=config,
-            **boolean_dict,
-        )
-    )
+    output.update(booleans_processing(config=config, **boolean_dict))
 
     return output
 
@@ -624,9 +619,7 @@ class TFPreTrainedModel(tf.keras.Model, TFModelUtilsMixin, TFGenerationMixin):
         Returns:
             :obj:`Dict[str, tf.Tensor]`: The dummy inputs.
         """
-        return {
-            "input_ids": tf.constant(DUMMY_INPUTS),
-        }
+        return {"input_ids": tf.constant(DUMMY_INPUTS)}
 
     def __init__(self, config, *inputs, **kwargs):
         super().__init__(*inputs, **kwargs)
@@ -915,10 +908,7 @@ class TFPreTrainedModel(tf.keras.Model, TFModelUtilsMixin, TFGenerationMixin):
                 bias_mask = tf.fill(tf.convert_to_tensor(final_shape), True)
 
             new_bias = self.add_weight(
-                shape=final_shape,
-                initializer="zeros",
-                trainable=True,
-                name=weight.name.split(":")[0],
+                shape=final_shape, initializer="zeros", trainable=True, name=weight.name.split(":")[0]
             )
             init_bias = tf.where(bias_mask, current_bias, new_bias.value())
 

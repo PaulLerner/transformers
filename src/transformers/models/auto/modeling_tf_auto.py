@@ -445,10 +445,7 @@ TF_MODEL_FOR_MULTIPLE_CHOICE_MAPPING = OrderedDict(
 )
 
 TF_MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING = OrderedDict(
-    [
-        (BertConfig, TFBertForNextSentencePrediction),
-        (MobileBertConfig, TFMobileBertForNextSentencePrediction),
-    ]
+    [(BertConfig, TFBertForNextSentencePrediction), (MobileBertConfig, TFMobileBertForNextSentencePrediction)]
 )
 
 

@@ -46,9 +46,7 @@ PRETRAINED_VOCAB_FILES_MAP = {
     },
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "google/reformer-crime-and-punishment": 524288,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"google/reformer-crime-and-punishment": 524_288}
 
 
 class ReformerTokenizerFast(PreTrainedTokenizerFast):
@@ -92,7 +90,7 @@ class ReformerTokenizerFast(PreTrainedTokenizerFast):
         eos_token="</s>",
         unk_token="<unk>",
         additional_special_tokens=[],
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             vocab_file,

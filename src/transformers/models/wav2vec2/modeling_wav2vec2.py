@@ -274,12 +274,7 @@ class Wav2Vec2Attention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
     def __init__(
-        self,
-        embed_dim: int,
-        num_heads: int,
-        dropout: float = 0.0,
-        is_decoder: bool = False,
-        bias: bool = True,
+        self, embed_dim: int, num_heads: int, dropout: float = 0.0, is_decoder: bool = False, bias: bool = True
     ):
         super().__init__()
         self.embed_dim = embed_dim
@@ -520,12 +515,7 @@ class Wav2Vec2Encoder(nn.Module):
         self.layers = nn.ModuleList([Wav2Vec2EncoderLayer(config) for _ in range(config.num_hidden_layers)])
 
     def forward(
-        self,
-        hidden_states,
-        attention_mask=None,
-        output_attentions=False,
-        output_hidden_states=False,
-        return_dict=True,
+        self, hidden_states, attention_mask=None, output_attentions=False, output_hidden_states=False, return_dict=True
     ):
         all_hidden_states = () if output_hidden_states else None
         all_self_attentions = () if output_attentions else None
@@ -563,9 +553,7 @@ class Wav2Vec2Encoder(nn.Module):
                         return custom_forward
 
                     layer_outputs = torch.utils.checkpoint.checkpoint(
-                        create_custom_forward(layer),
-                        hidden_states,
-                        attention_mask,
+                        create_custom_forward(layer), hidden_states, attention_mask
                     )
                 else:
                     layer_outputs = layer(
@@ -582,9 +570,7 @@ class Wav2Vec2Encoder(nn.Module):
         if not return_dict:
             return tuple(v for v in [hidden_states, all_hidden_states, all_self_attentions] if v is not None)
         return BaseModelOutput(
-            last_hidden_state=hidden_states,
-            hidden_states=all_hidden_states,
-            attentions=all_self_attentions,
+            last_hidden_state=hidden_states, hidden_states=all_hidden_states, attentions=all_self_attentions
         )
 
 
@@ -600,12 +586,7 @@ class Wav2Vec2EncoderStableLayerNorm(nn.Module):
         )
 
     def forward(
-        self,
-        hidden_states,
-        attention_mask=None,
-        output_attentions=False,
-        output_hidden_states=False,
-        return_dict=True,
+        self, hidden_states, attention_mask=None, output_attentions=False, output_hidden_states=False, return_dict=True
     ):
         all_hidden_states = () if output_hidden_states else None
         all_self_attentions = () if output_attentions else None
@@ -642,9 +623,7 @@ class Wav2Vec2EncoderStableLayerNorm(nn.Module):
                         return custom_forward
 
                     layer_outputs = torch.utils.checkpoint.checkpoint(
-                        create_custom_forward(layer),
-                        hidden_states,
-                        attention_mask,
+                        create_custom_forward(layer), hidden_states, attention_mask
                     )
                 else:
                     layer_outputs = layer(
@@ -663,9 +642,7 @@ class Wav2Vec2EncoderStableLayerNorm(nn.Module):
         if not return_dict:
             return tuple(v for v in [hidden_states, all_hidden_states, all_self_attentions] if v is not None)
         return BaseModelOutput(
-            last_hidden_state=hidden_states,
-            hidden_states=all_hidden_states,
-            attentions=all_self_attentions,
+            last_hidden_state=hidden_states, hidden_states=all_hidden_states, attentions=all_self_attentions
         )
 
 
@@ -788,12 +765,7 @@ class Wav2Vec2Model(Wav2Vec2PreTrainedModel):
     @add_start_docstrings_to_model_forward(WAV_2_VEC_2_INPUTS_DOCSTRING)
     @replace_return_docstrings(output_type=BaseModelOutput, config_class=_CONFIG_FOR_DOC)
     def forward(
-        self,
-        input_values,
-        attention_mask=None,
-        output_attentions=None,
-        output_hidden_states=None,
-        return_dict=None,
+        self, input_values, attention_mask=None, output_attentions=None, output_hidden_states=None, return_dict=None
     ):
         """
 
@@ -862,9 +834,7 @@ class Wav2Vec2Model(Wav2Vec2PreTrainedModel):
             # apply SpecAugment along feature axis
             if self.config.mask_feature_prob > 0:
                 mask_feature_indices = _compute_mask_indices(
-                    (batch_size, hidden_size),
-                    self.config.mask_feature_prob,
-                    self.config.mask_feature_length,
+                    (batch_size, hidden_size), self.config.mask_feature_prob, self.config.mask_feature_length
                 )
                 mask_feature_indices = torch.from_numpy(mask_feature_indices).to(hidden_states.device)
                 hidden_states[mask_feature_indices[:, None].expand(-1, sequence_length, -1)] = 0

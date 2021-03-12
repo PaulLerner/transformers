@@ -40,7 +40,4 @@ if __name__ == "__main__":
     for MODEL in DIALOGPT_MODELS:
         checkpoint_path = os.path.join(args.dialogpt_path, f"{MODEL}_ft.pkl")
         pytorch_dump_folder_path = f"./DialoGPT-{MODEL}"
-        convert_dialogpt_checkpoint(
-            checkpoint_path,
-            pytorch_dump_folder_path,
-        )
+        convert_dialogpt_checkpoint(checkpoint_path, pytorch_dump_folder_path)

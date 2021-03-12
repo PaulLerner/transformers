@@ -57,7 +57,7 @@ class Text2TextGenerationPipeline(Pipeline):
         return_text=True,
         clean_up_tokenization_spaces=False,
         truncation=TruncationStrategy.DO_NOT_TRUNCATE,
-        **generate_kwargs
+        **generate_kwargs,
     ):
         r"""
         Generate the output text(s) using text(s) given as inputs.
@@ -120,9 +120,7 @@ class Text2TextGenerationPipeline(Pipeline):
             self.check_inputs(input_length, min_length, max_length)
 
             generations = self.model.generate(
-                inputs["input_ids"],
-                attention_mask=inputs["attention_mask"],
-                **generate_kwargs,
+                inputs["input_ids"], attention_mask=inputs["attention_mask"], **generate_kwargs
             )
             results = []
             for generation in generations:
@@ -131,9 +129,7 @@ class Text2TextGenerationPipeline(Pipeline):
                     record[f"{self.return_name}_token_ids"] = generation
                 if return_text:
                     record[f"{self.return_name}_text"] = self.tokenizer.decode(
-                        generation,
-                        skip_special_tokens=True,
-                        clean_up_tokenization_spaces=clean_up_tokenization_spaces,
+                        generation, skip_special_tokens=True, clean_up_tokenization_spaces=clean_up_tokenization_spaces
                     )
                 results.append(record)
             return results

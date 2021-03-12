@@ -189,12 +189,7 @@ class HfArgumentParserTest(unittest.TestCase):
     def test_parse_dict(self):
         parser = HfArgumentParser(BasicExample)
 
-        args_dict = {
-            "foo": 12,
-            "bar": 3.14,
-            "baz": "42",
-            "flag": True,
-        }
+        args_dict = {"foo": 12, "bar": 3.14, "baz": "42", "flag": True}
 
         parsed_args = parser.parse_dict(args_dict)[0]
         args = BasicExample(**args_dict)

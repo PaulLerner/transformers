@@ -922,11 +922,7 @@ class TFGPT2DoubleHeadsModel(TFGPT2PreTrainedModel):
         attns = tf.convert_to_tensor(output.attentions) if self.config.output_attentions else None
 
         return TFGPT2DoubleHeadsModelOutput(
-            logits=output.logits,
-            mc_logits=output.mc_logits,
-            past_key_values=pkv,
-            hidden_states=hs,
-            attentions=attns,
+            logits=output.logits, mc_logits=output.mc_logits, past_key_values=pkv, hidden_states=hs, attentions=attns
         )
 
 

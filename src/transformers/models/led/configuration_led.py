@@ -128,7 +128,7 @@ class LEDConfig(PretrainedConfig):
         eos_token_id=2,
         gradient_checkpointing=False,
         attention_window: Union[List[int], int] = 512,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             pad_token_id=pad_token_id,

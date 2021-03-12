@@ -385,11 +385,7 @@ if is_torch_available():
     # PyTorch models structure
 
     _import_structure["models.speech_to_text"].extend(
-        [
-            "SPEECH_TO_TEXT_PRETRAINED_MODEL_ARCHIVE_LIST",
-            "Speech2TextForConditionalGeneration",
-            "Speech2TextModel",
-        ]
+        ["SPEECH_TO_TEXT_PRETRAINED_MODEL_ARCHIVE_LIST", "Speech2TextForConditionalGeneration", "Speech2TextModel"]
     )
 
     _import_structure["models.wav2vec2"].extend(
@@ -402,11 +398,7 @@ if is_torch_available():
         ]
     )
     _import_structure["models.m2m_100"].extend(
-        [
-            "M2M_100_PRETRAINED_MODEL_ARCHIVE_LIST",
-            "M2M100ForConditionalGeneration",
-            "M2M100Model",
-        ]
+        ["M2M_100_PRETRAINED_MODEL_ARCHIVE_LIST", "M2M100ForConditionalGeneration", "M2M100Model"]
     )
 
     _import_structure["models.convbert"].extend(
@@ -495,11 +487,7 @@ if is_torch_available():
         ]
     )
     _import_structure["models.bert_generation"].extend(
-        [
-            "BertGenerationDecoder",
-            "BertGenerationEncoder",
-            "load_tf_weights_in_bert_generation",
-        ]
+        ["BertGenerationDecoder", "BertGenerationEncoder", "load_tf_weights_in_bert_generation"]
     )
     _import_structure["models.blenderbot"].extend(
         [
@@ -1145,13 +1133,7 @@ if is_tf_available():
         ]
     )
     _import_structure["models.pegasus"].extend(["TFPegasusForConditionalGeneration", "TFPegasusModel"])
-    _import_structure["models.rag"].extend(
-        [
-            "TFRagModel",
-            "TFRagSequenceForGeneration",
-            "TFRagTokenForGeneration",
-        ]
-    )
+    _import_structure["models.rag"].extend(["TFRagModel", "TFRagSequenceForGeneration", "TFRagTokenForGeneration"])
     _import_structure["models.roberta"].extend(
         [
             "TF_ROBERTA_PRETRAINED_MODEL_ARCHIVE_LIST",

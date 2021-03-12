@@ -518,7 +518,7 @@ class FlaxRobertaModel(FlaxRobertaPreTrainedModel):
         input_shape: Tuple = (1, 1),
         seed: int = 0,
         dtype: jnp.dtype = jnp.float32,
-        **kwargs
+        **kwargs,
     ):
         module = FlaxRobertaModule(
             vocab_size=config.vocab_size,

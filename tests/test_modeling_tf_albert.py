@@ -202,11 +202,7 @@ class TFAlbertModelTester:
     ):
         config.num_labels = self.num_labels
         model = TFAlbertForTokenClassification(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": input_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": input_mask, "token_type_ids": token_type_ids}
         result = model(inputs)
         self.parent.assertListEqual(list(result["logits"].shape), [self.batch_size, self.seq_length, self.num_labels])
 

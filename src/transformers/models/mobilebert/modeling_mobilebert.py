@@ -246,13 +246,7 @@ class MobileBertSelfAttention(nn.Module):
         return x.permute(0, 2, 1, 3)
 
     def forward(
-        self,
-        query_tensor,
-        key_tensor,
-        value_tensor,
-        attention_mask=None,
-        head_mask=None,
-        output_attentions=None,
+        self, query_tensor, key_tensor, value_tensor, attention_mask=None, head_mask=None, output_attentions=None
     ):
         mixed_query_layer = self.query(query_tensor)
         mixed_key_layer = self.key(key_tensor)
@@ -336,14 +330,7 @@ class MobileBertAttention(nn.Module):
         head_mask=None,
         output_attentions=None,
     ):
-        self_outputs = self.self(
-            query_tensor,
-            key_tensor,
-            value_tensor,
-            attention_mask,
-            head_mask,
-            output_attentions,
-        )
+        self_outputs = self.self(query_tensor, key_tensor, value_tensor, attention_mask, head_mask, output_attentions)
         # Run a linear projection of `hidden_size` then add a residual
         # with `layer_input`.
         attention_output = self.output(self_outputs[0], layer_input)
@@ -488,13 +475,7 @@ class MobileBertLayer(nn.Module):
         if config.num_feedforward_networks > 1:
             self.ffn = nn.ModuleList([FFNLayer(config) for _ in range(config.num_feedforward_networks - 1)])
 
-    def forward(
-        self,
-        hidden_states,
-        attention_mask=None,
-        head_mask=None,
-        output_attentions=None,
-    ):
+    def forward(self, hidden_states, attention_mask=None, head_mask=None, output_attentions=None):
         if self.use_bottleneck:
             query_tensor, key_tensor, value_tensor, layer_input = self.bottleneck(hidden_states)
         else:
@@ -557,12 +538,7 @@ class MobileBertEncoder(nn.Module):
             if output_hidden_states:
                 all_hidden_states = all_hidden_states + (hidden_states,)
 
-            layer_outputs = layer_module(
-                hidden_states,
-                attention_mask,
-                head_mask[i],
-                output_attentions,
-            )
+            layer_outputs = layer_module(hidden_states, attention_mask, head_mask[i], output_attentions)
             hidden_states = layer_outputs[0]
 
             if output_attentions:
@@ -1106,8 +1082,7 @@ class MobileBertOnlyNSPHead(nn.Module):
 
 
 @add_start_docstrings(
-    """MobileBert Model with a `next sentence prediction (classification)` head on top. """,
-    MOBILEBERT_START_DOCSTRING,
+    """MobileBert Model with a `next sentence prediction (classification)` head on top. """, MOBILEBERT_START_DOCSTRING
 )
 class MobileBertForNextSentencePrediction(MobileBertPreTrainedModel):
     def __init__(self, config):
@@ -1281,10 +1256,7 @@ class MobileBertForSequenceClassification(MobileBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return SequenceClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 
@@ -1478,10 +1450,7 @@ class MobileBertForMultipleChoice(MobileBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return MultipleChoiceModelOutput(
-            loss=loss,
-            logits=reshaped_logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=reshaped_logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 
@@ -1570,8 +1539,5 @@ class MobileBertForTokenClassification(MobileBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return TokenClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )

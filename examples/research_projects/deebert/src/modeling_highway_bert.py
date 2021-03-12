@@ -102,10 +102,7 @@ class DeeBertEncoder(nn.Module):
         return outputs  # last-layer hidden state, (all hidden states), (all attentions), all highway exits
 
 
-@add_start_docstrings(
-    "The Bert Model transformer with early exiting (DeeBERT). ",
-    BERT_START_DOCSTRING,
-)
+@add_start_docstrings("The Bert Model transformer with early exiting (DeeBERT). ", BERT_START_DOCSTRING)
 class DeeBertModel(BertPreTrainedModel):
     def __init__(self, config):
         super().__init__(config)
@@ -229,7 +226,7 @@ class DeeBertModel(BertPreTrainedModel):
         sequence_output = encoder_outputs[0]
         pooled_output = self.pooler(sequence_output)
 
-        outputs = (sequence_output, pooled_output,) + encoder_outputs[
+        outputs = (sequence_output, pooled_output) + encoder_outputs[
             1:
         ]  # add hidden_states and attentions if they are here
         return outputs  # sequence_output, pooled_output, (hidden_states), (attentions), highway exits

@@ -117,23 +117,10 @@ class T5ModelTester:
             decoder_start_token_id=self.decoder_start_token_id,
         )
 
-        return (
-            config,
-            input_ids,
-            decoder_input_ids,
-            attention_mask,
-            decoder_attention_mask,
-            lm_labels,
-        )
+        return (config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels)
 
     def check_prepare_lm_labels_via_shift_left(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         model = T5Model(config=config)
         model.to(torch_device)
@@ -166,13 +153,7 @@ class T5ModelTester:
                 self.parent.assertListEqual(decoder_input_ids_slice[1:].tolist(), lm_labels_slice[:-1].tolist())
 
     def create_and_check_model(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         model = T5Model(config=config)
         model.to(torch_device)
@@ -196,13 +177,7 @@ class T5ModelTester:
         self.parent.assertEqual(len(decoder_past[0]), 4)
 
     def create_and_check_with_lm_head(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         model = T5ForConditionalGeneration(config=config).to(torch_device).eval()
         outputs = model(
@@ -216,13 +191,7 @@ class T5ModelTester:
         self.parent.assertEqual(outputs["loss"].size(), ())
 
     def create_and_check_decoder_model_past(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         model = T5Model(config=config).get_decoder().to(torch_device).eval()
         # first forward pass
@@ -253,13 +222,7 @@ class T5ModelTester:
         self.parent.assertTrue(torch.allclose(output_from_past_slice, output_from_no_past_slice, atol=1e-3))
 
     def create_and_check_decoder_model_attention_mask_past(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         model = T5Model(config=config).get_decoder()
         model.to(torch_device)
@@ -285,8 +248,7 @@ class T5ModelTester:
         # append to next input_ids and attn_mask
         next_input_ids = torch.cat([input_ids, next_tokens], dim=-1)
         attn_mask = torch.cat(
-            [attn_mask, torch.ones((attn_mask.shape[0], 1), dtype=torch.long, device=torch_device)],
-            dim=1,
+            [attn_mask, torch.ones((attn_mask.shape[0], 1), dtype=torch.long, device=torch_device)], dim=1
         )
 
         # get two different outputs
@@ -304,13 +266,7 @@ class T5ModelTester:
         self.parent.assertTrue(torch.allclose(output_from_past_slice, output_from_no_past_slice, atol=1e-3))
 
     def create_and_check_decoder_model_past_large_inputs(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         model = T5Model(config=config).get_decoder().to(torch_device).eval()
         # first forward pass
@@ -342,13 +298,7 @@ class T5ModelTester:
         self.parent.assertTrue(torch.allclose(output_from_past_slice, output_from_no_past_slice, atol=1e-3))
 
     def create_and_check_generate_with_past_key_values(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         model = T5ForConditionalGeneration(config=config).to(torch_device).eval()
         torch.manual_seed(0)
@@ -360,26 +310,14 @@ class T5ModelTester:
         self.parent.assertTrue(torch.all(output_with_past_cache == output_without_past_cache))
 
     def create_and_check_model_fp16_forward(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         model = T5Model(config=config).to(torch_device).half().eval()
         output = model(input_ids, decoder_input_ids=input_ids, attention_mask=attention_mask)["last_hidden_state"]
         self.parent.assertFalse(torch.isnan(output).any().item())
 
     def create_and_check_encoder_decoder_shared_weights(
-        self,
-        config,
-        input_ids,
-        decoder_input_ids,
-        attention_mask,
-        decoder_attention_mask,
-        lm_labels,
+        self, config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels
     ):
         for model_class in [T5Model, T5ForConditionalGeneration]:
             torch.manual_seed(0)
@@ -448,10 +386,7 @@ class T5ModelTester:
                     )
                 )
 
-    def check_resize_embeddings_t5_v1_1(
-        self,
-        config,
-    ):
+    def check_resize_embeddings_t5_v1_1(self, config):
         prev_vocab_size = config.vocab_size
 
         config.tie_word_embeddings = False
@@ -464,14 +399,7 @@ class T5ModelTester:
 
     def prepare_config_and_inputs_for_common(self):
         config_and_inputs = self.prepare_config_and_inputs()
-        (
-            config,
-            input_ids,
-            decoder_input_ids,
-            attention_mask,
-            decoder_attention_mask,
-            lm_labels,
-        ) = config_and_inputs
+        (config, input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels) = config_and_inputs
 
         inputs_dict = {
             "input_ids": input_ids,
@@ -641,52 +569,28 @@ class T5EncoderOnlyModelTester:
             is_encoder_decoder=self.is_encoder_decoder,
         )
 
-        return (
-            config,
-            input_ids,
-            attention_mask,
-        )
+        return (config, input_ids, attention_mask)
 
-    def create_and_check_model(
-        self,
-        config,
-        input_ids,
-        attention_mask,
-    ):
+    def create_and_check_model(self, config, input_ids, attention_mask):
         model = T5EncoderModel(config=config)
         model.to(torch_device)
         model.eval()
-        result = model(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-        )
+        result = model(input_ids=input_ids, attention_mask=attention_mask)
         result = model(input_ids=input_ids)
         encoder_output = result.last_hidden_state
 
         self.parent.assertEqual(encoder_output.size(), (self.batch_size, self.encoder_seq_length, self.hidden_size))
 
-    def create_and_check_model_fp16_forward(
-        self,
-        config,
-        input_ids,
-        attention_mask,
-    ):
+    def create_and_check_model_fp16_forward(self, config, input_ids, attention_mask):
         model = T5EncoderModel(config=config).to(torch_device).half().eval()
         output = model(input_ids, attention_mask=attention_mask)["last_hidden_state"]
         self.parent.assertFalse(torch.isnan(output).any().item())
 
     def prepare_config_and_inputs_for_common(self):
         config_and_inputs = self.prepare_config_and_inputs()
-        (
-            config,
-            input_ids,
-            attention_mask,
-        ) = config_and_inputs
+        (config, input_ids, attention_mask) = config_and_inputs
 
-        inputs_dict = {
-            "input_ids": input_ids,
-            "attention_mask": attention_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "attention_mask": attention_mask}
         return config, inputs_dict
 
 
@@ -822,10 +726,7 @@ class T5ModelIntegrationTests(unittest.TestCase):
         )
 
         decoded = tok.batch_decode(hypotheses_batch, skip_special_tokens=True, clean_up_tokenization_spaces=False)
-        self.assertListEqual(
-            expected_summaries,
-            decoded,
-        )
+        self.assertListEqual(expected_summaries, decoded)
 
     @slow
     def test_translation_en_to_de(self):
@@ -894,13 +795,7 @@ class TestAsymmetricT5(unittest.TestCase):
     def build_model_and_check_forward_pass(self, **kwargs):
         tester = T5ModelTester(self, **kwargs)
         config, *inputs = tester.prepare_config_and_inputs()
-        (
-            input_ids,
-            decoder_input_ids,
-            attention_mask,
-            decoder_attention_mask,
-            lm_labels,
-        ) = inputs
+        (input_ids, decoder_input_ids, attention_mask, decoder_attention_mask, lm_labels) = inputs
         model = T5ForConditionalGeneration(config=config).to(torch_device).eval()
         outputs = model(
             input_ids=input_ids,

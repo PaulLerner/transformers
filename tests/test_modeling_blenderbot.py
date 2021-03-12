@@ -106,9 +106,7 @@ class BlenderbotModelTester:
 
     def prepare_config_and_inputs(self):
         input_ids = ids_tensor([self.batch_size, self.seq_length], self.vocab_size)
-        input_ids = ids_tensor([self.batch_size, self.seq_length], self.vocab_size).clamp(
-            3,
-        )
+        input_ids = ids_tensor([self.batch_size, self.seq_length], self.vocab_size).clamp(3)
         input_ids[:, -1] = self.eos_token_id  # Eos Token
 
         decoder_input_ids = ids_tensor([self.batch_size, self.seq_length], self.vocab_size)
@@ -391,20 +389,9 @@ class BlenderbotStandaloneDecoderModelTester:
             encoder_no_repeat_ngram_size=self.encoder_no_repeat_ngram_size,
         )
 
-        return (
-            config,
-            input_ids,
-            attention_mask,
-            lm_labels,
-        )
+        return (config, input_ids, attention_mask, lm_labels)
 
-    def create_and_check_decoder_model_past(
-        self,
-        config,
-        input_ids,
-        attention_mask,
-        lm_labels,
-    ):
+    def create_and_check_decoder_model_past(self, config, input_ids, attention_mask, lm_labels):
         config.use_cache = True
         model = BlenderbotDecoder(config=config).to(torch_device).eval()
         # first forward pass
@@ -434,13 +421,7 @@ class BlenderbotStandaloneDecoderModelTester:
         # test that outputs are equal for slice
         assert torch.allclose(output_from_past_slice, output_from_no_past_slice, atol=1e-3)
 
-    def create_and_check_decoder_model_attention_mask_past(
-        self,
-        config,
-        input_ids,
-        attention_mask,
-        lm_labels,
-    ):
+    def create_and_check_decoder_model_attention_mask_past(self, config, input_ids, attention_mask, lm_labels):
         model = BlenderbotDecoder(config=config).to(torch_device).eval()
 
         # create attention mask
@@ -464,8 +445,7 @@ class BlenderbotStandaloneDecoderModelTester:
         # append to next input_ids and attn_mask
         next_input_ids = torch.cat([input_ids, next_tokens], dim=-1)
         attn_mask = torch.cat(
-            [attn_mask, torch.ones((attn_mask.shape[0], 1), dtype=torch.long, device=torch_device)],
-            dim=1,
+            [attn_mask, torch.ones((attn_mask.shape[0], 1), dtype=torch.long, device=torch_device)], dim=1
         )
 
         # get two different outputs
@@ -484,17 +464,9 @@ class BlenderbotStandaloneDecoderModelTester:
 
     def prepare_config_and_inputs_for_common(self):
         config_and_inputs = self.prepare_config_and_inputs()
-        (
-            config,
-            input_ids,
-            attention_mask,
-            lm_labels,
-        ) = config_and_inputs
+        (config, input_ids, attention_mask, lm_labels) = config_and_inputs
 
-        inputs_dict = {
-            "input_ids": input_ids,
-            "attention_mask": attention_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "attention_mask": attention_mask}
         return config, inputs_dict
 
 
@@ -505,9 +477,7 @@ class BlenderbotStandaloneDecoderModelTest(ModelTesterMixin, GenerationTesterMix
     test_pruning = False
     is_encoder_decoder = False
 
-    def setUp(
-        self,
-    ):
+    def setUp(self,):
         self.model_tester = BlenderbotStandaloneDecoderModelTester(self, is_training=False)
         self.config_tester = ConfigTester(self, config_class=BlenderbotConfig)
 

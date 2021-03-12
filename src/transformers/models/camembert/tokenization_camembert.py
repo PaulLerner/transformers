@@ -30,14 +30,10 @@ logger = logging.get_logger(__name__)
 VOCAB_FILES_NAMES = {"vocab_file": "sentencepiece.bpe.model"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
-    "vocab_file": {
-        "camembert-base": "https://huggingface.co/camembert-base/resolve/main/sentencepiece.bpe.model",
-    }
+    "vocab_file": {"camembert-base": "https://huggingface.co/camembert-base/resolve/main/sentencepiece.bpe.model"}
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "camembert-base": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"camembert-base": 512}
 
 SPIECE_UNDERLINE = "▁"
 
@@ -107,7 +103,7 @@ class CamembertTokenizer(PreTrainedTokenizer):
         pad_token="<pad>",
         mask_token="<mask>",
         additional_special_tokens=["<s>NOTUSED", "</s>NOTUSED"],
-        **kwargs
+        **kwargs,
     ):
         # Mask token behave like a normal word, i.e. include the space before it
         mask_token = AddedToken(mask_token, lstrip=True, rstrip=False) if isinstance(mask_token, str) else mask_token

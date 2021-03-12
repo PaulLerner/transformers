@@ -55,7 +55,7 @@ class Speech2TextFeatureExtractionTester(unittest.TestCase):
         feature_size=24,
         num_mel_bins=24,
         padding_value=0.0,
-        sampling_rate=16_000,
+        sampling_rate=16000,
         return_attention_mask=True,
         do_normalize=True,
     ):

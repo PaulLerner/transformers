@@ -30,17 +30,13 @@ VOCAB_FILES_NAMES = {"vocab_file": "prophetnet.tokenizer"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
     "vocab_file": {
-        "microsoft/xprophetnet-large-wiki100-cased": "https://cdn.huggingface.co/microsoft/xprophetnet-large-wiki100-cased/prophetnet.tokenizer",
+        "microsoft/xprophetnet-large-wiki100-cased": "https://cdn.huggingface.co/microsoft/xprophetnet-large-wiki100-cased/prophetnet.tokenizer"
     }
 }
 
-PRETRAINED_INIT_CONFIGURATION = {
-    "microsoft/xprophetnet-large-wiki100-cased": {"do_lower_case": False},
-}
+PRETRAINED_INIT_CONFIGURATION = {"microsoft/xprophetnet-large-wiki100-cased": {"do_lower_case": False}}
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "microsoft/xprophetnet-large-wiki100-cased": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"microsoft/xprophetnet-large-wiki100-cased": 512}
 
 
 def load_vocab(vocab_file):
@@ -117,7 +113,7 @@ class XLMProphetNetTokenizer(PreTrainedTokenizer):
         pad_token="[PAD]",
         cls_token="[CLS]",
         mask_token="[MASK]",
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             bos_token=bos_token,

@@ -21,10 +21,7 @@ from ...file_utils import _BaseLazyModule, is_sentencepiece_available, is_torch_
 
 
 _import_structure = {
-    "configuration_speech_to_text": [
-        "SPEECH_TO_TEXT_PRETRAINED_CONFIG_ARCHIVE_MAP",
-        "Speech2TextConfig",
-    ],
+    "configuration_speech_to_text": ["SPEECH_TO_TEXT_PRETRAINED_CONFIG_ARCHIVE_MAP", "Speech2TextConfig"],
     "feature_extraction_speech_to_text": ["Speech2TextFeatureExtractor"],
 }
 

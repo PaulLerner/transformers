@@ -203,7 +203,7 @@ class ConversationalPipeline(Pipeline):
         self,
         conversations: Union[Conversation, List[Conversation]],
         clean_up_tokenization_spaces=True,
-        **generate_kwargs
+        **generate_kwargs,
     ):
         r"""
         Generate responses for the conversation(s) given as inputs.
@@ -255,9 +255,7 @@ class ConversationalPipeline(Pipeline):
                 input_length = tf.shape(inputs["input_ids"])[-1].numpy()
 
             generated_responses = self.model.generate(
-                inputs["input_ids"],
-                attention_mask=inputs["attention_mask"],
-                **generate_kwargs,
+                inputs["input_ids"], attention_mask=inputs["attention_mask"], **generate_kwargs
             )
 
             if self.model.config.is_encoder_decoder:

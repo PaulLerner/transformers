@@ -36,10 +36,7 @@ if is_tf_available():
 
 
 class TFTransfoXLModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7
@@ -108,12 +105,10 @@ class TFTransfoXLModelTester:
         self.parent.assertEqual(hidden_states_1.shape, (self.batch_size, self.seq_length, self.hidden_size))
         self.parent.assertEqual(hidden_states_2.shape, (self.batch_size, self.seq_length, self.hidden_size))
         self.parent.assertListEqual(
-            [mem.shape for mem in mems_1],
-            [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers,
+            [mem.shape for mem in mems_1], [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers
         )
         self.parent.assertListEqual(
-            [mem.shape for mem in mems_2],
-            [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers,
+            [mem.shape for mem in mems_2], [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers
         )
 
     def create_and_check_transfo_xl_lm_head(self, config, input_ids_1, input_ids_2, lm_labels):
@@ -132,14 +127,12 @@ class TFTransfoXLModelTester:
 
         self.parent.assertEqual(lm_logits_1.shape, (self.batch_size, self.seq_length, self.vocab_size))
         self.parent.assertListEqual(
-            [mem.shape for mem in mems_1],
-            [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers,
+            [mem.shape for mem in mems_1], [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers
         )
 
         self.parent.assertEqual(lm_logits_2.shape, (self.batch_size, self.seq_length, self.vocab_size))
         self.parent.assertListEqual(
-            [mem.shape for mem in mems_2],
-            [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers,
+            [mem.shape for mem in mems_2], [(self.mem_len, self.batch_size, self.hidden_size)] * self.num_hidden_layers
         )
 
     def create_and_check_transfo_xl_for_sequence_classification(self, config, input_ids_1, input_ids_2, lm_labels):

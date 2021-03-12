@@ -313,9 +313,7 @@ class ConversationalPipelineTests(MonoInputPipelineCommonMixin, unittest.TestCas
         nlp = ConversationalPipeline(model=model, tokenizer=tokenizer)
 
         conversation_1 = Conversation("hello")
-        result = nlp(
-            conversation_1,
-        )
+        result = nlp(conversation_1)
         self.assertEqual(
             result.generated_responses[0],
             # ParlAI implementation output, we have a different one, but it's our
@@ -334,10 +332,7 @@ class ConversationalPipelineTests(MonoInputPipelineCommonMixin, unittest.TestCas
         conversation_1 = Conversation(
             "Lasagne   hello   Lasagne is my favorite Italian dish. Do you like lasagne?   I like lasagne."
         )
-        result = nlp(
-            conversation_1,
-            encoder_no_repeat_ngram_size=3,
-        )
+        result = nlp(conversation_1, encoder_no_repeat_ngram_size=3)
         self.assertEqual(
             result.generated_responses[0],
             " Me too. I like how it can be topped with vegetables, meats, and condiments.",

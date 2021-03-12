@@ -132,10 +132,7 @@ class SquadDataset(Dataset):
         cached_features_file = os.path.join(
             cache_dir if cache_dir is not None else args.data_dir,
             "cached_{}_{}_{}_{}".format(
-                mode.value,
-                tokenizer.__class__.__name__,
-                str(args.max_seq_length),
-                version_tag,
+                mode.value, tokenizer.__class__.__name__, str(args.max_seq_length), version_tag
             ),
         )
 
@@ -201,11 +198,7 @@ class SquadDataset(Dataset):
         p_mask = torch.tensor(feature.p_mask, dtype=torch.float)
         is_impossible = torch.tensor(feature.is_impossible, dtype=torch.float)
 
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": attention_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": attention_mask, "token_type_ids": token_type_ids}
 
         if self.args.model_type in ["xlm", "roberta", "distilbert", "camembert"]:
             del inputs["token_type_ids"]

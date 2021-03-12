@@ -156,7 +156,7 @@ class HfLargefilesTest(HfApiCommonTest):
         DEST_FILENAME = "uploaded.pdf"
         subprocess.run(["wget", pdf_url, "-O", DEST_FILENAME], check=True, capture_output=True, cwd=WORKING_REPO_DIR)
         dest_filesize = os.stat(os.path.join(WORKING_REPO_DIR, DEST_FILENAME)).st_size
-        self.assertEqual(dest_filesize, 18685041)
+        self.assertEqual(dest_filesize, 18_685_041)
 
     def test_end_to_end_thresh_16M(self):
         # Here we'll push one multipart and one non-multipart file in the same commit, and see what happens

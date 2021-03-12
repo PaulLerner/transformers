@@ -36,10 +36,7 @@ if is_tf_available():
 
 
 class TFGPT2ModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7
@@ -125,11 +122,7 @@ class TFGPT2ModelTester:
 
     def create_and_check_gpt2_model(self, config, input_ids, input_mask, head_mask, token_type_ids, *args):
         model = TFGPT2Model(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": input_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": input_mask, "token_type_ids": token_type_ids}
         result = model(inputs)
 
         inputs = [input_ids, None, input_mask]  # None is the input for 'past'
@@ -256,11 +249,7 @@ class TFGPT2ModelTester:
 
     def create_and_check_gpt2_lm_head(self, config, input_ids, input_mask, head_mask, token_type_ids, *args):
         model = TFGPT2LMHeadModel(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": input_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": input_mask, "token_type_ids": token_type_ids}
         result = model(inputs)
         self.parent.assertEqual(result.logits.shape, (self.batch_size, self.seq_length, self.vocab_size))
 
@@ -315,11 +304,7 @@ class TFGPT2ModelTester:
             choice_labels,
         ) = config_and_inputs
 
-        inputs_dict = {
-            "input_ids": input_ids,
-            "token_type_ids": token_type_ids,
-            "attention_mask": input_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "token_type_ids": token_type_ids, "attention_mask": input_mask}
         return config, inputs_dict
 
 

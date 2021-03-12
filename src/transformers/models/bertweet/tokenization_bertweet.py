@@ -30,23 +30,14 @@ from ...utils import logging
 
 logger = logging.get_logger(__name__)
 
-VOCAB_FILES_NAMES = {
-    "vocab_file": "vocab.txt",
-    "merges_file": "bpe.codes",
-}
+VOCAB_FILES_NAMES = {"vocab_file": "vocab.txt", "merges_file": "bpe.codes"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
-    "vocab_file": {
-        "vinai/bertweet-base": "https://huggingface.co/vinai/bertweet-base/resolve/main/vocab.txt",
-    },
-    "merges_file": {
-        "vinai/bertweet-base": "https://huggingface.co/vinai/bertweet-base/resolve/main/bpe.codes",
-    },
+    "vocab_file": {"vinai/bertweet-base": "https://huggingface.co/vinai/bertweet-base/resolve/main/vocab.txt"},
+    "merges_file": {"vinai/bertweet-base": "https://huggingface.co/vinai/bertweet-base/resolve/main/bpe.codes"},
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "vinai/bertweet-base": 128,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"vinai/bertweet-base": 128}
 
 
 def get_pairs(word):
@@ -126,7 +117,7 @@ class BertweetTokenizer(PreTrainedTokenizer):
         unk_token="<unk>",
         pad_token="<pad>",
         mask_token="<mask>",
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             normalization=normalization,

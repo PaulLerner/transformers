@@ -104,7 +104,7 @@ class TokenClassificationTask:
 
         features = []
         for (ex_index, example) in enumerate(examples):
-            if ex_index % 10_000 == 0:
+            if ex_index % 10000 == 0:
                 logger.info("Writing example %d of %d", ex_index, len(examples))
 
             tokens = []
@@ -232,8 +232,7 @@ if is_torch_available():
         ):
             # Load data features from cache or dataset file
             cached_features_file = os.path.join(
-                data_dir,
-                "cached_{}_{}_{}".format(mode.value, tokenizer.__class__.__name__, str(max_seq_length)),
+                data_dir, "cached_{}_{}_{}".format(mode.value, tokenizer.__class__.__name__, str(max_seq_length))
             )
 
             # Make sure only the first process in distributed training processes the dataset,
@@ -323,10 +322,7 @@ if is_tf_available():
             def gen():
                 for ex in self.features:
                     if ex.token_type_ids is None:
-                        yield (
-                            {"input_ids": ex.input_ids, "attention_mask": ex.attention_mask},
-                            ex.label_ids,
-                        )
+                        yield ({"input_ids": ex.input_ids, "attention_mask": ex.attention_mask}, ex.label_ids)
                     else:
                         yield (
                             {

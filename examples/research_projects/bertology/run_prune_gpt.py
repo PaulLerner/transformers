@@ -199,9 +199,7 @@ def prune_heads(args, model, eval_dataloader, head_mask):
 
     for k, v in heads_to_prune.items():
         if isinstance(v, int):
-            heads_to_prune[k] = [
-                v,
-            ]
+            heads_to_prune[k] = [v]
 
     assert sum(len(h) for h in heads_to_prune.values()) == (1 - head_mask.long()).sum().item()
     model.prune_heads(heads_to_prune)
@@ -364,11 +362,7 @@ def main():
     logger.info("Training/evaluation parameters %s", args)
 
     # Prepare dataset
-    numpy_data = np.concatenate(
-        [
-            np.loadtxt(args.data_dir, dtype=np.int64),
-        ]
-    )
+    numpy_data = np.concatenate([np.loadtxt(args.data_dir, dtype=np.int64)])
     train_tensor_dataset = (torch.from_numpy(numpy_data),)
     train_data = TensorDataset(*train_tensor_dataset)
     train_sampler = RandomSampler(train_data)

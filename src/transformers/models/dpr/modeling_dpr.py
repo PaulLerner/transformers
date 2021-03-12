@@ -46,10 +46,7 @@ DPR_QUESTION_ENCODER_PRETRAINED_MODEL_ARCHIVE_LIST = [
     "facebook/dpr-question_encoder-single-nq-base",
     "facebook/dpr-question_encoder-multiset-base",
 ]
-DPR_READER_PRETRAINED_MODEL_ARCHIVE_LIST = [
-    "facebook/dpr-reader-single-nq-base",
-    "facebook/dpr-reader-multiset-base",
-]
+DPR_READER_PRETRAINED_MODEL_ARCHIVE_LIST = ["facebook/dpr-reader-single-nq-base", "facebook/dpr-reader-multiset-base"]
 
 
 ##########
@@ -435,8 +432,7 @@ DPR_READER_INPUTS_DOCSTRING = r"""
 
 
 @add_start_docstrings(
-    "The bare DPRContextEncoder transformer outputting pooler outputs as context representations.",
-    DPR_START_DOCSTRING,
+    "The bare DPRContextEncoder transformer outputting pooler outputs as context representations.", DPR_START_DOCSTRING
 )
 class DPRContextEncoder(DPRPretrainedContextEncoder):
     def __init__(self, config: DPRConfig):
@@ -589,10 +585,7 @@ class DPRQuestionEncoder(DPRPretrainedQuestionEncoder):
         )
 
 
-@add_start_docstrings(
-    "The bare DPRReader transformer outputting span predictions.",
-    DPR_START_DOCSTRING,
-)
+@add_start_docstrings("The bare DPRReader transformer outputting span predictions.", DPR_START_DOCSTRING)
 class DPRReader(DPRPretrainedReader):
     def __init__(self, config: DPRConfig):
         super().__init__(config)

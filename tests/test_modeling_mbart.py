@@ -113,9 +113,7 @@ class MBartModelTester:
 
     def prepare_config_and_inputs(self):
         input_ids = ids_tensor([self.batch_size, self.seq_length], self.vocab_size)
-        input_ids = ids_tensor([self.batch_size, self.seq_length], self.vocab_size).clamp(
-            3,
-        )
+        input_ids = ids_tensor([self.batch_size, self.seq_length], self.vocab_size).clamp(3)
         input_ids[:, -1] = self.eos_token_id  # Eos Token
 
         decoder_input_ids = ids_tensor([self.batch_size, self.seq_length], self.vocab_size)
@@ -345,7 +343,7 @@ class MBartEnroIntegrationTest(AbstractSeq2SeqIntegrationTest):
         "Şeful ONU declară că nu există o soluţie militară în Siria",
         'Secretarul General Ban Ki-moon declară că răspunsul său la intensificarea sprijinului militar al Rusiei pentru Siria este că "nu există o soluţie militară" la conflictul de aproape cinci ani şi că noi arme nu vor face decât să înrăutăţească violenţa şi mizeria pentru milioane de oameni.',
     ]
-    expected_src_tokens = [8274, 127873, 25916, 7, 8622, 2071, 438, 67485, 53, 187895, 23, 51712, 2, 250004]
+    expected_src_tokens = [8274, 127_873, 25916, 7, 8622, 2071, 438, 67485, 53, 187_895, 23, 51712, 2, 250_004]
 
     @slow
     def test_enro_generate_one(self):
@@ -402,10 +400,7 @@ class MBartEnroIntegrationTest(AbstractSeq2SeqIntegrationTest):
 @require_tokenizers
 class MBartCC25IntegrationTest(AbstractSeq2SeqIntegrationTest):
     checkpoint_name = "facebook/mbart-large-cc25"
-    src_text = [
-        " UN Chief Says There Is No Military Solution in Syria",
-        " I ate lunch twice yesterday",
-    ]
+    src_text = [" UN Chief Says There Is No Military Solution in Syria", " I ate lunch twice yesterday"]
     tgt_text = ["Şeful ONU declară că nu există o soluţie militară în Siria", "to be padded"]
 
     @unittest.skip("This test is broken, still generates english")
@@ -513,20 +508,9 @@ class MBartStandaloneDecoderModelTester:
             is_encoder_decoder=self.is_encoder_decoder,
         )
 
-        return (
-            config,
-            input_ids,
-            attention_mask,
-            lm_labels,
-        )
+        return (config, input_ids, attention_mask, lm_labels)
 
-    def create_and_check_decoder_model_past(
-        self,
-        config,
-        input_ids,
-        attention_mask,
-        lm_labels,
-    ):
+    def create_and_check_decoder_model_past(self, config, input_ids, attention_mask, lm_labels):
         config.use_cache = True
         model = MBartDecoder(config=config).to(torch_device).eval()
         # first forward pass
@@ -556,13 +540,7 @@ class MBartStandaloneDecoderModelTester:
         # test that outputs are equal for slice
         assert torch.allclose(output_from_past_slice, output_from_no_past_slice, atol=1e-3)
 
-    def create_and_check_decoder_model_attention_mask_past(
-        self,
-        config,
-        input_ids,
-        attention_mask,
-        lm_labels,
-    ):
+    def create_and_check_decoder_model_attention_mask_past(self, config, input_ids, attention_mask, lm_labels):
         model = MBartDecoder(config=config).to(torch_device).eval()
 
         # create attention mask
@@ -585,8 +563,7 @@ class MBartStandaloneDecoderModelTester:
         # append to next input_ids and attn_mask
         next_input_ids = torch.cat([input_ids, next_tokens], dim=-1)
         attn_mask = torch.cat(
-            [attn_mask, torch.ones((attn_mask.shape[0], 1), dtype=torch.long, device=torch_device)],
-            dim=1,
+            [attn_mask, torch.ones((attn_mask.shape[0], 1), dtype=torch.long, device=torch_device)], dim=1
         )
 
         # get two different outputs
@@ -605,17 +582,9 @@ class MBartStandaloneDecoderModelTester:
 
     def prepare_config_and_inputs_for_common(self):
         config_and_inputs = self.prepare_config_and_inputs()
-        (
-            config,
-            input_ids,
-            attention_mask,
-            lm_labels,
-        ) = config_and_inputs
+        (config, input_ids, attention_mask, lm_labels) = config_and_inputs
 
-        inputs_dict = {
-            "input_ids": input_ids,
-            "attention_mask": attention_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "attention_mask": attention_mask}
         return config, inputs_dict
 
 
@@ -626,9 +595,7 @@ class MBartStandaloneDecoderModelTest(ModelTesterMixin, GenerationTesterMixin, u
     test_pruning = False
     is_encoder_decoder = False
 
-    def setUp(
-        self,
-    ):
+    def setUp(self,):
         self.model_tester = MBartStandaloneDecoderModelTester(self, is_training=False)
         self.config_tester = ConfigTester(self, config_class=MBartConfig)
 

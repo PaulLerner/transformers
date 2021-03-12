@@ -107,11 +107,7 @@ class OpenAIGPTTokenizationTest(TokenizerTesterMixin, unittest.TestCase):
 
                 # Simple input
                 self.assertRaises(
-                    ValueError,
-                    tokenizer_r.batch_encode_plus,
-                    s2,
-                    max_length=max_length,
-                    padding="max_length",
+                    ValueError, tokenizer_r.batch_encode_plus, s2, max_length=max_length, padding="max_length"
                 )
 
                 # Pair input
@@ -122,11 +118,7 @@ class OpenAIGPTTokenizationTest(TokenizerTesterMixin, unittest.TestCase):
 
                 # Pair input
                 self.assertRaises(
-                    ValueError,
-                    tokenizer_r.batch_encode_plus,
-                    p2,
-                    max_length=max_length,
-                    padding="max_length",
+                    ValueError, tokenizer_r.batch_encode_plus, p2, max_length=max_length, padding="max_length"
                 )
 
     # tokenizer has no padding token

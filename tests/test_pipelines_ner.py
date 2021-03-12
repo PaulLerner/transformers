@@ -44,7 +44,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "B-PER",
                     "index": 1,
-                    "score": 0.9994944930076599,
+                    "score": 0.999_494_493_007_659_9,
                     "is_subword": False,
                     "word": "Cons",
                     "start": 0,
@@ -53,7 +53,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "B-PER",
                     "index": 2,
-                    "score": 0.8025449514389038,
+                    "score": 0.802_544_951_438_903_8,
                     "is_subword": True,
                     "word": "##uelo",
                     "start": 4,
@@ -62,7 +62,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 3,
-                    "score": 0.9993102550506592,
+                    "score": 0.999_310_255_050_659_2,
                     "is_subword": False,
                     "word": "Ara",
                     "start": 9,
@@ -71,7 +71,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 4,
-                    "score": 0.9993743896484375,
+                    "score": 0.999_374_389_648_437_5,
                     "is_subword": True,
                     "word": "##új",
                     "start": 11,
@@ -80,7 +80,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 5,
-                    "score": 0.9992871880531311,
+                    "score": 0.999_287_188_053_131_1,
                     "is_subword": True,
                     "word": "##o",
                     "start": 13,
@@ -89,7 +89,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 6,
-                    "score": 0.9993029236793518,
+                    "score": 0.999_302_923_679_351_8,
                     "is_subword": False,
                     "word": "No",
                     "start": 15,
@@ -98,7 +98,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 7,
-                    "score": 0.9981776475906372,
+                    "score": 0.998_177_647_590_637_2,
                     "is_subword": True,
                     "word": "##guera",
                     "start": 17,
@@ -107,7 +107,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "B-PER",
                     "index": 15,
-                    "score": 0.9998136162757874,
+                    "score": 0.999_813_616_275_787_4,
                     "is_subword": False,
                     "word": "Andrés",
                     "start": 23,
@@ -116,7 +116,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 16,
-                    "score": 0.999740719795227,
+                    "score": 0.999_740_719_795_227,
                     "is_subword": False,
                     "word": "Pas",
                     "start": 29,
@@ -125,7 +125,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 17,
-                    "score": 0.9997414350509644,
+                    "score": 0.999_741_435_050_964_4,
                     "is_subword": True,
                     "word": "##tran",
                     "start": 32,
@@ -134,7 +134,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 18,
-                    "score": 0.9996136426925659,
+                    "score": 0.999_613_642_692_565_9,
                     "is_subword": True,
                     "word": "##a",
                     "start": 36,
@@ -143,7 +143,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "B-ORG",
                     "index": 28,
-                    "score": 0.9989739060401917,
+                    "score": 0.998_973_906_040_191_7,
                     "is_subword": False,
                     "word": "Far",
                     "start": 39,
@@ -152,7 +152,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-ORG",
                     "index": 29,
-                    "score": 0.7188422083854675,
+                    "score": 0.718_842_208_385_467_5,
                     "is_subword": True,
                     "word": "##c",
                     "start": 42,
@@ -163,7 +163,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 1,
-                    "score": 0.9968166351318359,
+                    "score": 0.996_816_635_131_835_9,
                     "is_subword": False,
                     "word": "En",
                     "start": 0,
@@ -172,7 +172,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-PER",
                     "index": 2,
-                    "score": 0.9957635998725891,
+                    "score": 0.995_763_599_872_589_1,
                     "is_subword": True,
                     "word": "##zo",
                     "start": 2,
@@ -181,7 +181,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                 {
                     "entity": "I-ORG",
                     "index": 7,
-                    "score": 0.9986497163772583,
+                    "score": 0.998_649_716_377_258_3,
                     "is_subword": False,
                     "word": "UN",
                     "start": 11,
@@ -194,48 +194,48 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
             [
                 {
                     "entity_group": "PER",
-                    "score": 0.999369223912557,
+                    "score": 0.999_369_223_912_557,
                     "word": "Consuelo Araújo Noguera",
                     "start": 0,
                     "end": 22,
                 },
                 {
                     "entity_group": "PER",
-                    "score": 0.9997771680355072,
+                    "score": 0.999_777_168_035_507_2,
                     "word": "Andrés Pastrana",
                     "start": 23,
                     "end": 37,
                 },
-                {"entity_group": "ORG", "score": 0.9989739060401917, "word": "Farc", "start": 39, "end": 43},
+                {"entity_group": "ORG", "score": 0.998_973_906_040_191_7, "word": "Farc", "start": 39, "end": 43},
             ],
             [
-                {"entity_group": "PER", "score": 0.9968166351318359, "word": "Enzo", "start": 0, "end": 4},
-                {"entity_group": "ORG", "score": 0.9986497163772583, "word": "UN", "start": 11, "end": 13},
+                {"entity_group": "PER", "score": 0.996_816_635_131_835_9, "word": "Enzo", "start": 0, "end": 4},
+                {"entity_group": "ORG", "score": 0.998_649_716_377_258_3, "word": "UN", "start": 11, "end": 13},
             ],
         ]
 
         expected_grouped_ner_results_w_subword = [
             [
-                {"entity_group": "PER", "score": 0.9994944930076599, "word": "Cons", "start": 0, "end": 4},
+                {"entity_group": "PER", "score": 0.999_494_493_007_659_9, "word": "Cons", "start": 0, "end": 4},
                 {
                     "entity_group": "PER",
-                    "score": 0.9663328925768534,
+                    "score": 0.966_332_892_576_853_4,
                     "word": "##uelo Araújo Noguera",
                     "start": 4,
                     "end": 22,
                 },
                 {
                     "entity_group": "PER",
-                    "score": 0.9997273534536362,
+                    "score": 0.999_727_353_453_636_2,
                     "word": "Andrés Pastrana",
                     "start": 23,
                     "end": 37,
                 },
-                {"entity_group": "ORG", "score": 0.8589080572128296, "word": "Farc", "start": 39, "end": 43},
+                {"entity_group": "ORG", "score": 0.858_908_057_212_829_6, "word": "Farc", "start": 39, "end": 43},
             ],
             [
-                {"entity_group": "PER", "score": 0.9962901175022125, "word": "Enzo", "start": 0, "end": 4},
-                {"entity_group": "ORG", "score": 0.9986497163772583, "word": "UN", "start": 11, "end": 13},
+                {"entity_group": "PER", "score": 0.996_290_117_502_212_5, "word": "Enzo", "start": 0, "end": 4},
+                {"entity_group": "ORG", "score": 0.998_649_716_377_258_3, "word": "UN", "start": 11, "end": 13},
             ],
         ]
 
@@ -358,13 +358,7 @@ class NerPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
         self.assertEqual(
             output_,
             [
-                {
-                    "entity_group": "PER",
-                    "score": 0.996,
-                    "word": "Sarah Jessica Parker",
-                    "start": 6,
-                    "end": 26,
-                },
+                {"entity_group": "PER", "score": 0.996, "word": "Sarah Jessica Parker", "start": 6, "end": 26},
                 {"entity_group": "PER", "score": 0.977, "word": "Jessica", "start": 31, "end": 38},
                 {"entity_group": "LOC", "score": 0.999, "word": "New York", "start": 48, "end": 56},
             ],

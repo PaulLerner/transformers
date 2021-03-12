@@ -21,9 +21,7 @@ from typing import TYPE_CHECKING
 from ...file_utils import _BaseLazyModule, is_torch_available
 
 
-_import_structure = {
-    "configuration_mmbt": ["MMBTConfig"],
-}
+_import_structure = {"configuration_mmbt": ["MMBTConfig"]}
 
 if is_torch_available():
     _import_structure["modeling_mmbt"] = ["MMBTForClassification", "MMBTModel", "ModalEmbeddings"]

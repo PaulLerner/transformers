@@ -46,10 +46,7 @@ PRETRAINED_VOCAB_FILES_MAP = {
     },
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "xlnet-base-cased": None,
-    "xlnet-large-cased": None,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"xlnet-base-cased": None, "xlnet-large-cased": None}
 
 SPIECE_UNDERLINE = "▁"
 
@@ -137,7 +134,7 @@ class XLNetTokenizerFast(PreTrainedTokenizerFast):
         cls_token="<cls>",
         mask_token="<mask>",
         additional_special_tokens=["<eop>", "<eod>"],
-        **kwargs
+        **kwargs,
     ):
         # Mask token behave like a normal word, i.e. include the space before it
         mask_token = AddedToken(mask_token, lstrip=True, rstrip=False) if isinstance(mask_token, str) else mask_token

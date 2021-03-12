@@ -26,9 +26,7 @@ from ...file_utils import (
 )
 
 
-_import_structure = {
-    "configuration_marian": ["MARIAN_PRETRAINED_CONFIG_ARCHIVE_MAP", "MarianConfig"],
-}
+_import_structure = {"configuration_marian": ["MARIAN_PRETRAINED_CONFIG_ARCHIVE_MAP", "MarianConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_marian"] = ["MarianTokenizer"]

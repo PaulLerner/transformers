@@ -100,7 +100,7 @@ class M2M100Config(PretrainedConfig):
 
     def __init__(
         self,
-        vocab_size=128112,
+        vocab_size=128_112,
         max_position_embeddings=1024,
         encoder_layers=12,
         encoder_ffn_dim=4096,
@@ -124,7 +124,7 @@ class M2M100Config(PretrainedConfig):
         pad_token_id=1,
         bos_token_id=0,
         eos_token_id=2,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             pad_token_id=pad_token_id,

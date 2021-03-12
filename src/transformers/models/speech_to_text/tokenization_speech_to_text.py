@@ -29,23 +29,18 @@ logger = logging.get_logger(__name__)
 
 SPIECE_UNDERLINE = "▁"
 
-VOCAB_FILES_NAMES = {
-    "vocab_file": "vocab.json",
-    "spm_file": "sentencepiece.bpe.model",
-}
+VOCAB_FILES_NAMES = {"vocab_file": "vocab.json", "spm_file": "sentencepiece.bpe.model"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
     "vocab_file": {
-        "facebook/s2t-small-librispeech-asr": "https://huggingface.co/facebook/s2t-small-librispeech-asr/resolve/main/vocab.json",
+        "facebook/s2t-small-librispeech-asr": "https://huggingface.co/facebook/s2t-small-librispeech-asr/resolve/main/vocab.json"
     },
     "spm_file": {
         "facebook/s2t-small-librispeech-asr": "https://huggingface.co/facebook/s2t-small-librispeech-asr/resolve/main/sentencepiece.bpe.model"
     },
 }
 
-MAX_MODEL_INPUT_SIZES = {
-    "facebook/s2t-small-librispeech-asr": 1024,
-}
+MAX_MODEL_INPUT_SIZES = {"facebook/s2t-small-librispeech-asr": 1024}
 
 MUSTC_LANGS = ["pt", "fr", "ru", "nl", "ro", "it", "es", "de"]
 

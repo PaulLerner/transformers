@@ -27,9 +27,7 @@ from ...file_utils import (
 )
 
 
-_import_structure = {
-    "configuration_t5": ["T5_PRETRAINED_CONFIG_ARCHIVE_MAP", "T5Config"],
-}
+_import_structure = {"configuration_t5": ["T5_PRETRAINED_CONFIG_ARCHIVE_MAP", "T5Config"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_t5"] = ["T5Tokenizer"]

@@ -51,10 +51,7 @@ class MT5Model(T5Model):
         r"decoder\.embed_tokens\.weight",
         r"decoder\.block\.0\.layer\.1\.EncDecAttention\.relative_attention_bias\.weight",
     ]
-    _keys_to_ignore_on_save = [
-        r"encoder\.embed_tokens\.weight",
-        r"decoder\.embed_tokens\.weight",
-    ]
+    _keys_to_ignore_on_save = [r"encoder\.embed_tokens\.weight", r"decoder\.embed_tokens\.weight"]
 
 
 class MT5ForConditionalGeneration(T5ForConditionalGeneration):
@@ -79,12 +76,8 @@ class MT5ForConditionalGeneration(T5ForConditionalGeneration):
 
     model_type = "mt5"
     config_class = MT5Config
-    _keys_to_ignore_on_load_missing = [
-        r"encoder\.embed_tokens\.weight",
-    ]
-    _keys_to_ignore_on_save = [
-        r"encoder\.embed_tokens\.weight",
-    ]
+    _keys_to_ignore_on_load_missing = [r"encoder\.embed_tokens\.weight"]
+    _keys_to_ignore_on_save = [r"encoder\.embed_tokens\.weight"]
 
 
 class MT5EncoderModel(T5EncoderModel):
@@ -105,9 +98,5 @@ class MT5EncoderModel(T5EncoderModel):
 
     model_type = "mt5"
     config_class = MT5Config
-    _keys_to_ignore_on_load_missing = [
-        r"encoder\.embed_tokens\.weight",
-    ]
-    _keys_to_ignore_on_save = [
-        r"encoder\.embed_tokens\.weight",
-    ]
+    _keys_to_ignore_on_load_missing = [r"encoder\.embed_tokens\.weight"]
+    _keys_to_ignore_on_save = [r"encoder\.embed_tokens\.weight"]

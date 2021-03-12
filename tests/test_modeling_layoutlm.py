@@ -204,12 +204,7 @@ class LayoutLMModelTester:
 class LayoutLMModelTest(ModelTesterMixin, unittest.TestCase):
 
     all_model_classes = (
-        (
-            LayoutLMModel,
-            LayoutLMForMaskedLM,
-            LayoutLMForSequenceClassification,
-            LayoutLMForTokenClassification,
-        )
+        (LayoutLMModel, LayoutLMForMaskedLM, LayoutLMForSequenceClassification, LayoutLMForTokenClassification)
         if is_torch_available()
         else None
     )
@@ -271,8 +266,7 @@ class LayoutLMModelIntegrationTest(unittest.TestCase):
 
         # test the sequence output on [0, :3, :3]
         expected_slice = torch.tensor(
-            [[0.1785, -0.1947, -0.0425], [-0.3254, -0.2807, 0.2553], [-0.5391, -0.3322, 0.3364]],
-            device=torch_device,
+            [[0.1785, -0.1947, -0.0425], [-0.3254, -0.2807, 0.2553], [-0.5391, -0.3322, 0.3364]], device=torch_device
         )
 
         self.assertTrue(torch.allclose(outputs.last_hidden_state[0, :3, :3], expected_slice, atol=1e-3))

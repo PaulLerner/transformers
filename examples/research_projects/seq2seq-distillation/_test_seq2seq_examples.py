@@ -227,12 +227,7 @@ class TestSummarizationDistiller(TestCasePlus):
         self._test_distiller_cli(updates)
 
     def test_distill_different_base_models(self):
-        updates = dict(
-            teacher=T5_TINY,
-            student=T5_TINIER,
-            model_name_or_path=T5_TINIER,
-            tokenizer_name=T5_TINIER,
-        )
+        updates = dict(teacher=T5_TINY, student=T5_TINIER, model_name_or_path=T5_TINIER, tokenizer_name=T5_TINIER)
         self._test_distiller_cli(updates)
 
     def _test_distiller_cli(self, updates, check_contents=True):
@@ -278,9 +273,7 @@ class TestSummarizationDistiller(TestCasePlus):
 
 
 class TestTheRest(TestCasePlus):
-    @parameterized.expand(
-        [T5_TINY, BART_TINY, MBART_TINY, MARIAN_TINY, FSMT_TINY],
-    )
+    @parameterized.expand([T5_TINY, BART_TINY, MBART_TINY, MARIAN_TINY, FSMT_TINY])
     def test_finetune(self, model):
         args_d: dict = CHEAP_ARGS.copy()
         task = "translation" if model in [MBART_TINY, MARIAN_TINY, FSMT_TINY] else "summarization"
@@ -355,10 +348,7 @@ class TestTheRest(TestCasePlus):
         model = BART_TINY
         output_dir = self.get_auto_remove_tmp_dir()
         args_d1 = args_d.copy()
-        args_d1.update(
-            model_name_or_path=model,
-            output_dir=output_dir,
-        )
+        args_d1.update(model_name_or_path=model, output_dir=output_dir)
         extra_model_params = ("encoder_layerdrop", "decoder_layerdrop", "dropout", "attention_dropout")
         for p in extra_model_params:
             args_d1[p] = 0.5
@@ -371,10 +361,7 @@ class TestTheRest(TestCasePlus):
         model = T5_TINY
         output_dir = self.get_auto_remove_tmp_dir()
         args_d2 = args_d.copy()
-        args_d2.update(
-            model_name_or_path=model,
-            output_dir=output_dir,
-        )
+        args_d2.update(model_name_or_path=model, output_dir=output_dir)
         unsupported_param = "encoder_layerdrop"
         args_d2[unsupported_param] = 0.5
         args = argparse.Namespace(**args_d2)

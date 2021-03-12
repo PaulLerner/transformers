@@ -20,17 +20,13 @@ VOCAB_FILES_NAMES = {"vocab_file": "vocab.txt"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
     "vocab_file": {
-        "unc-nlp/lxmert-base-uncased": "https://huggingface.co/unc-nlp/lxmert-base-uncased/resolve/main/vocab.txt",
+        "unc-nlp/lxmert-base-uncased": "https://huggingface.co/unc-nlp/lxmert-base-uncased/resolve/main/vocab.txt"
     }
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "unc-nlp/lxmert-base-uncased": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"unc-nlp/lxmert-base-uncased": 512}
 
-PRETRAINED_INIT_CONFIGURATION = {
-    "unc-nlp/lxmert-base-uncased": {"do_lower_case": True},
-}
+PRETRAINED_INIT_CONFIGURATION = {"unc-nlp/lxmert-base-uncased": {"do_lower_case": True}}
 
 
 class LxmertTokenizer(BertTokenizer):

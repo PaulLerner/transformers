@@ -218,15 +218,7 @@ class Wav2Vec2ModelTester:
 
 @require_torch
 class Wav2Vec2ModelTest(ModelTesterMixin, unittest.TestCase):
-    all_model_classes = (
-        (
-            Wav2Vec2ForCTC,
-            Wav2Vec2Model,
-            Wav2Vec2ForMaskedLM,
-        )
-        if is_torch_available()
-        else ()
-    )
+    all_model_classes = (Wav2Vec2ForCTC, Wav2Vec2Model, Wav2Vec2ForMaskedLM) if is_torch_available() else ()
     test_pruning = False
     test_headmasking = False
     test_torchscript = False

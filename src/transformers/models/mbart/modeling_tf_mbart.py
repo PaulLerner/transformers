@@ -432,11 +432,7 @@ class TFMBartDecoderLayer(tf.keras.layers.Layer):
         hidden_states = self.dropout(hidden_states, training=training)
         hidden_states = residual + hidden_states
 
-        return (
-            hidden_states,
-            self_attn_weights,
-            present_key_value,
-        )
+        return (hidden_states, self_attn_weights, present_key_value)
 
 
 class TFMBartPreTrainedModel(TFPreTrainedModel):
@@ -634,9 +630,7 @@ class TFMBartEncoder(tf.keras.layers.Layer):
 
         self.embed_tokens = embed_tokens
         self.embed_positions = TFMBartLearnedPositionalEmbedding(
-            config.max_position_embeddings,
-            config.d_model,
-            name="embed_positions",
+            config.max_position_embeddings, config.d_model, name="embed_positions"
         )
         self.layers = [TFMBartEncoderLayer(config, name=f"layers.{i}") for i in range(config.encoder_layers)]
         self.layernorm_embedding = tf.keras.layers.LayerNormalization(epsilon=1e-5, name="layernorm_embedding")
@@ -765,9 +759,7 @@ class TFMBartEncoder(tf.keras.layers.Layer):
                 continue
 
             hidden_states, attn = encoder_layer(
-                hidden_states,
-                attention_mask,
-                inputs["head_mask"][idx] if inputs["head_mask"] is not None else None,
+                hidden_states, attention_mask, inputs["head_mask"][idx] if inputs["head_mask"] is not None else None
             )
 
             if inputs["output_attentions"]:
@@ -803,9 +795,7 @@ class TFMBartDecoder(tf.keras.layers.Layer):
         self.embed_tokens = embed_tokens
         self.layerdrop = config.decoder_layerdrop
         self.embed_positions = TFMBartLearnedPositionalEmbedding(
-            config.max_position_embeddings,
-            config.d_model,
-            name="embed_positions",
+            config.max_position_embeddings, config.d_model, name="embed_positions"
         )
         self.embed_scale = tf.math.sqrt(float(config.d_model)) if config.scale_embedding else 1.0
         self.layers = [TFMBartDecoderLayer(config, name=f"layers.{i}") for i in range(config.decoder_layers)]
@@ -1084,7 +1074,7 @@ class TFMBartMainLayer(tf.keras.layers.Layer):
         output_hidden_states=None,
         return_dict=None,
         training=False,
-        **kwargs
+        **kwargs,
     ):
         inputs = input_processing(
             func=self.call,
@@ -1172,8 +1162,7 @@ class TFMBartMainLayer(tf.keras.layers.Layer):
 
 
 @add_start_docstrings(
-    "The bare MBART Model outputting raw hidden-states without any specific head on top.",
-    MBART_START_DOCSTRING,
+    "The bare MBART Model outputting raw hidden-states without any specific head on top.", MBART_START_DOCSTRING
 )
 class TFMBartModel(TFMBartPreTrainedModel):
     def __init__(self, config: MBartConfig, *inputs, **kwargs):
@@ -1211,7 +1200,7 @@ class TFMBartModel(TFMBartPreTrainedModel):
         output_hidden_states=None,
         return_dict=None,
         training=False,
-        **kwargs
+        **kwargs,
     ):
         inputs = input_processing(
             func=self.call,
@@ -1274,14 +1263,10 @@ class TFMBartModel(TFMBartPreTrainedModel):
 
 
 @add_start_docstrings(
-    "The MBART Model with a language modeling head. Can be used for summarization.",
-    MBART_START_DOCSTRING,
+    "The MBART Model with a language modeling head. Can be used for summarization.", MBART_START_DOCSTRING
 )
 class TFMBartForConditionalGeneration(TFMBartPreTrainedModel, TFCausalLanguageModelingLoss):
-    _keys_to_ignore_on_load_unexpected = [
-        r"model.encoder.embed_tokens.weight",
-        r"model.decoder.embed_tokens.weight",
-    ]
+    _keys_to_ignore_on_load_unexpected = [r"model.encoder.embed_tokens.weight", r"model.decoder.embed_tokens.weight"]
 
     def __init__(self, config, *inputs, **kwargs):
         super().__init__(config, *inputs, **kwargs)
@@ -1429,13 +1414,7 @@ class TFMBartForConditionalGeneration(TFMBartPreTrainedModel, TFCausalLanguageMo
 
     # Copied from transformers.models.bart.modeling_tf_bart.TFBartForConditionalGeneration.prepare_inputs_for_generation
     def prepare_inputs_for_generation(
-        self,
-        decoder_input_ids,
-        past,
-        attention_mask,
-        head_mask=None,
-        use_cache=None,
-        **kwargs,
+        self, decoder_input_ids, past, attention_mask, head_mask=None, use_cache=None, **kwargs
     ) -> Dict:
         assert past is not None and len(past) in {1, 2}, f"past has to be an iterable of length 1,2 got {past}"
         if len(past) == 1:

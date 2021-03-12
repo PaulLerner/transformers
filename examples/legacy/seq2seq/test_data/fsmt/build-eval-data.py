@@ -5,12 +5,7 @@ import json
 import subprocess
 
 
-pairs = [
-    ["en", "ru"],
-    ["ru", "en"],
-    ["en", "de"],
-    ["de", "en"],
-]
+pairs = [["en", "ru"], ["ru", "en"], ["en", "de"], ["de", "en"]]
 
 n_objs = 8
 

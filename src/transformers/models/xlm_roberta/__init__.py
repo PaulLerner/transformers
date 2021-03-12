@@ -27,9 +27,7 @@ from ...file_utils import (
 )
 
 
-_import_structure = {
-    "configuration_xlm_roberta": ["XLM_ROBERTA_PRETRAINED_CONFIG_ARCHIVE_MAP", "XLMRobertaConfig"],
-}
+_import_structure = {"configuration_xlm_roberta": ["XLM_ROBERTA_PRETRAINED_CONFIG_ARCHIVE_MAP", "XLMRobertaConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_xlm_roberta"] = ["XLMRobertaTokenizer"]

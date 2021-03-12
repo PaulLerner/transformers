@@ -32,9 +32,7 @@ PRETRAINED_VOCAB_FILES_MAP = {
     "tokenizer_file": {"openai-gpt": "https://huggingface.co/openai-gpt/resolve/main/tokenizer.json"},
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "openai-gpt": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"openai-gpt": 512}
 
 
 class OpenAIGPTTokenizerFast(PreTrainedTokenizerFast):

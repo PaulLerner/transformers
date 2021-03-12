@@ -21,9 +21,7 @@ from typing import TYPE_CHECKING
 from ...file_utils import _BaseLazyModule, is_sentencepiece_available, is_tokenizers_available, is_torch_available
 
 
-_import_structure = {
-    "configuration_reformer": ["REFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP", "ReformerConfig"],
-}
+_import_structure = {"configuration_reformer": ["REFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP", "ReformerConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_reformer"] = ["ReformerTokenizer"]

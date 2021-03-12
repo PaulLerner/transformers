@@ -109,11 +109,7 @@ def build_compute_metrics_fn(task_name: str, tokenizer: PreTrainedTokenizer) -> 
     return compute_metrics_fn
 
 
-def trim_batch(
-    input_ids,
-    pad_token_id,
-    attention_mask=None,
-):
+def trim_batch(input_ids, pad_token_id, attention_mask=None):
     """Remove columns that are populated exclusively by pad_token_id"""
     keep_column_mask = input_ids.ne(pad_token_id).any(dim=0)
     if attention_mask is None:
@@ -132,7 +128,7 @@ class AbstractSeq2SeqDataset(Dataset):
         type_path="train",
         n_obs=None,
         prefix="",
-        **dataset_kwargs
+        **dataset_kwargs,
     ):
         super().__init__()
         self.src_file = Path(data_dir).joinpath(type_path + ".source")
@@ -220,11 +216,7 @@ class LegacySeq2SeqDataset(AbstractSeq2SeqDataset):
         source_ids = source_inputs["input_ids"].squeeze()
         target_ids = target_inputs["input_ids"].squeeze()
         src_mask = source_inputs["attention_mask"].squeeze()
-        return {
-            "input_ids": source_ids,
-            "attention_mask": src_mask,
-            "labels": target_ids,
-        }
+        return {"input_ids": source_ids, "attention_mask": src_mask, "labels": target_ids}
 
     def encode_line(self, tokenizer, line, max_length, pad_to_max_length=True, return_tensors="pt"):
         """Only used by LegacyDataset"""
@@ -244,11 +236,7 @@ class LegacySeq2SeqDataset(AbstractSeq2SeqDataset):
         pad_token_id = self.pad_token_id
         y = trim_batch(target_ids, pad_token_id)
         source_ids, source_mask = trim_batch(input_ids, pad_token_id, attention_mask=masks)
-        batch = {
-            "input_ids": source_ids,
-            "attention_mask": source_mask,
-            "labels": y,
-        }
+        batch = {"input_ids": source_ids, "attention_mask": source_mask, "labels": y}
         return batch
 
 
@@ -296,11 +284,7 @@ class Seq2SeqDataCollator:
     def __call__(self, batch) -> Dict[str, torch.Tensor]:
         if hasattr(self.tokenizer, "prepare_seq2seq_batch"):
             batch = self._encode(batch)
-            input_ids, attention_mask, labels = (
-                batch["input_ids"],
-                batch["attention_mask"],
-                batch["labels"],
-            )
+            input_ids, attention_mask, labels = (batch["input_ids"], batch["attention_mask"], batch["labels"])
         else:
             input_ids = torch.stack([x["input_ids"] for x in batch])
             attention_mask = torch.stack([x["attention_mask"] for x in batch])
@@ -486,12 +470,7 @@ def get_git_info():
         }
         return repo_infos
     except TypeError:
-        return {
-            "repo_id": None,
-            "repo_sha": None,
-            "repo_branch": None,
-            "hostname": None,
-        }
+        return {"repo_id": None, "repo_sha": None, "repo_branch": None, "hostname": None}
 
 
 ROUGE_KEYS = ["rouge1", "rouge2", "rougeL", "rougeLsum"]

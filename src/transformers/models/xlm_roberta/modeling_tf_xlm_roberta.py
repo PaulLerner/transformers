@@ -85,10 +85,7 @@ class TFXLMRobertaModel(TFRobertaModel):
     config_class = XLMRobertaConfig
 
 
-@add_start_docstrings(
-    """XLM-RoBERTa Model with a `language modeling` head on top. """,
-    XLM_ROBERTA_START_DOCSTRING,
-)
+@add_start_docstrings("""XLM-RoBERTa Model with a `language modeling` head on top. """, XLM_ROBERTA_START_DOCSTRING)
 class TFXLMRobertaForMaskedLM(TFRobertaForMaskedLM):
     """
     This class overrides :class:`~transformers.TFRobertaForMaskedLM`. Please check the superclass for the appropriate

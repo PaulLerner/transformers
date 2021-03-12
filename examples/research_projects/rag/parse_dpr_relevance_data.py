@@ -14,22 +14,9 @@ def main():
     parser = argparse.ArgumentParser()
 
     # Required parameters
-    parser.add_argument(
-        "--src_path",
-        type=str,
-        default="biencoder-nq-dev.json",
-        help="Path to raw DPR training data",
-    )
-    parser.add_argument(
-        "--evaluation_set",
-        type=str,
-        help="where to store parsed evaluation_set file",
-    )
-    parser.add_argument(
-        "--gold_data_path",
-        type=str,
-        help="where to store parsed gold_data_path file",
-    )
+    parser.add_argument("--src_path", type=str, default="biencoder-nq-dev.json", help="Path to raw DPR training data")
+    parser.add_argument("--evaluation_set", type=str, help="where to store parsed evaluation_set file")
+    parser.add_argument("--gold_data_path", type=str, help="where to store parsed gold_data_path file")
     args = parser.parse_args()
 
     with open(args.src_path, "r") as src_file, open(args.evaluation_set, "w") as eval_file, open(

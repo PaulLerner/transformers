@@ -31,7 +31,7 @@ VOCAB_FILES_NAMES = {"vocab_file": "spiece.model"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
     "vocab_file": {
-        "bert_for_seq_generation": "https://huggingface.co/google/bert_for_seq_generation_L-24_bbc_encoder/resolve/main/spiece.model",
+        "bert_for_seq_generation": "https://huggingface.co/google/bert_for_seq_generation_L-24_bbc_encoder/resolve/main/spiece.model"
     }
 }
 
@@ -74,7 +74,7 @@ class BertGenerationTokenizer(PreTrainedTokenizer):
         unk_token="<unk>",
         pad_token="<pad>",
         sep_token="<::::>",
-        **kwargs
+        **kwargs,
     ):
         # Add extra_ids to the special token list
         super().__init__(

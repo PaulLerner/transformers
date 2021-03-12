@@ -144,12 +144,7 @@ class MarianAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
     def __init__(
-        self,
-        embed_dim: int,
-        num_heads: int,
-        dropout: float = 0.0,
-        is_decoder: bool = False,
-        bias: bool = True,
+        self, embed_dim: int, num_heads: int, dropout: float = 0.0, is_decoder: bool = False, bias: bool = True
     ):
         super().__init__()
         self.embed_dim = embed_dim
@@ -288,9 +283,7 @@ class MarianEncoderLayer(nn.Module):
         super().__init__()
         self.embed_dim = config.d_model
         self.self_attn = MarianAttention(
-            embed_dim=self.embed_dim,
-            num_heads=config.encoder_attention_heads,
-            dropout=config.attention_dropout,
+            embed_dim=self.embed_dim, num_heads=config.encoder_attention_heads, dropout=config.attention_dropout
         )
         self.self_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.dropout = config.dropout
@@ -369,10 +362,7 @@ class MarianDecoderLayer(nn.Module):
 
         self.self_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.encoder_attn = MarianAttention(
-            self.embed_dim,
-            config.decoder_attention_heads,
-            dropout=config.attention_dropout,
-            is_decoder=True,
+            self.embed_dim, config.decoder_attention_heads, dropout=config.attention_dropout, is_decoder=True
         )
         self.encoder_attn_layer_norm = nn.LayerNorm(self.embed_dim)
         self.fc1 = nn.Linear(self.embed_dim, config.decoder_ffn_dim)
@@ -647,9 +637,7 @@ class MarianEncoder(MarianPreTrainedModel):
             self.embed_tokens = nn.Embedding(config.vocab_size, embed_dim, self.padding_idx)
 
         self.embed_positions = MarianSinusoidalPositionalEmbedding(
-            config.max_position_embeddings,
-            embed_dim,
-            self.padding_idx,
+            config.max_position_embeddings, embed_dim, self.padding_idx
         )
         self.layers = nn.ModuleList([MarianEncoderLayer(config) for _ in range(config.encoder_layers)])
         self.init_weights()
@@ -807,9 +795,7 @@ class MarianDecoder(MarianPreTrainedModel):
             self.embed_tokens = nn.Embedding(config.vocab_size, config.d_model, self.padding_idx)
 
         self.embed_positions = MarianSinusoidalPositionalEmbedding(
-            config.max_position_embeddings,
-            config.d_model,
-            self.padding_idx,
+            config.max_position_embeddings, config.d_model, self.padding_idx
         )
         self.layers = nn.ModuleList([MarianDecoderLayer(config) for _ in range(config.decoder_layers)])
         self.init_weights()
@@ -1049,8 +1035,7 @@ class MarianDecoder(MarianPreTrainedModel):
 
 
 @add_start_docstrings(
-    "The bare Marian Model outputting raw hidden-states without any specific head on top.",
-    MARIAN_START_DOCSTRING,
+    "The bare Marian Model outputting raw hidden-states without any specific head on top.", MARIAN_START_DOCSTRING
 )
 class MarianModel(MarianPreTrainedModel):
     def __init__(self, config: MarianConfig):
@@ -1183,10 +1168,7 @@ class MarianMTModel(MarianPreTrainedModel):
         r"embed_positions",
     ]
 
-    _keys_to_ignore_on_save = [
-        "model.encoder.embed_positions.weight",
-        "model.decoder.embed_positions.weight",
-    ]
+    _keys_to_ignore_on_save = ["model.encoder.embed_positions.weight", "model.decoder.embed_positions.weight"]
 
     def __init__(self, config: MarianConfig):
         super().__init__(config)
@@ -1307,7 +1289,7 @@ class MarianMTModel(MarianPreTrainedModel):
         head_mask=None,
         use_cache=None,
         encoder_outputs=None,
-        **kwargs
+        **kwargs,
     ):
         # cut decoder_input_ids if past is used
         if past is not None:

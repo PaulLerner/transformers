@@ -601,10 +601,7 @@ class TFFunnelEncoder(tf.keras.layers.Layer):
         # The pooling is not implemented on long tensors, so we convert this mask.
         # attention_mask = tf.cast(attention_mask, inputs_embeds.dtype)
         attention_inputs = self.attention_structure.init_attention_inputs(
-            inputs_embeds,
-            attention_mask=attention_mask,
-            token_type_ids=token_type_ids,
-            training=training,
+            inputs_embeds, attention_mask=attention_mask, token_type_ids=token_type_ids, training=training
         )
         hidden = inputs_embeds
 
@@ -699,10 +696,7 @@ class TFFunnelDecoder(tf.keras.layers.Layer):
         all_attentions = () if output_attentions else None
 
         attention_inputs = self.attention_structure.init_attention_inputs(
-            hidden,
-            attention_mask=attention_mask,
-            token_type_ids=token_type_ids,
-            training=training,
+            hidden, attention_mask=attention_mask, token_type_ids=token_type_ids, training=training
         )
 
         for layer in self.layers:
@@ -1262,7 +1256,7 @@ class TFFunnelForPreTraining(TFFunnelPreTrainedModel):
         output_hidden_states=None,
         return_dict=None,
         training=False,
-        **kwargs
+        **kwargs,
     ):
         r"""
         Returns:
@@ -1395,10 +1389,7 @@ class TFFunnelForMaskedLM(TFFunnelPreTrainedModel, TFMaskedLanguageModelingLoss)
             return ((loss,) + output) if loss is not None else output
 
         return TFMaskedLMOutput(
-            loss=loss,
-            logits=prediction_scores,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=prediction_scores, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
     # Copied from transformers.models.bert.modeling_tf_bert.TFBertForMaskedLM.serving_output
@@ -1485,10 +1476,7 @@ class TFFunnelForSequenceClassification(TFFunnelPreTrainedModel, TFSequenceClass
             return ((loss,) + output) if loss is not None else output
 
         return TFSequenceClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
     # Copied from transformers.models.bert.modeling_tf_bert.TFBertForSequenceClassification.serving_output
@@ -1607,10 +1595,7 @@ class TFFunnelForMultipleChoice(TFFunnelPreTrainedModel, TFMultipleChoiceLoss):
             return ((loss,) + output) if loss is not None else output
 
         return TFMultipleChoiceModelOutput(
-            loss=loss,
-            logits=reshaped_logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=reshaped_logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
     @tf.function(
@@ -1714,10 +1699,7 @@ class TFFunnelForTokenClassification(TFFunnelPreTrainedModel, TFTokenClassificat
             return ((loss,) + output) if loss is not None else output
 
         return TFTokenClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
     # Copied from transformers.models.bert.modeling_tf_bert.TFBertForTokenClassification.serving_output

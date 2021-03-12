@@ -159,7 +159,7 @@ class FSMTConfig(PretrainedConfig):
         bos_token_id=0,
         eos_token_id=2,
         forced_eos_token_id=2,
-        **common_kwargs
+        **common_kwargs,
     ):
         if "hidden_size" in common_kwargs:
             raise ValueError("hidden size is called d_model")

@@ -240,12 +240,7 @@ class IBertSelfAttention(nn.Module):
         return x.permute(0, 2, 1, 3)
 
     def forward(
-        self,
-        hidden_states,
-        hidden_states_scaling_factor,
-        attention_mask=None,
-        head_mask=None,
-        output_attentions=False,
+        self, hidden_states, hidden_states_scaling_factor, attention_mask=None, head_mask=None, output_attentions=False
     ):
         # Projection
         mixed_query_layer, mixed_query_layer_scaling_factor = self.query(hidden_states, hidden_states_scaling_factor)
@@ -391,19 +386,10 @@ class IBertAttention(nn.Module):
         self.pruned_heads = self.pruned_heads.union(heads)
 
     def forward(
-        self,
-        hidden_states,
-        hidden_states_scaling_factor,
-        attention_mask=None,
-        head_mask=None,
-        output_attentions=False,
+        self, hidden_states, hidden_states_scaling_factor, attention_mask=None, head_mask=None, output_attentions=False
     ):
         self_outputs, self_outputs_scaling_factor = self.self(
-            hidden_states,
-            hidden_states_scaling_factor,
-            attention_mask,
-            head_mask,
-            output_attentions,
+            hidden_states, hidden_states_scaling_factor, attention_mask, head_mask, output_attentions
         )
         attention_output, attention_output_scaling_factor = self.output(
             self_outputs[0], self_outputs_scaling_factor[0], hidden_states, hidden_states_scaling_factor
@@ -508,19 +494,10 @@ class IBertLayer(nn.Module):
         self.pre_output_act = QuantAct(self.act_bit, quant_mode=self.quant_mode)
 
     def forward(
-        self,
-        hidden_states,
-        hidden_states_scaling_factor,
-        attention_mask=None,
-        head_mask=None,
-        output_attentions=False,
+        self, hidden_states, hidden_states_scaling_factor, attention_mask=None, head_mask=None, output_attentions=False
     ):
         self_attention_outputs, self_attention_outputs_scaling_factor = self.attention(
-            hidden_states,
-            hidden_states_scaling_factor,
-            attention_mask,
-            head_mask,
-            output_attentions=output_attentions,
+            hidden_states, hidden_states_scaling_factor, attention_mask, head_mask, output_attentions=output_attentions
         )
         attention_output = self_attention_outputs[0]
         attention_output_scaling_factor = self_attention_outputs_scaling_factor[0]
@@ -584,11 +561,7 @@ class IBertEncoder(nn.Module):
 
             else:
                 layer_outputs = layer_module(
-                    hidden_states,
-                    hidden_states_scaling_factor,
-                    attention_mask,
-                    layer_head_mask,
-                    output_attentions,
+                    hidden_states, hidden_states_scaling_factor, attention_mask, layer_head_mask, output_attentions
                 )
 
             hidden_states = layer_outputs[0]
@@ -829,10 +802,7 @@ class IBertModel(IBertPreTrainedModel):
         head_mask = self.get_head_mask(head_mask, self.config.num_hidden_layers)
 
         embedding_output, embedding_output_scaling_factor = self.embeddings(
-            input_ids=input_ids,
-            position_ids=position_ids,
-            token_type_ids=token_type_ids,
-            inputs_embeds=inputs_embeds,
+            input_ids=input_ids, position_ids=position_ids, token_type_ids=token_type_ids, inputs_embeds=inputs_embeds
         )
         encoder_outputs = self.encoder(
             embedding_output,
@@ -1041,10 +1011,7 @@ class IBertForSequenceClassification(IBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return SequenceClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 
@@ -1133,10 +1100,7 @@ class IBertForMultipleChoice(IBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return MultipleChoiceModelOutput(
-            loss=loss,
-            logits=reshaped_logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=reshaped_logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 
@@ -1224,10 +1188,7 @@ class IBertForTokenClassification(IBertPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return TokenClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 

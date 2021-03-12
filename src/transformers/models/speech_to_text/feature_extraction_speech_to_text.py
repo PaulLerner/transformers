@@ -73,7 +73,7 @@ class Speech2TextFeatureExtractor(SequenceFeatureExtractor):
         do_ceptral_normalize=True,
         normalize_means=True,
         normalize_vars=True,
-        **kwargs
+        **kwargs,
     ):
         if not is_torchaudio_available():
             raise ImportError("`Speech2TextFeatureExtractor` requires torchaudio: `pip install torchaudio`.")
@@ -84,10 +84,7 @@ class Speech2TextFeatureExtractor(SequenceFeatureExtractor):
         self.normalize_vars = normalize_vars
         self.return_attention_mask = True
 
-    def _extract_fbank_features(
-        self,
-        waveform: np.ndarray,
-    ) -> np.ndarray:
+    def _extract_fbank_features(self, waveform: np.ndarray) -> np.ndarray:
         """
         Get mel-filter bank features using TorchAudio. Note that TorchAudio requires 16-bit signed integers as inputs
         and hence the waveform should not be normalized before feature extraction.
@@ -125,7 +122,7 @@ class Speech2TextFeatureExtractor(SequenceFeatureExtractor):
         return_tensors: Optional[Union[str, TensorType]] = None,
         sampling_rate: Optional[int] = None,
         return_attention_mask: Optional[bool] = None,
-        **kwargs
+        **kwargs,
     ) -> BatchFeature:
         """
         Main method to featurize and prepare for the model one or several sequence(s). sequences.

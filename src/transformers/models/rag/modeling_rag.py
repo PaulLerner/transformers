@@ -239,7 +239,7 @@ class RagPreTrainedModel(PreTrainedModel):
         generator_pretrained_model_name_or_path: str = None,
         retriever: RagRetriever = None,
         *model_args,
-        **kwargs
+        **kwargs,
     ) -> PreTrainedModel:
         r"""
         Instantiates an question encoder and a generator from one or two base classes of the library from pretrained
@@ -726,7 +726,7 @@ class RagSequenceForGeneration(RagPreTrainedModel):
         reduce_loss=None,
         labels=None,
         n_docs=None,
-        **kwargs  # needs kwargs for generation
+        **kwargs,  # needs kwargs for generation
     ):
         r"""
         exclude_bos_score (:obj:`bool`, `optional`):
@@ -849,7 +849,7 @@ class RagSequenceForGeneration(RagPreTrainedModel):
         num_return_sequences=None,  # defaults to 1
         num_beams=None,  # defaults to 1
         n_docs=None,
-        **model_kwargs
+        **model_kwargs,
     ):
         """
         Implements RAG sequence "thorough" decoding. Read the :meth:`~transformers.PreTrainedModel.generate``
@@ -938,10 +938,7 @@ class RagSequenceForGeneration(RagPreTrainedModel):
             # first, generate beams from documents:
             generator_input_ids = context_input_ids[index * n_docs : (index + 1) * n_docs]  # (n_docs, max_len)
 
-            output_sequences = self.generator.generate(
-                generator_input_ids,
-                **model_kwargs,
-            )  # n_docs * n_beam, tgt_len
+            output_sequences = self.generator.generate(generator_input_ids, **model_kwargs)  # n_docs * n_beam, tgt_len
             if do_deduplication:
                 # do_deduplication, max_output_len
                 output_sequences = torch.stack(list({str(k.tolist()): k for k in output_sequences}.values()))
@@ -1099,7 +1096,7 @@ class RagTokenForGeneration(RagPreTrainedModel):
         encoder_outputs=None,
         doc_scores=None,
         n_docs=None,
-        **kwargs
+        **kwargs,
     ):
         if past is not None:
             # if past is defined use only last decoder_input_ids
@@ -1180,7 +1177,7 @@ class RagTokenForGeneration(RagPreTrainedModel):
         reduce_loss=None,
         labels=None,
         n_docs=None,
-        **kwargs  # needs kwargs for generation
+        **kwargs,  # needs kwargs for generation
     ):
         r"""
         do_marginalize (:obj:`bool`, `optional`):
@@ -1316,7 +1313,7 @@ class RagTokenForGeneration(RagPreTrainedModel):
         prefix_allowed_tokens_fn: Callable[[int, torch.Tensor], List[int]] = None,
         forced_bos_token_id: Optional[int] = None,
         forced_eos_token_id: Optional[int] = None,
-        **model_kwargs
+        **model_kwargs,
     ):
         """
         Implements RAG token decoding.

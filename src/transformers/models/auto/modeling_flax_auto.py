@@ -27,12 +27,7 @@ from .configuration_auto import AutoConfig, BertConfig, RobertaConfig
 logger = logging.get_logger(__name__)
 
 
-FLAX_MODEL_MAPPING = OrderedDict(
-    [
-        (RobertaConfig, FlaxRobertaModel),
-        (BertConfig, FlaxBertModel),
-    ]
-)
+FLAX_MODEL_MAPPING = OrderedDict([(RobertaConfig, FlaxRobertaModel), (BertConfig, FlaxBertModel)])
 
 
 class FlaxAutoModel(object):

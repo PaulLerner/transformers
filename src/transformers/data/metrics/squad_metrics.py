@@ -425,7 +425,7 @@ def compute_predictions_logits(
 
         prelim_predictions = []
         # keep track of the minimum score of null start+end of position 0
-        score_null = 1000000  # large and positive
+        score_null = 1_000_000  # large and positive
         min_null_feature_index = 0  # the paragraph slice with min null score
         null_start_logit = 0  # the start logit at the slice with min null score
         null_end_logit = 0  # the end logit at the slice with min null score
@@ -635,7 +635,7 @@ def compute_predictions_log_probs(
 
         prelim_predictions = []
         # keep track of the minimum score of null start+end of position 0
-        score_null = 1000000  # large and positive
+        score_null = 1_000_000  # large and positive
 
         for (feature_index, feature) in enumerate(features):
             result = unique_id_to_result[feature.unique_id]

@@ -289,7 +289,7 @@ class TrainingArguments:
     """
 
     output_dir: str = field(
-        metadata={"help": "The output directory where the model predictions and checkpoints will be written."},
+        metadata={"help": "The output directory where the model predictions and checkpoints will be written."}
     )
     overwrite_output_dir: bool = field(
         default=False,
@@ -304,13 +304,9 @@ class TrainingArguments:
     do_train: bool = field(default=False, metadata={"help": "Whether to run training."})
     do_eval: bool = field(default=None, metadata={"help": "Whether to run eval on the dev set."})
     do_predict: bool = field(default=False, metadata={"help": "Whether to run predictions on the test set."})
-    evaluation_strategy: IntervalStrategy = field(
-        default="no",
-        metadata={"help": "The evaluation strategy to use."},
-    )
+    evaluation_strategy: IntervalStrategy = field(default="no", metadata={"help": "The evaluation strategy to use."})
     prediction_loss_only: bool = field(
-        default=False,
-        metadata={"help": "When performing evaluation and predictions, only returns the loss."},
+        default=False, metadata={"help": "When performing evaluation and predictions, only returns the loss."}
     )
 
     per_device_train_batch_size: int = field(
@@ -336,8 +332,7 @@ class TrainingArguments:
     )
 
     gradient_accumulation_steps: int = field(
-        default=1,
-        metadata={"help": "Number of updates steps to accumulate before performing a backward/update pass."},
+        default=1, metadata={"help": "Number of updates steps to accumulate before performing a backward/update pass."}
     )
     eval_accumulation_steps: Optional[int] = field(
         default=None,
@@ -356,26 +351,17 @@ class TrainingArguments:
         default=-1,
         metadata={"help": "If > 0: set total number of training steps to perform. Override num_train_epochs."},
     )
-    lr_scheduler_type: SchedulerType = field(
-        default="linear",
-        metadata={"help": "The scheduler type to use."},
-    )
+    lr_scheduler_type: SchedulerType = field(default="linear", metadata={"help": "The scheduler type to use."})
     warmup_ratio: float = field(
         default=0.0, metadata={"help": "Linear warmup over warmup_ratio fraction of total steps."}
     )
     warmup_steps: int = field(default=0, metadata={"help": "Linear warmup over warmup_steps."})
 
     logging_dir: Optional[str] = field(default_factory=default_logdir, metadata={"help": "Tensorboard log dir."})
-    logging_strategy: IntervalStrategy = field(
-        default="steps",
-        metadata={"help": "The logging strategy to use."},
-    )
+    logging_strategy: IntervalStrategy = field(default="steps", metadata={"help": "The logging strategy to use."})
     logging_first_step: bool = field(default=False, metadata={"help": "Log the first global_step"})
     logging_steps: int = field(default=500, metadata={"help": "Log every X updates steps."})
-    save_strategy: IntervalStrategy = field(
-        default="steps",
-        metadata={"help": "The checkpoint save strategy to use."},
-    )
+    save_strategy: IntervalStrategy = field(default="steps", metadata={"help": "The checkpoint save strategy to use."})
     save_steps: int = field(default=500, metadata={"help": "Save checkpoint every X updates steps."})
     save_total_limit: Optional[int] = field(
         default=None,
@@ -389,10 +375,7 @@ class TrainingArguments:
     no_cuda: bool = field(default=False, metadata={"help": "Do not use CUDA even when it is available"})
     seed: int = field(default=42, metadata={"help": "Random seed that will be set at the beginning of training."})
 
-    fp16: bool = field(
-        default=False,
-        metadata={"help": "Whether to use 16-bit (mixed) precision instead of 32-bit"},
-    )
+    fp16: bool = field(default=False, metadata={"help": "Whether to use 16-bit (mixed) precision instead of 32-bit"})
     fp16_opt_level: str = field(
         default="O1",
         metadata={
@@ -407,8 +390,7 @@ class TrainingArguments:
         metadata={"help": "The backend to be used for mixed precision.", "choices": ["auto", "amp", "apex"]},
     )
     fp16_full_eval: bool = field(
-        default=False,
-        metadata={"help": "Whether to use full 16-bit precision evaluation instead of 32-bit"},
+        default=False, metadata={"help": "Whether to use full 16-bit precision evaluation instead of 32-bit"}
     )
     local_rank: int = field(default=-1, metadata={"help": "For distributed training: local_rank"})
 
@@ -507,9 +489,9 @@ class TrainingArguments:
     _n_gpu: int = field(init=False, repr=False, default=-1)
 
     def __post_init__(self):
-        # expand paths, if not os.makedirs("~/bar") will make directory 
+        # expand paths, if not os.makedirs("~/bar") will make directory
         # in the current directory instead of the actual home
-        # see https://github.com/huggingface/transformers/issues/10628
+        #  see https://github.com/huggingface/transformers/issues/10628
         if self.output_dir is not None:
             self.output_dir = os.path.expanduser(self.output_dir)
         if self.logging_dir is not None:

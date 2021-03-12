@@ -45,10 +45,7 @@ if is_torch_available():
 
 
 class RobertaModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7

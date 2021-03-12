@@ -27,9 +27,7 @@ from ...file_utils import (
 )
 
 
-_import_structure = {
-    "configuration_albert": ["ALBERT_PRETRAINED_CONFIG_ARCHIVE_MAP", "AlbertConfig"],
-}
+_import_structure = {"configuration_albert": ["ALBERT_PRETRAINED_CONFIG_ARCHIVE_MAP", "AlbertConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_albert"] = ["AlbertTokenizer"]

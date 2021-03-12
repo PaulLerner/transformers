@@ -144,11 +144,7 @@ class TFBertModelTester:
     ):
         config.is_decoder = True
         model = TFBertLMHeadModel(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": input_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": input_mask, "token_type_ids": token_type_ids}
         prediction_scores = model(inputs)["logits"]
         self.parent.assertListEqual(
             list(prediction_scores.numpy().shape), [self.batch_size, self.seq_length, self.vocab_size]
@@ -158,11 +154,7 @@ class TFBertModelTester:
         self, config, input_ids, token_type_ids, input_mask, sequence_labels, token_labels, choice_labels
     ):
         model = TFBertForMaskedLM(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": input_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": input_mask, "token_type_ids": token_type_ids}
         result = model(inputs)
         self.parent.assertEqual(result.logits.shape, (self.batch_size, self.seq_length, self.vocab_size))
 
@@ -188,11 +180,7 @@ class TFBertModelTester:
     ):
         config.num_labels = self.num_labels
         model = TFBertForSequenceClassification(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": input_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": input_mask, "token_type_ids": token_type_ids}
 
         result = model(inputs)
         self.parent.assertEqual(result.logits.shape, (self.batch_size, self.num_labels))
@@ -218,11 +206,7 @@ class TFBertModelTester:
     ):
         config.num_labels = self.num_labels
         model = TFBertForTokenClassification(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": input_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": input_mask, "token_type_ids": token_type_ids}
         result = model(inputs)
         self.parent.assertEqual(result.logits.shape, (self.batch_size, self.seq_length, self.num_labels))
 
@@ -230,11 +214,7 @@ class TFBertModelTester:
         self, config, input_ids, token_type_ids, input_mask, sequence_labels, token_labels, choice_labels
     ):
         model = TFBertForQuestionAnswering(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "attention_mask": input_mask,
-            "token_type_ids": token_type_ids,
-        }
+        inputs = {"input_ids": input_ids, "attention_mask": input_mask, "token_type_ids": token_type_ids}
 
         result = model(inputs)
         self.parent.assertEqual(result.start_logits.shape, (self.batch_size, self.seq_length))

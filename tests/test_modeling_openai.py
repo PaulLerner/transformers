@@ -38,10 +38,7 @@ if is_torch_available():
 
 
 class OpenAIGPTModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7
@@ -98,15 +95,7 @@ class OpenAIGPTModelTester:
 
         head_mask = ids_tensor([self.num_hidden_layers, self.num_attention_heads], 2)
 
-        return (
-            config,
-            input_ids,
-            head_mask,
-            token_type_ids,
-            sequence_labels,
-            token_labels,
-            choice_labels,
-        )
+        return (config, input_ids, head_mask, token_type_ids, sequence_labels, token_labels, choice_labels)
 
     def create_and_check_openai_gpt_model(self, config, input_ids, head_mask, token_type_ids, *args):
         model = OpenAIGPTModel(config=config)
@@ -160,11 +149,7 @@ class OpenAIGPTModelTester:
             token_labels,
             choice_labels,
         ) = config_and_inputs
-        inputs_dict = {
-            "input_ids": input_ids,
-            "token_type_ids": token_type_ids,
-            "head_mask": head_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "token_type_ids": token_type_ids, "head_mask": head_mask}
 
         return config, inputs_dict
 

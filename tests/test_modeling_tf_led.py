@@ -113,10 +113,7 @@ class TFLEDModelTester:
             **self.config_updates,
         )
         inputs_dict = prepare_led_inputs_dict(config, input_ids, decoder_input_ids)
-        global_attention_mask = tf.concat(
-            [tf.zeros_like(input_ids)[:, :-1], tf.ones_like(input_ids)[:, -1:]],
-            axis=-1,
-        )
+        global_attention_mask = tf.concat([tf.zeros_like(input_ids)[:, :-1], tf.ones_like(input_ids)[:, -1:]], axis=-1)
         inputs_dict["global_attention_mask"] = global_attention_mask
         return config, inputs_dict
 
@@ -310,8 +307,7 @@ class TFLEDModelTest(TFModelTesterMixin, unittest.TestCase):
             decoder_attentions = outputs.decoder_attentions
             self.assertEqual(len(decoder_attentions), self.model_tester.num_hidden_layers)
             self.assertListEqual(
-                list(decoder_attentions[0].shape[-3:]),
-                [self.model_tester.num_attention_heads, seq_length, seq_length],
+                list(decoder_attentions[0].shape[-3:]), [self.model_tester.num_attention_heads, seq_length, seq_length]
             )
 
         def check_encoder_attentions_output(outputs):
@@ -320,8 +316,7 @@ class TFLEDModelTest(TFModelTesterMixin, unittest.TestCase):
             self.assertEqual(len(attentions), self.model_tester.num_hidden_layers)
             self.assertEqual(len(global_attentions), self.model_tester.num_hidden_layers)
             self.assertListEqual(
-                list(attentions[0].shape[-3:]),
-                [self.model_tester.num_attention_heads, encoder_seq_length, seq_length],
+                list(attentions[0].shape[-3:]), [self.model_tester.num_attention_heads, encoder_seq_length, seq_length]
             )
             self.assertListEqual(
                 list(global_attentions[0].shape[-3:]),
@@ -408,7 +403,7 @@ class TFLEDModelIntegrationTest(unittest.TestCase):
         self.assertEqual(output.shape, expected_shape)
         # change to expected output here
         expected_slice = tf.convert_to_tensor(
-            [[2.3050, 2.8279, 0.6531], [-1.8457, -0.1455, -3.5661], [-1.0186, 0.4586, -2.2043]],
+            [[2.3050, 2.8279, 0.6531], [-1.8457, -0.1455, -3.5661], [-1.0186, 0.4586, -2.2043]]
         )
         tf.debugging.assert_near(output[:, :3, :3], expected_slice, atol=TOLERANCE)
 
@@ -424,6 +419,6 @@ class TFLEDModelIntegrationTest(unittest.TestCase):
         self.assertEqual(output.shape, expected_shape)
         # change to expected output here
         expected_slice = tf.convert_to_tensor(
-            [[33.6507, 6.4572, 16.8089], [5.8739, -2.4238, 11.2902], [-3.2139, -4.3149, 4.2783]],
+            [[33.6507, 6.4572, 16.8089], [5.8739, -2.4238, 11.2902], [-3.2139, -4.3149, 4.2783]]
         )
         tf.debugging.assert_near(output[:, :3, :3], expected_slice, atol=TOLERANCE)

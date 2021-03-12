@@ -297,22 +297,14 @@ class TapasModelTester:
         model = TapasForQuestionAnswering(config=sqa_config)
         model.to(torch_device)
         model.eval()
-        result = model(
-            input_ids=input_ids,
-            attention_mask=input_mask,
-            token_type_ids=token_type_ids,
-        )
+        result = model(input_ids=input_ids, attention_mask=input_mask, token_type_ids=token_type_ids)
         self.parent.assertEqual(result.logits.shape, (self.batch_size, self.seq_length))
 
         # inference: with aggregation head (WTQ, WikiSQL-supervised). Model returns logits and aggregation logits
         model = TapasForQuestionAnswering(config=config)
         model.to(torch_device)
         model.eval()
-        result = model(
-            input_ids=input_ids,
-            attention_mask=input_mask,
-            token_type_ids=token_type_ids,
-        )
+        result = model(input_ids=input_ids, attention_mask=input_mask, token_type_ids=token_type_ids)
         self.parent.assertEqual(result.logits.shape, (self.batch_size, self.seq_length))
         self.parent.assertEqual(result.logits_aggregation.shape, (self.batch_size, self.num_aggregation_labels))
 
@@ -321,12 +313,7 @@ class TapasModelTester:
         model = TapasForQuestionAnswering(config=sqa_config)
         model.to(torch_device)
         model.eval()
-        result = model(
-            input_ids,
-            attention_mask=input_mask,
-            token_type_ids=token_type_ids,
-            labels=labels,
-        )
+        result = model(input_ids, attention_mask=input_mask, token_type_ids=token_type_ids, labels=labels)
         self.parent.assertEqual(result.loss.shape, ())
         self.parent.assertEqual(result.logits.shape, (self.batch_size, self.seq_length))
 
@@ -409,12 +396,7 @@ class TapasModelTester:
 class TapasModelTest(ModelTesterMixin, unittest.TestCase):
 
     all_model_classes = (
-        (
-            TapasModel,
-            TapasForMaskedLM,
-            TapasForQuestionAnswering,
-            TapasForSequenceClassification,
-        )
+        (TapasModel, TapasForMaskedLM, TapasForQuestionAnswering, TapasForSequenceClassification)
         if is_torch_available()
         else None
     )
@@ -500,10 +482,7 @@ class TapasModelTest(ModelTesterMixin, unittest.TestCase):
 
 def prepare_tapas_single_inputs_for_inference():
     # Here we prepare a single table-question pair to test TAPAS inference on:
-    data = {
-        "Footballer": ["Lionel Messi", "Cristiano Ronaldo"],
-        "Age": ["33", "35"],
-    }
+    data = {"Footballer": ["Lionel Messi", "Cristiano Ronaldo"], "Age": ["33", "35"]}
     queries = "Which footballer is 33 years old?"
     table = pd.DataFrame.from_dict(data)
 
@@ -904,28 +883,15 @@ class TapasUtilitiesTest(unittest.TestCase):
         SegmentedTensors with the tables.
         """
         values = torch.tensor(
-            [
-                [[1.0, 2.0, 3.0], [2.0, 0.0, 1.0], [1.0, 3.0, 4.0]],
-                [[1.0, 2.0, 3.0], [2.0, 0.0, 1.0], [1.0, 3.0, 4.0]],
-            ]
+            [[[1.0, 2.0, 3.0], [2.0, 0.0, 1.0], [1.0, 3.0, 4.0]], [[1.0, 2.0, 3.0], [2.0, 0.0, 1.0], [1.0, 3.0, 4.0]]]
         )
         row_index = IndexMap(
-            indices=torch.tensor(
-                [
-                    [[0, 0, 0], [1, 1, 1], [2, 2, 2]],
-                    [[0, 0, 0], [1, 1, 1], [2, 2, 2]],
-                ]
-            ),
+            indices=torch.tensor([[[0, 0, 0], [1, 1, 1], [2, 2, 2]], [[0, 0, 0], [1, 1, 1], [2, 2, 2]]]),
             num_segments=3,
             batch_dims=1,
         )
         col_index = IndexMap(
-            indices=torch.tensor(
-                [
-                    [[0, 0, 1], [0, 0, 1], [0, 0, 1]],
-                    [[0, 1, 2], [0, 1, 2], [0, 1, 2]],
-                ]
-            ),
+            indices=torch.tensor([[[0, 0, 1], [0, 0, 1], [0, 0, 1]], [[0, 1, 2], [0, 1, 2], [0, 1, 2]]]),
             num_segments=3,
             batch_dims=1,
         )

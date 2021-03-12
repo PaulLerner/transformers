@@ -39,10 +39,7 @@ if is_torch_available():
 
 
 class LongformerModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7
@@ -626,11 +623,7 @@ class LongformerModelIntegrationTest(unittest.TestCase):
         self.assertTrue(
             torch.allclose(
                 global_attentions[0, 0, 1, :],
-                torch.tensor(
-                    [0.2500, 0.2500, 0.2500, 0.2500],
-                    dtype=torch.float32,
-                    device=torch_device,
-                ),
+                torch.tensor([0.2500, 0.2500, 0.2500, 0.2500], dtype=torch.float32, device=torch_device),
                 atol=1e-3,
             )
         )
@@ -638,11 +631,7 @@ class LongformerModelIntegrationTest(unittest.TestCase):
         self.assertTrue(
             torch.allclose(
                 global_attentions[1, 0, 0, :],
-                torch.tensor(
-                    [0.2497, 0.2500, 0.2499, 0.2504],
-                    dtype=torch.float32,
-                    device=torch_device,
-                ),
+                torch.tensor([0.2497, 0.2500, 0.2499, 0.2504], dtype=torch.float32, device=torch_device),
                 atol=1e-3,
             )
         )

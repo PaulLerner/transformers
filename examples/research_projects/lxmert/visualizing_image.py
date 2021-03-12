@@ -153,29 +153,14 @@ class SingleImageViz:
         font_size = np.clip((height_ratio - 0.02) / 0.08 + 1, 1.2, 2)
         font_size *= 0.75 * self.font_size
 
-        self.draw_text(
-            text=label,
-            position=text_pos,
-            color=lighter_color,
-        )
+        self.draw_text(text=label, position=text_pos, color=lighter_color)
 
-    def draw_text(
-        self,
-        text,
-        position,
-        color="g",
-        ha="left",
-    ):
+    def draw_text(self, text, position, color="g", ha="left"):
         rotation = 0
         font_size = self.font_size
         color = np.maximum(list(mplc.to_rgb(color)), 0.2)
         color[np.argmax(color)] = max(0.8, np.max(color))
-        bbox = {
-            "facecolor": "black",
-            "alpha": self.alpha,
-            "pad": self.pad,
-            "edgecolor": "none",
-        }
+        bbox = {"facecolor": "black", "alpha": self.alpha, "pad": self.pad, "edgecolor": "none"}
         x, y = position
         self.ax.text(
             x,
@@ -195,10 +180,7 @@ class SingleImageViz:
         if saveas is None:
             saveas = self.saveas
         if saveas.lower().endswith(".jpg") or saveas.lower().endswith(".png"):
-            cv2.imwrite(
-                saveas,
-                self._get_buffer()[:, :, ::-1],
-            )
+            cv2.imwrite(saveas, self._get_buffer()[:, :, ::-1])
         else:
             self.fig.savefig(saveas)
 

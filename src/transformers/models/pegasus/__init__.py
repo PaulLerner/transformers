@@ -26,9 +26,7 @@ from ...file_utils import (
 )
 
 
-_import_structure = {
-    "configuration_pegasus": ["PEGASUS_PRETRAINED_CONFIG_ARCHIVE_MAP", "PegasusConfig"],
-}
+_import_structure = {"configuration_pegasus": ["PEGASUS_PRETRAINED_CONFIG_ARCHIVE_MAP", "PegasusConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_pegasus"] = ["PegasusTokenizer"]

@@ -27,9 +27,7 @@ from ...file_utils import (
 )
 
 
-_import_structure = {
-    "configuration_xlnet": ["XLNET_PRETRAINED_CONFIG_ARCHIVE_MAP", "XLNetConfig"],
-}
+_import_structure = {"configuration_xlnet": ["XLNET_PRETRAINED_CONFIG_ARCHIVE_MAP", "XLNetConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_xlnet"] = ["XLNetTokenizer"]

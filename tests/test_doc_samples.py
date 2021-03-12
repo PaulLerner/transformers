@@ -87,10 +87,7 @@ class TestCodeExamples(unittest.TestCase):
     def test_modeling_examples(self):
         transformers_directory = Path("src/transformers")
         files = "modeling"
-        ignore_files = [
-            "modeling_ctrl.py",
-            "modeling_tf_ctrl.py",
-        ]
+        ignore_files = ["modeling_ctrl.py", "modeling_tf_ctrl.py"]
         self.analyze_directory(transformers_directory, identifier=files, ignore_files=ignore_files)
 
     def test_tokenization_examples(self):

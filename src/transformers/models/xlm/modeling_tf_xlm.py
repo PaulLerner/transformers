@@ -323,9 +323,7 @@ class TFXLMMainLayer(tf.keras.layers.Layer):
         if self.n_langs > 1 and self.use_lang_emb:
             with tf.name_scope("lang_embeddings"):
                 self.lang_embeddings = self.add_weight(
-                    name="embeddings",
-                    shape=[self.n_langs, self.dim],
-                    initializer=get_initializer(self.embed_init_std),
+                    name="embeddings", shape=[self.n_langs, self.dim], initializer=get_initializer(self.embed_init_std)
                 )
 
         super().build(input_shape)
@@ -1066,9 +1064,7 @@ class TFXLMForMultipleChoice(TFXLMPreTrainedModel, TFMultipleChoiceLoss):
                 "langs": tf.constant(MULTIPLE_CHOICE_DUMMY_INPUTS),
             }
         else:
-            return {
-                "input_ids": tf.constant(MULTIPLE_CHOICE_DUMMY_INPUTS),
-            }
+            return {"input_ids": tf.constant(MULTIPLE_CHOICE_DUMMY_INPUTS)}
 
     @add_start_docstrings_to_model_forward(XLM_INPUTS_DOCSTRING.format("batch_size, num_choices, sequence_length"))
     @add_code_sample_docstrings(
@@ -1142,7 +1138,7 @@ class TFXLMForMultipleChoice(TFXLMPreTrainedModel, TFMultipleChoiceLoss):
         if inputs["lengths"] is not None:
             logger.warn(
                 "The `lengths` parameter cannot be used with the XLM multiple choice models. Please use the "
-                "attention mask instead.",
+                "attention mask instead."
             )
             inputs["lengths"] = None
 

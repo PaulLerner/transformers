@@ -43,11 +43,7 @@ def acc_and_f1(preds, labels):
     requires_sklearn(acc_and_f1)
     acc = simple_accuracy(preds, labels)
     f1 = f1_score(y_true=labels, y_pred=preds)
-    return {
-        "acc": acc,
-        "f1": f1,
-        "acc_and_f1": (acc + f1) / 2,
-    }
+    return {"acc": acc, "f1": f1, "acc_and_f1": (acc + f1) / 2}
 
 
 def pearson_and_spearman(preds, labels):
@@ -55,11 +51,7 @@ def pearson_and_spearman(preds, labels):
     requires_sklearn(pearson_and_spearman)
     pearson_corr = pearsonr(preds, labels)[0]
     spearman_corr = spearmanr(preds, labels)[0]
-    return {
-        "pearson": pearson_corr,
-        "spearmanr": spearman_corr,
-        "corr": (pearson_corr + spearman_corr) / 2,
-    }
+    return {"pearson": pearson_corr, "spearmanr": spearman_corr, "corr": (pearson_corr + spearman_corr) / 2}
 
 
 def glue_compute_metrics(task_name, preds, labels):

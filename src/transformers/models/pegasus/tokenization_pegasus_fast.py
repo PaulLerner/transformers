@@ -44,9 +44,7 @@ PRETRAINED_VOCAB_FILES_MAP = {
     },
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "google/pegasus-xsum": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"google/pegasus-xsum": 512}
 
 
 class PegasusTokenizerFast(PreTrainedTokenizerFast):
@@ -107,7 +105,7 @@ class PegasusTokenizerFast(PreTrainedTokenizerFast):
         mask_token="<mask_2>",
         mask_token_sent="<mask_1>",
         additional_special_tokens=None,
-        **kwargs
+        **kwargs,
     ):
         if additional_special_tokens is not None:
             assert isinstance(

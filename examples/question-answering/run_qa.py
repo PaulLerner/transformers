@@ -100,8 +100,7 @@ class DataTrainingArguments:
         default=False, metadata={"help": "Overwrite the cached training and evaluation sets"}
     )
     preprocessing_num_workers: Optional[int] = field(
-        default=None,
-        metadata={"help": "The number of processes to use for the preprocessing."},
+        default=None, metadata={"help": "The number of processes to use for the preprocessing."}
     )
     max_seq_length: int = field(
         default=384,
@@ -148,8 +147,7 @@ class DataTrainingArguments:
         metadata={"help": "When splitting up a long document into chunks, how much stride to take between chunks."},
     )
     n_best_size: int = field(
-        default=20,
-        metadata={"help": "The total number of n-best predictions to generate when looking for an answer."},
+        default=20, metadata={"help": "The total number of n-best predictions to generate when looking for an answer."}
     )
     max_answer_length: int = field(
         default=30,

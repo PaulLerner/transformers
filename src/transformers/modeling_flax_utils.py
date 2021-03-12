@@ -132,7 +132,7 @@ class FlaxPreTrainedModel(ABC):
         pretrained_model_name_or_path: Union[str, os.PathLike],
         dtype: jnp.dtype = jnp.float32,
         *model_args,
-        **kwargs
+        **kwargs,
     ):
 
         r"""
@@ -267,8 +267,7 @@ class FlaxPreTrainedModel(ABC):
                 else:
                     raise EnvironmentError(
                         "Error no file named {} found in directory {} or `from_pt` set to False".format(
-                            [FLAX_WEIGHTS_NAME, WEIGHTS_NAME],
-                            pretrained_model_name_or_path,
+                            [FLAX_WEIGHTS_NAME, WEIGHTS_NAME], pretrained_model_name_or_path
                         )
                     )
             elif os.path.isfile(pretrained_model_name_or_path) or is_remote_url(pretrained_model_name_or_path):

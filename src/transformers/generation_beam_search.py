@@ -98,7 +98,7 @@ class BeamScorer(ABC):
         next_scores: torch.FloatTensor,
         next_tokens: torch.LongTensor,
         next_indices: torch.LongTensor,
-        **kwargs
+        **kwargs,
     ) -> Tuple[torch.Tensor]:
         raise NotImplementedError("This is an abstract method.")
 
@@ -110,7 +110,7 @@ class BeamScorer(ABC):
         next_scores: torch.FloatTensor,
         next_tokens: torch.LongTensor,
         next_indices: torch.LongTensor,
-        **kwargs
+        **kwargs,
     ) -> torch.LongTensor:
         raise NotImplementedError("This is an abstract method.")
 
@@ -240,10 +240,7 @@ class BeamSearchScorer(BeamScorer):
                     is_beam_token_worse_than_top_num_beams = beam_token_rank >= self.group_size
                     if is_beam_token_worse_than_top_num_beams:
                         continue
-                    beam_hyp.add(
-                        input_ids[batch_beam_idx].clone(),
-                        next_score.item(),
-                    )
+                    beam_hyp.add(input_ids[batch_beam_idx].clone(), next_score.item())
                 else:
                     # add next predicted token since it is not eos_token
                     next_beam_scores[batch_idx, beam_idx] = next_score
@@ -328,12 +325,7 @@ class BeamSearchScorer(BeamScorer):
             decoded[i, : sent_lengths[i]] = hypo
             if sent_lengths[i] < self.max_length:
                 decoded[i, sent_lengths[i]] = eos_token_id
-        return UserDict(
-            {
-                "sequences": decoded,
-                "sequence_scores": best_scores,
-            }
-        )
+        return UserDict({"sequences": decoded, "sequence_scores": best_scores})
 
 
 class BeamHypotheses:

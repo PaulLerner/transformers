@@ -162,9 +162,7 @@ class Seq2SeqTrainer(Trainer):
         }
 
         generated_tokens = self.model.generate(
-            inputs["input_ids"],
-            attention_mask=inputs["attention_mask"],
-            **gen_kwargs,
+            inputs["input_ids"], attention_mask=inputs["attention_mask"], **gen_kwargs
         )
         # in case the batch is shorter than max length, the output should be padded
         if generated_tokens.shape[-1] < gen_kwargs["max_length"]:

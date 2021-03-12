@@ -30,10 +30,7 @@ if is_tf_available():
 
 
 class TFT5ModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7
@@ -85,11 +82,7 @@ class TFT5ModelTester:
 
     def create_and_check_t5_model(self, config, input_ids, input_mask, token_labels):
         model = TFT5Model(config=config)
-        inputs = {
-            "input_ids": input_ids,
-            "decoder_input_ids": input_ids,
-            "decoder_attention_mask": input_mask,
-        }
+        inputs = {"input_ids": input_ids, "decoder_input_ids": input_ids, "decoder_attention_mask": input_mask}
         result = model(inputs)
 
         result = model(input_ids, decoder_attention_mask=input_mask, decoder_input_ids=input_ids)
@@ -108,11 +101,7 @@ class TFT5ModelTester:
 
     def create_and_check_t5_with_lm_head(self, config, input_ids, input_mask, token_labels):
         model = TFT5ForConditionalGeneration(config=config)
-        inputs_dict = {
-            "input_ids": input_ids,
-            "decoder_input_ids": input_ids,
-            "decoder_attention_mask": input_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "decoder_input_ids": input_ids, "decoder_attention_mask": input_mask}
 
         result = model(inputs_dict)
 
@@ -178,10 +167,7 @@ class TFT5ModelTester:
 
         # append to next input_ids and attn_mask
         next_input_ids = tf.concat([input_ids, next_tokens], axis=-1)
-        attn_mask = tf.concat(
-            [attn_mask, tf.ones((attn_mask.shape[0], 1), dtype=tf.int32)],
-            axis=1,
-        )
+        attn_mask = tf.concat([attn_mask, tf.ones((attn_mask.shape[0], 1), dtype=tf.int32)], axis=1)
 
         # get two different outputs
         output_from_no_past = model(next_input_ids, attention_mask=attn_mask)[0]
@@ -233,11 +219,7 @@ class TFT5ModelTester:
     def prepare_config_and_inputs_for_common(self):
         config_and_inputs = self.prepare_config_and_inputs()
         (config, input_ids, input_mask, token_labels) = config_and_inputs
-        inputs_dict = {
-            "input_ids": input_ids,
-            "decoder_input_ids": input_ids,
-            "decoder_attention_mask": input_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "decoder_input_ids": input_ids, "decoder_attention_mask": input_mask}
         return config, inputs_dict
 
 
@@ -377,23 +359,11 @@ class TFT5EncoderOnlyModelTester:
             is_encoder_decoder=self.is_encoder_decoder,
         )
 
-        return (
-            config,
-            input_ids,
-            attention_mask,
-        )
+        return (config, input_ids, attention_mask)
 
-    def create_and_check_model(
-        self,
-        config,
-        input_ids,
-        attention_mask,
-    ):
+    def create_and_check_model(self, config, input_ids, attention_mask):
         model = TFT5EncoderModel(config=config)
-        result = model(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-        )
+        result = model(input_ids=input_ids, attention_mask=attention_mask)
         result = model(input_ids=input_ids)
         encoder_output = result.last_hidden_state
 
@@ -401,16 +371,9 @@ class TFT5EncoderOnlyModelTester:
 
     def prepare_config_and_inputs_for_common(self):
         config_and_inputs = self.prepare_config_and_inputs()
-        (
-            config,
-            input_ids,
-            attention_mask,
-        ) = config_and_inputs
+        (config, input_ids, attention_mask) = config_and_inputs
 
-        inputs_dict = {
-            "input_ids": input_ids,
-            "attention_mask": attention_mask,
-        }
+        inputs_dict = {"input_ids": input_ids, "attention_mask": attention_mask}
         return config, inputs_dict
 
 
@@ -544,10 +507,7 @@ class TFT5ModelIntegrationTests(unittest.TestCase):
             tok.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in hypotheses_batch
         ]
 
-        self.assertListEqual(
-            expected_summaries,
-            decoded,
-        )
+        self.assertListEqual(expected_summaries, decoded)
 
     @slow
     def test_translation_en_to_de(self):

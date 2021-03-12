@@ -605,11 +605,7 @@ class ProphetNetPositionalEmbeddings(nn.Embedding):
 class ProphetNetAttention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
-    def __init__(
-        self,
-        config: ProphetNetConfig,
-        num_attn_heads: int,
-    ):
+    def __init__(self, config: ProphetNetConfig, num_attn_heads: int):
         super().__init__()
         hidden_size = config.hidden_size
 
@@ -711,11 +707,7 @@ class ProphetNetAttention(nn.Module):
             attn_weights_reshaped = None
 
         attn_weights = F.softmax(attn_weights, dim=-1)
-        attn_probs = F.dropout(
-            attn_weights,
-            p=self.attention_dropout,
-            training=self.training,
-        )
+        attn_probs = F.dropout(attn_weights, p=self.attention_dropout, training=self.training)
 
         attn_output = torch.bmm(attn_probs, value_states)
         assert attn_output.size() == (
@@ -873,11 +865,7 @@ class ProphetNetNgramSelfAttention(nn.Module):
         if attention_mask is not None:
             main_attn_weights = main_attn_weights + attention_mask
 
-        main_attn_probs = softmax(
-            main_attn_weights,
-            dim=-1,
-            onnx_trace=self.onnx_trace,
-        ).type_as(main_attn_weights)
+        main_attn_probs = softmax(main_attn_weights, dim=-1, onnx_trace=self.onnx_trace).type_as(main_attn_weights)
 
         main_attn_probs = F.dropout(main_attn_probs, p=self.attention_dropout, training=self.training)
         # project to attn_output
@@ -927,11 +915,9 @@ class ProphetNetNgramSelfAttention(nn.Module):
                 predict_attn_weights.dtype
             )
 
-        predict_attn_probs = softmax(
-            predict_attn_weights,
-            dim=-1,
-            onnx_trace=self.onnx_trace,
-        ).type_as(predict_attn_weights)
+        predict_attn_probs = softmax(predict_attn_weights, dim=-1, onnx_trace=self.onnx_trace).type_as(
+            predict_attn_weights
+        )
         predict_attn_probs = F.dropout(predict_attn_probs, p=self.attention_dropout, training=self.training)
         # project to attention output
         # [ngram, B*head, T, c]
@@ -1069,9 +1055,7 @@ class ProphetNetEncoderLayer(nn.Module):
     def forward(self, hidden_states, attention_mask, output_attentions: bool = False):
         # 1st residual block
         attention_output, attn_weights, _ = self.self_attn(
-            hidden_states=hidden_states,
-            attention_mask=attention_mask,
-            output_attentions=output_attentions,
+            hidden_states=hidden_states, attention_mask=attention_mask, output_attentions=output_attentions
         )
         hidden_states = self.self_attn_layer_norm(attention_output + hidden_states)
 
@@ -1167,10 +1151,7 @@ class ProphetNetDecoderLayer(nn.Module):
         return outputs
 
 
-@add_start_docstrings(
-    "The standalone encoder part of the ProphetNetModel.",
-    PROPHETNET_START_DOCSTRING,
-)
+@add_start_docstrings("The standalone encoder part of the ProphetNetModel.", PROPHETNET_START_DOCSTRING)
 class ProphetNetEncoder(ProphetNetPreTrainedModel):
     r"""
     word_embeddings  (:obj:`torch.nn.Embeddings` of shape :obj:`(config.vocab_size, config.hidden_size)`, `optional`):
@@ -1270,9 +1251,7 @@ class ProphetNetEncoder(ProphetNetPreTrainedModel):
                     return custom_forward
 
                 layer_outputs = torch.utils.checkpoint.checkpoint(
-                    create_custom_forward(encoder_layer),
-                    hidden_states,
-                    extended_attention_mask,
+                    create_custom_forward(encoder_layer), hidden_states, extended_attention_mask
                 )
             else:
                 layer_outputs = encoder_layer(
@@ -1294,10 +1273,7 @@ class ProphetNetEncoder(ProphetNetPreTrainedModel):
         )
 
 
-@add_start_docstrings(
-    "The standalone decoder part of the ProphetNetModel.",
-    PROPHETNET_START_DOCSTRING,
-)
+@add_start_docstrings("The standalone decoder part of the ProphetNetModel.", PROPHETNET_START_DOCSTRING)
 class ProphetNetDecoder(ProphetNetPreTrainedModel):
     r"""
     word_embeddings  (:obj:`torch.nn.Embeddings` of shape :obj:`(config.vocab_size, config.hidden_size)`, `optional`):
@@ -1400,9 +1376,7 @@ class ProphetNetDecoder(ProphetNetPreTrainedModel):
         batch_size, sequence_length = inputs_embeds.shape[:2]
 
         main_stream_pos_embed, position_ids = self.position_embeddings(
-            (batch_size, sequence_length),
-            device=inputs_embeds.device,
-            past_key_values=past_key_values,
+            (batch_size, sequence_length), device=inputs_embeds.device, past_key_values=past_key_values
         )
 
         if past_key_values is not None:
@@ -1885,11 +1859,7 @@ class ProphetNetForConditionalGeneration(ProphetNetPreTrainedModel):
                 break
             expend_targets[i, :, :] = labels
 
-        lprobs = F.log_softmax(
-            logits.view(-1, logits.size(-1)),
-            dim=-1,
-            dtype=torch.float32,
-        )
+        lprobs = F.log_softmax(logits.view(-1, logits.size(-1)), dim=-1, dtype=torch.float32)
 
         loss = F.nll_loss(lprobs, expend_targets.view(-1), reduction="mean")
 
@@ -2107,11 +2077,7 @@ class ProphetNetForCausalLM(ProphetNetPreTrainedModel):
                 break
             expend_targets[i, :, :] = labels
 
-        lprobs = F.log_softmax(
-            logits.view(-1, logits.size(-1)),
-            dim=-1,
-            dtype=torch.float32,
-        )
+        lprobs = F.log_softmax(logits.view(-1, logits.size(-1)), dim=-1, dtype=torch.float32)
 
         loss = F.nll_loss(lprobs, expend_targets.view(-1), reduction="mean")
 

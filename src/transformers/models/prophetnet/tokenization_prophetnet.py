@@ -28,17 +28,13 @@ VOCAB_FILES_NAMES = {"vocab_file": "prophetnet.tokenizer"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
     "vocab_file": {
-        "microsoft/prophetnet-large-uncased": "https://huggingface.co/microsoft/prophetnet-large-uncased/resolve/main/prophetnet.tokenizer",
+        "microsoft/prophetnet-large-uncased": "https://huggingface.co/microsoft/prophetnet-large-uncased/resolve/main/prophetnet.tokenizer"
     }
 }
 
-PRETRAINED_INIT_CONFIGURATION = {
-    "microsoft/prophetnet-large-uncased": {"do_lower_case": True},
-}
+PRETRAINED_INIT_CONFIGURATION = {"microsoft/prophetnet-large-uncased": {"do_lower_case": True}}
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "microsoft/prophetnet-large-uncased": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"microsoft/prophetnet-large-uncased": 512}
 
 
 def load_vocab(vocab_file):
@@ -116,7 +112,7 @@ class ProphetNetTokenizer(PreTrainedTokenizer):
         mask_token="[MASK]",
         tokenize_chinese_chars=True,
         strip_accents=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             do_lower_case=do_lower_case,

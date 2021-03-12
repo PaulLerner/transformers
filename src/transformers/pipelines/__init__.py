@@ -108,7 +108,7 @@ SUPPORTED_TASKS = {
             "model": {
                 "pt": "distilbert-base-uncased-finetuned-sst-2-english",
                 "tf": "distilbert-base-uncased-finetuned-sst-2-english",
-            },
+            }
         },
     },
     "ner": {
@@ -119,7 +119,7 @@ SUPPORTED_TASKS = {
             "model": {
                 "pt": "dbmdz/bert-large-cased-finetuned-conll03-english",
                 "tf": "dbmdz/bert-large-cased-finetuned-conll03-english",
-            },
+            }
         },
     },
     "question-answering": {
@@ -127,7 +127,7 @@ SUPPORTED_TASKS = {
         "tf": TFAutoModelForQuestionAnswering if is_tf_available() else None,
         "pt": AutoModelForQuestionAnswering if is_torch_available() else None,
         "default": {
-            "model": {"pt": "distilbert-base-cased-distilled-squad", "tf": "distilbert-base-cased-distilled-squad"},
+            "model": {"pt": "distilbert-base-cased-distilled-squad", "tf": "distilbert-base-cased-distilled-squad"}
         },
     },
     "table-question-answering": {
@@ -139,7 +139,7 @@ SUPPORTED_TASKS = {
                 "pt": "google/tapas-base-finetuned-wtq",
                 "tokenizer": "google/tapas-base-finetuned-wtq",
                 "tf": "google/tapas-base-finetuned-wtq",
-            },
+            }
         },
     },
     "fill-mask": {
@@ -246,7 +246,7 @@ def pipeline(
     framework: Optional[str] = None,
     revision: Optional[str] = None,
     use_fast: bool = True,
-    **kwargs
+    **kwargs,
 ) -> Pipeline:
     """
     Utility factory method to build a :class:`~transformers.Pipeline`.

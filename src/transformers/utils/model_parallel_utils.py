@@ -38,10 +38,9 @@ def assert_device_map(device_map, num_blocks):
         "There are attention blocks for this model that are not specified in the device_map. Add these attention "
         "blocks to a device on the device_map: " + str(missing_blocks)
     )
-    assert (
-        len(extra_blocks) == 0
-    ), "The device_map contains more attention blocks than this model has. Remove these from the device_map:" + str(
-        extra_blocks
+    assert len(extra_blocks) == 0, (
+        "The device_map contains more attention blocks than this model has. Remove these from the device_map:"
+        + str(extra_blocks)
     )
 
 

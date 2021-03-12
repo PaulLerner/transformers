@@ -63,10 +63,7 @@ class M2M100TokenizationTest(TokenizerTesterMixin, unittest.TestCase):
         return M2M100Tokenizer.from_pretrained(self.tmpdirname, **kwargs)
 
     def get_input_output_texts(self, tokenizer):
-        return (
-            "This is a test",
-            "This is a test",
-        )
+        return ("This is a test", "This is a test")
 
     @unittest.skip("Skip this test while all models are still to be uploaded.")
     def test_pretrained_model_lists(self):
@@ -78,10 +75,7 @@ class M2M100TokenizationTest(TokenizerTesterMixin, unittest.TestCase):
         tokens = tokenizer.tokenize("This is a test")
         self.assertListEqual(tokens, ["▁This", "▁is", "▁a", "▁t", "est"])
 
-        self.assertListEqual(
-            tokenizer.convert_tokens_to_ids(tokens),
-            [2, 3, 4, 5, 6],
-        )
+        self.assertListEqual(tokenizer.convert_tokens_to_ids(tokens), [2, 3, 4, 5, 6])
 
         back_tokens = tokenizer.convert_ids_to_tokens([2, 3, 4, 5, 6])
         self.assertListEqual(back_tokens, ["▁This", "▁is", "▁a", "▁t", "est"])

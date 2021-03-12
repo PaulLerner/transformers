@@ -26,9 +26,7 @@ from ...file_utils import (
 )
 
 
-_import_structure = {
-    "configuration_mbart": ["MBART_PRETRAINED_CONFIG_ARCHIVE_MAP", "MBartConfig"],
-}
+_import_structure = {"configuration_mbart": ["MBART_PRETRAINED_CONFIG_ARCHIVE_MAP", "MBartConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_mbart"] = ["MBartTokenizer"]

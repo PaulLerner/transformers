@@ -121,11 +121,7 @@ if __name__ == "__main__":
         type=str,
         help="Optional checkpoint name. If not given, will download and convert the canonical checkpoints from AWS.",
     )
-    parser.add_argument(
-        "--force_download",
-        action="store_true",
-        help="Re-download checkpoints.",
-    )
+    parser.add_argument("--force_download", action="store_true", help="Re-download checkpoints.")
     args = parser.parse_args()
 
     convert_slow_checkpoint_to_fast(args.tokenizer_name, args.checkpoint_name, args.dump_path, args.force_download)

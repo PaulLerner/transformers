@@ -33,10 +33,7 @@ if is_torch_available():
 
 
 class TransfoXLModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 14
         self.seq_length = 7
@@ -317,12 +314,7 @@ class TransfoXLModelTest(ModelTesterMixin, GenerationTesterMixin, unittest.TestC
             tgt_len = min_length if idx == 0 else (min_length - 2)
             src_len = (min_length + config.mem_len) if idx == 0 else (min_length + config.mem_len - 2)
 
-            expected_shape = (
-                batch_size * num_beam_groups,
-                config.num_attention_heads,
-                tgt_len,
-                src_len,
-            )
+            expected_shape = (batch_size * num_beam_groups, config.num_attention_heads, tgt_len, src_len)
 
             # check attn size
             self.assertListEqual(

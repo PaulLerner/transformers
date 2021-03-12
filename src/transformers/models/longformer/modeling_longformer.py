@@ -1043,10 +1043,7 @@ class LongformerSelfAttention(nn.Module):
             is_local_index_no_global_attn_nonzero[0], :, is_local_index_no_global_attn_nonzero[1], :
         ] = -10000.0
 
-        global_attn_scores = global_attn_scores.masked_fill(
-            is_index_masked[:, None, None, :],
-            -10000.0,
-        )
+        global_attn_scores = global_attn_scores.masked_fill(is_index_masked[:, None, None, :], -10000.0)
 
         global_attn_scores = global_attn_scores.view(batch_size * self.num_heads, max_num_global_attn_indices, seq_len)
 
@@ -1553,9 +1550,7 @@ class LongformerModel(LongformerPreTrainedModel):
                 position_ids = F.pad(position_ids, (0, padding_len), value=pad_token_id)
             if inputs_embeds is not None:
                 input_ids_padding = inputs_embeds.new_full(
-                    (batch_size, padding_len),
-                    self.config.pad_token_id,
-                    dtype=torch.long,
+                    (batch_size, padding_len), self.config.pad_token_id, dtype=torch.long
                 )
                 inputs_embeds_padding = self.embeddings(input_ids_padding)
                 inputs_embeds = torch.cat([inputs_embeds, inputs_embeds_padding], dim=-2)
@@ -1874,10 +1869,7 @@ class LongformerForSequenceClassification(LongformerPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return LongformerSequenceClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 
@@ -2122,10 +2114,7 @@ class LongformerForTokenClassification(LongformerPreTrainedModel):
             return ((loss,) + output) if loss is not None else output
 
         return LongformerTokenClassifierOutput(
-            loss=loss,
-            logits=logits,
-            hidden_states=outputs.hidden_states,
-            attentions=outputs.attentions,
+            loss=loss, logits=logits, hidden_states=outputs.hidden_states, attentions=outputs.attentions
         )
 
 

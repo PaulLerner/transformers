@@ -25,13 +25,8 @@ from .test_pipelines_common import CustomInputPipelineCommonMixin
 @require_pandas
 class TQAPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
     pipeline_task = "table-question-answering"
-    pipeline_running_kwargs = {
-        "padding": "max_length",
-    }
-    small_models = [
-        "lysandre/tiny-tapas-random-wtq",
-        "lysandre/tiny-tapas-random-sqa",
-    ]
+    pipeline_running_kwargs = {"padding": "max_length"}
+    small_models = ["lysandre/tiny-tapas-random-wtq", "lysandre/tiny-tapas-random-sqa"]
     large_models = ["google/tapas-base-finetuned-wtq"]  # Models tested with the @slow decorator
     valid_inputs = [
         {
@@ -132,18 +127,9 @@ class TQAPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
         self.assertIsInstance(table_querier.model.config.no_aggregation_label_index, int)
 
         with self.assertRaises(ValueError):
-            table_querier(
-                {
-                    "table": {},
-                    "query": "how many movies has george clooney played in?",
-                }
-            )
+            table_querier({"table": {}, "query": "how many movies has george clooney played in?"})
         with self.assertRaises(ValueError):
-            table_querier(
-                {
-                    "query": "how many movies has george clooney played in?",
-                }
-            )
+            table_querier({"query": "how many movies has george clooney played in?"})
         with self.assertRaises(ValueError):
             table_querier(
                 {
@@ -164,7 +150,7 @@ class TQAPipelineTests(CustomInputPipelineCommonMixin, unittest.TestCase):
                         "Stars": ["36542", "4512", "3934"],
                         "Contributors": ["651", "77", "34"],
                         "Programming language": ["Python", "Python", "Rust, Python and NodeJS"],
-                    },
+                    }
                 }
             )
 

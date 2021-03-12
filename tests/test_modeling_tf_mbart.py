@@ -308,12 +308,8 @@ TOLERANCE = 1e-4
 @require_tokenizers
 @require_tf
 class TFMBartModelIntegrationTest(unittest.TestCase):
-    src_text = [
-        " UN Chief Says There Is No Military Solution in Syria",
-    ]
-    expected_text = [
-        "Şeful ONU declară că nu există o soluţie militară în Siria",
-    ]
+    src_text = [" UN Chief Says There Is No Military Solution in Syria"]
+    expected_text = ["Şeful ONU declară că nu există o soluţie militară în Siria"]
     model_name = "facebook/mbart-large-en-ro"
 
     @cached_property

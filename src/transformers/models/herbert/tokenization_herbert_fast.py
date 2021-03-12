@@ -22,10 +22,7 @@ from .tokenization_herbert import HerbertTokenizer
 
 logger = logging.get_logger(__name__)
 
-VOCAB_FILES_NAMES = {
-    "vocab_file": "vocab.json",
-    "merges_file": "merges.txt",
-}
+VOCAB_FILES_NAMES = {"vocab_file": "vocab.json", "merges_file": "merges.txt"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
     "vocab_file": {"allegro/herbert-base-cased": "https://cdn.huggingface.co/allegro/herbert-base-cased/vocab.json"},
@@ -69,12 +66,7 @@ class HerbertTokenizerFast(PreTrainedTokenizerFast):
         kwargs["mask_token"] = "<mask>"
         kwargs["sep_token"] = "</s>"
 
-        super().__init__(
-            vocab_file,
-            merges_file,
-            tokenizer_file=tokenizer_file,
-            **kwargs,
-        )
+        super().__init__(vocab_file, merges_file, tokenizer_file=tokenizer_file, **kwargs)
 
     def build_inputs_with_special_tokens(
         self, token_ids_0: List[int], token_ids_1: Optional[List[int]] = None

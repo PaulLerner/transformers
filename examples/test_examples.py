@@ -268,10 +268,7 @@ class ExamplesTests(TestCasePlus):
         if is_cuda_and_apex_available():
             testargs.append("--fp16")
 
-        model_type, model_name = (
-            "--model_type=gpt2",
-            "--model_name_or_path=sshleifer/tiny-gpt2",
-        )
+        model_type, model_name = ("--model_type=gpt2", "--model_name_or_path=sshleifer/tiny-gpt2")
         with patch.object(sys, "argv", testargs + [model_type, model_name]):
             result = run_generation.main()
             self.assertGreaterEqual(len(result[0]), 10)

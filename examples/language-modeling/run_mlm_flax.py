@@ -125,8 +125,7 @@ class DataTrainingArguments:
         metadata={"help": "An optional input evaluation data file to evaluate the perplexity on (a text file)."},
     )
     train_ref_file: Optional[str] = field(
-        default=None,
-        metadata={"help": "An optional input train ref data file for whole word masking in Chinese."},
+        default=None, metadata={"help": "An optional input train ref data file for whole word masking in Chinese."}
     )
     validation_ref_file: Optional[str] = field(
         default=None,
@@ -149,8 +148,7 @@ class DataTrainingArguments:
         },
     )
     preprocessing_num_workers: Optional[int] = field(
-        default=None,
-        metadata={"help": "The number of processes to use for the preprocessing."},
+        default=None, metadata={"help": "The number of processes to use for the preprocessing."}
     )
     mlm_probability: float = field(
         default=0.15, metadata={"help": "Ratio of tokens to mask for masked language modeling loss"}
@@ -265,7 +263,7 @@ def create_learning_rate_scheduler(
     warmup_steps=1000,
     decay_factor=0.5,
     steps_per_decay=20000,
-    steps_per_cycle=100000,
+    steps_per_cycle=100_000,
 ):
     """Creates learning rate schedule.
     Interprets factors in the factors string which can consist of:
@@ -450,9 +448,7 @@ if __name__ == "__main__":
 
     # Setup logging
     logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
-        level="NOTSET",
-        datefmt="[%X]",
+        format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s", level="NOTSET", datefmt="[%X]"
     )
 
     # Log on each process the small summary:

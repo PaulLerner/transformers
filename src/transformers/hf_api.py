@@ -155,11 +155,7 @@ class HfApi:
         json = {"name": name, "organization": organization, "private": private}
         if lfsmultipartthresh is not None:
             json["lfsmultipartthresh"] = lfsmultipartthresh
-        r = requests.post(
-            path,
-            headers={"authorization": "Bearer {}".format(token)},
-            json=json,
-        )
+        r = requests.post(path, headers={"authorization": "Bearer {}".format(token)}, json=json)
         if exist_ok and r.status_code == 409:
             return ""
         r.raise_for_status()

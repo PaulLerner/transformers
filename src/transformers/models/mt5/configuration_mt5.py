@@ -68,7 +68,7 @@ class MT5Config(PretrainedConfig):
 
     def __init__(
         self,
-        vocab_size=250112,
+        vocab_size=250_112,
         d_model=512,
         d_kv=64,
         d_ff=1024,
@@ -87,7 +87,7 @@ class MT5Config(PretrainedConfig):
         pad_token_id=0,
         eos_token_id=1,
         decoder_start_token_id=0,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             is_encoder_decoder=is_encoder_decoder,

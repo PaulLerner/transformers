@@ -175,10 +175,7 @@ class T5TokenizationTest(TokenizerTesterMixin, unittest.TestCase):
 
     def test_max_length(self):
         tokenizer = self.t5_base_tokenizer
-        tgt_text = [
-            "Summary of the text.",
-            "Another summary.",
-        ]
+        tgt_text = ["Summary of the text.", "Another summary."]
         with tokenizer.as_target_tokenizer():
             targets = tokenizer(
                 tgt_text, max_length=32, padding="max_length", truncation=True, return_tensors=FRAMEWORK

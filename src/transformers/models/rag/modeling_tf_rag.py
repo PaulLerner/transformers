@@ -226,7 +226,7 @@ class TFRagPreTrainedModel(TFPreTrainedModel):
         generator_pretrained_model_name_or_path: str = None,
         retriever: RagRetriever = None,
         *model_args,
-        **kwargs
+        **kwargs,
     ) -> TFPreTrainedModel:
         r"""
         Instantiates an question encoder and a generator from one or two base classes of the library from pretrained
@@ -547,7 +547,7 @@ class TFRagModel(TFRagPreTrainedModel):
         n_docs=None,
         return_dict=None,
         training=False,
-        **kwargs
+        **kwargs,
     ):
         r"""
         Returns:
@@ -909,7 +909,7 @@ class TFRagTokenForGeneration(TFRagPreTrainedModel, TFCausalLanguageModelingLoss
         reduce_loss=None,
         return_dict=None,
         training=False,
-        **kwargs  # needs kwargs for generation
+        **kwargs,  # needs kwargs for generation
     ):
         r"""
         do_marginalize (:obj:`bool`, `optional`):
@@ -1065,7 +1065,7 @@ class TFRagTokenForGeneration(TFRagPreTrainedModel, TFCausalLanguageModelingLoss
         num_return_sequences=None,
         decoder_start_token_id=None,
         n_docs=None,
-        **kwargs
+        **kwargs,
     ):
         """
         Implements TFRAG token decoding.
@@ -1203,10 +1203,7 @@ class TFRagTokenForGeneration(TFRagPreTrainedModel, TFCausalLanguageModelingLoss
         encoder = self.rag.generator.get_encoder()
         encoder_outputs = encoder(input_ids=context_input_ids, attention_mask=context_attention_mask, return_dict=True)
 
-        decoder_input_ids = tf.fill(
-            (batch_size * num_beams, 1),
-            tf.cast(decoder_start_token_id, tf.int32),
-        )
+        decoder_input_ids = tf.fill((batch_size * num_beams, 1), tf.cast(decoder_start_token_id, tf.int32))
         last_hidden_state = encoder_outputs["last_hidden_state"]
 
         def extend_enc_output(tensor, num_beams=None):
@@ -1354,8 +1351,7 @@ class TFRagTokenForGeneration(TFRagPreTrainedModel, TFCausalLanguageModelingLoss
     def compute_loss(self, labels, y_pred, smooth_epsilon=0.0, from_logits=True, reduce_loss=False):
         """CrossEntropyLoss that ignores pad tokens"""
         loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(
-            from_logits=True,
-            reduction=tf.keras.losses.Reduction.SUM,
+            from_logits=True, reduction=tf.keras.losses.Reduction.SUM
         )
 
         if from_logits is False:  # convert to logits
@@ -1457,7 +1453,7 @@ class TFRagSequenceForGeneration(TFRagPreTrainedModel, TFCausalLanguageModelingL
         reduce_loss=None,
         return_dict=None,
         training=False,
-        **kwargs  # needs kwargs for generation
+        **kwargs,  # needs kwargs for generation
     ):
         r"""
         exclude_bos_score (:obj:`bool`, `optional`):
@@ -1681,7 +1677,7 @@ class TFRagSequenceForGeneration(TFRagPreTrainedModel, TFCausalLanguageModelingL
         num_return_sequences=None,  # defaults to 1
         num_beams=None,  # defaults to 1
         n_docs=None,
-        **model_kwargs
+        **model_kwargs,
     ):
         """
         Implements RAG sequence "thorough" decoding. Read the :meth:`~transformers.PreTrainedModel.generate``
@@ -1760,10 +1756,7 @@ class TFRagSequenceForGeneration(TFRagPreTrainedModel, TFCausalLanguageModelingL
             # first, generate beams from documents:
             generator_input_ids = context_input_ids[index * n_docs : (index + 1) * n_docs]  # (n_docs, max_len)
 
-            output_sequences = self.generator.generate(
-                generator_input_ids,
-                **model_kwargs,
-            )  # n_docs * n_beam, tgt_len
+            output_sequences = self.generator.generate(generator_input_ids, **model_kwargs)  # n_docs * n_beam, tgt_len
             if do_deduplication:
                 # do_deduplication -- for TF, work on Eager mode only!
                 output_sequences = tf.stack(list({str(k.numpy().tolist()): k for k in output_sequences}.values()))

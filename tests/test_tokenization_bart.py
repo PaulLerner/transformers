@@ -113,10 +113,7 @@ class TestTokenizationBart(TokenizerTesterMixin, unittest.TestCase):
 
     @require_torch
     def test_as_target_tokenizer_target_length(self):
-        tgt_text = [
-            "Summary of the text.",
-            "Another summary.",
-        ]
+        tgt_text = ["Summary of the text.", "Another summary."]
         for tokenizer in [self.default_tokenizer, self.default_tokenizer_fast]:
             with tokenizer.as_target_tokenizer():
                 targets = tokenizer(tgt_text, max_length=32, padding="max_length", return_tensors="pt")
@@ -135,9 +132,7 @@ class TestTokenizationBart(TokenizerTesterMixin, unittest.TestCase):
     def test_special_tokens(self):
 
         src_text = ["A long paragraph for summarization."]
-        tgt_text = [
-            "Summary of the text.",
-        ]
+        tgt_text = ["Summary of the text."]
         for tokenizer in [self.default_tokenizer, self.default_tokenizer_fast]:
             inputs = tokenizer(src_text, return_tensors="pt")
             with tokenizer.as_target_tokenizer():

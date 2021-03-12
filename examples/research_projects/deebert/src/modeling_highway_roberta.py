@@ -14,10 +14,7 @@ from transformers.models.roberta.modeling_roberta import (
 from .modeling_highway_bert import BertPreTrainedModel, DeeBertModel, HighwayException, entropy
 
 
-@add_start_docstrings(
-    "The RoBERTa Model transformer with early exiting (DeeRoBERTa). ",
-    ROBERTA_START_DOCSTRING,
-)
+@add_start_docstrings("The RoBERTa Model transformer with early exiting (DeeRoBERTa). ", ROBERTA_START_DOCSTRING)
 class DeeRobertaModel(DeeBertModel):
 
     config_class = RobertaConfig

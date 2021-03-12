@@ -54,11 +54,7 @@ class TrainerUtilsTest(unittest.TestCase):
         # Simulate a result with a dataset of size 21, 4 processes and chunks of lengths 2, 3, 1
         world_size = 4
         num_samples = 21
-        input_indices = [
-            [0, 1, 6, 7, 12, 13, 18, 19],
-            [2, 3, 4, 8, 9, 10, 14, 15, 16, 20, 0, 1],
-            [5, 11, 17, 2],
-        ]
+        input_indices = [[0, 1, 6, 7, 12, 13, 18, 19], [2, 3, 4, 8, 9, 10, 14, 15, 16, 20, 0, 1], [5, 11, 17, 2]]
 
         predictions = np.random.normal(size=(num_samples, 13))
         gatherer = DistributedTensorGatherer(world_size=world_size, num_samples=num_samples)

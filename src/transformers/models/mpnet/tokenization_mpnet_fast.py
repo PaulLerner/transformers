@@ -31,21 +31,15 @@ logger = logging.get_logger(__name__)
 VOCAB_FILES_NAMES = {"vocab_file": "vocab.txt", "tokenizer_file": "tokenizer.json"}
 
 PRETRAINED_VOCAB_FILES_MAP = {
-    "vocab_file": {
-        "microsoft/mpnet-base": "https://huggingface.co/microsoft/mpnet-base/resolve/main/vocab.txt",
-    },
+    "vocab_file": {"microsoft/mpnet-base": "https://huggingface.co/microsoft/mpnet-base/resolve/main/vocab.txt"},
     "tokenizer_file": {
-        "microsoft/mpnet-base": "https://huggingface.co/microsoft/mpnet-base/resolve/main/tokenizer.json",
+        "microsoft/mpnet-base": "https://huggingface.co/microsoft/mpnet-base/resolve/main/tokenizer.json"
     },
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "microsoft/mpnet-base": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"microsoft/mpnet-base": 512}
 
-PRETRAINED_INIT_CONFIGURATION = {
-    "microsoft/mpnet-base": {"do_lower_case": True},
-}
+PRETRAINED_INIT_CONFIGURATION = {"microsoft/mpnet-base": {"do_lower_case": True}}
 
 
 class MPNetTokenizerFast(PreTrainedTokenizerFast):
@@ -118,7 +112,7 @@ class MPNetTokenizerFast(PreTrainedTokenizerFast):
         mask_token="<mask>",
         tokenize_chinese_chars=True,
         strip_accents=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             vocab_file,

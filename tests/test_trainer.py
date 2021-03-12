@@ -802,9 +802,7 @@ class TrainerIntegrationTest(unittest.TestCase):
         MODEL_ID = "distilroberta-base"
         tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
         dataset = LineByLineTextDataset(
-            tokenizer=tokenizer,
-            file_path=PATH_SAMPLE_TEXT,
-            block_size=tokenizer.max_len_single_sentence,
+            tokenizer=tokenizer, file_path=PATH_SAMPLE_TEXT, block_size=tokenizer.max_len_single_sentence
         )
         self.assertEqual(len(dataset), 31)
 
@@ -977,11 +975,11 @@ class TrainerIntegrationTest(unittest.TestCase):
 
         # here we expect the model to be preloaded in trainer.__init__ and consume around 64K gpu ram.
         # perfect world: fp32_init == 64<<10
-        self.assertGreater(fp32_init, 59_000)
+        self.assertGreater(fp32_init, 59000)
         # after eval should be no extra memory allocated - with a small margin (other than the peak
         # memory consumption for the forward calculation that gets recovered)
         # perfect world: fp32_eval == close to zero
-        self.assertLess(fp32_eval, 5_000)
+        self.assertLess(fp32_eval, 5000)
 
         # 2. with mem metrics disabled
         trainer = get_regression_trainer(a=a, b=b, eval_len=16, fp16_full_eval=True)
@@ -995,15 +993,15 @@ class TrainerIntegrationTest(unittest.TestCase):
 
         # here we expect the model to not be preloaded in trainer.__init__, so with a small margin it should be close to 0
         # perfect world: fp16_init == close to zero
-        self.assertLess(fp16_init, 5_000)
+        self.assertLess(fp16_init, 5000)
         # here we put the model on device in eval and only `half()` of it, i.e. about 32K,(again we ignore the peak margin which gets returned back)
         # perfect world: fp32_init == 32<<10
-        self.assertGreater(fp16_eval, 27_000)
+        self.assertGreater(fp16_eval, 27000)
 
         # 3. relative comparison fp32 vs full fp16
         # should be about half of fp16_init
         # perfect world: fp32_init/2 == fp16_eval
-        self.assertAlmostEqual(fp16_eval, fp32_init / 2, delta=5_000)
+        self.assertAlmostEqual(fp16_eval, fp32_init / 2, delta=5000)
 
     def test_no_wd_param_group(self):
         model = torch.nn.Sequential(TstLayer(128), torch.nn.ModuleList([TstLayer(128), TstLayer(128)]))
@@ -1078,10 +1076,7 @@ class TrainerHyperParameterRayIntegrationTest(unittest.TestCase):
         def hp_space(trial):
             from ray import tune
 
-            return {
-                "a": tune.randint(-4, 4),
-                "b": tune.randint(-4, 4),
-            }
+            return {"a": tune.randint(-4, 4), "b": tune.randint(-4, 4)}
 
         def model_init(config):
             model_config = RegressionModelConfig(a=config["a"], b=config["b"], double_output=False)

@@ -35,10 +35,7 @@ if is_tf_available():
 
 
 class TFCTRLModelTester(object):
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 13
         self.seq_length = 7
@@ -140,11 +137,7 @@ class TFCTRLModelTester(object):
     ):
         config.num_labels = self.num_labels
         sequence_labels = ids_tensor([self.batch_size], self.type_sequence_label_size)
-        inputs = {
-            "input_ids": input_ids,
-            "token_type_ids": token_type_ids,
-            "labels": sequence_labels,
-        }
+        inputs = {"input_ids": input_ids, "token_type_ids": token_type_ids, "labels": sequence_labels}
         model = TFCTRLForSequenceClassification(config)
         result = model(inputs)
         self.parent.assertEqual(result.logits.shape, (self.batch_size, self.num_labels))

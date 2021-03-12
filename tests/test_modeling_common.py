@@ -199,12 +199,7 @@ class ModelTesterMixin:
             arg_names = [*signature.parameters.keys()]
 
             if model.config.is_encoder_decoder:
-                expected_arg_names = [
-                    "input_ids",
-                    "attention_mask",
-                    "decoder_input_ids",
-                    "decoder_attention_mask",
-                ]
+                expected_arg_names = ["input_ids", "attention_mask", "decoder_input_ids", "decoder_attention_mask"]
                 expected_arg_names.extend(
                     ["head_mask", "decoder_head_mask", "encoder_outputs"]
                     if "head_mask" and "decoder_head_mask" in arg_names
@@ -328,11 +323,7 @@ class ModelTesterMixin:
                 self.assertEqual(len(cross_attentions), self.model_tester.num_hidden_layers)
                 self.assertListEqual(
                     list(cross_attentions[0].shape[-3:]),
-                    [
-                        self.model_tester.num_attention_heads,
-                        decoder_seq_length,
-                        encoder_key_length,
-                    ],
+                    [self.model_tester.num_attention_heads, decoder_seq_length, encoder_key_length],
                 )
 
             # Check attention is always last and order is fine
@@ -394,7 +385,9 @@ class ModelTesterMixin:
 
             try:
                 if model.config.is_encoder_decoder:
-                    model.config.use_cache = False  # FSTM still requires this hack -> FSTM should probably be refactored similar to BART afterward
+                    model.config.use_cache = (
+                        False
+                    )  # FSTM still requires this hack -> FSTM should probably be refactored similar to BART afterward
                     input_ids = inputs["input_ids"]
                     attention_mask = inputs["attention_mask"]
                     decoder_input_ids = inputs["decoder_input_ids"]
@@ -459,9 +452,7 @@ class ModelTesterMixin:
             # Prepare head_mask
             # Set require_grad after having prepared the tensor to avoid error (leaf variable has been moved into the graph interior)
             head_mask = torch.ones(
-                self.model_tester.num_hidden_layers,
-                self.model_tester.num_attention_heads,
-                device=torch_device,
+                self.model_tester.num_hidden_layers, self.model_tester.num_attention_heads, device=torch_device
             )
             head_mask[0, 0] = 0
             head_mask[-1, :-1] = 0
@@ -512,10 +503,7 @@ class ModelTesterMixin:
             return
 
         for model_class in self.all_model_classes:
-            (
-                config,
-                inputs_dict,
-            ) = self.model_tester.prepare_config_and_inputs_for_common()
+            (config, inputs_dict) = self.model_tester.prepare_config_and_inputs_for_common()
 
             if "head_mask" in inputs_dict:
                 del inputs_dict["head_mask"]
@@ -525,10 +513,7 @@ class ModelTesterMixin:
             model = model_class(config=config)
             model.to(torch_device)
             model.eval()
-            heads_to_prune = {
-                0: list(range(1, self.model_tester.num_attention_heads)),
-                -1: [0],
-            }
+            heads_to_prune = {0: list(range(1, self.model_tester.num_attention_heads)), -1: [0]}
             model.prune_heads(heads_to_prune)
             with torch.no_grad():
                 outputs = model(**self._prepare_for_class(inputs_dict, model_class))
@@ -544,10 +529,7 @@ class ModelTesterMixin:
             return
 
         for model_class in self.all_model_classes:
-            (
-                config,
-                inputs_dict,
-            ) = self.model_tester.prepare_config_and_inputs_for_common()
+            (config, inputs_dict) = self.model_tester.prepare_config_and_inputs_for_common()
 
             if "head_mask" in inputs_dict:
                 del inputs_dict["head_mask"]
@@ -557,10 +539,7 @@ class ModelTesterMixin:
             model = model_class(config=config)
             model.to(torch_device)
             model.eval()
-            heads_to_prune = {
-                0: list(range(1, self.model_tester.num_attention_heads)),
-                -1: [0],
-            }
+            heads_to_prune = {0: list(range(1, self.model_tester.num_attention_heads)), -1: [0]}
             model.prune_heads(heads_to_prune)
 
             with tempfile.TemporaryDirectory() as temp_dir_name:
@@ -580,10 +559,7 @@ class ModelTesterMixin:
             return
 
         for model_class in self.all_model_classes:
-            (
-                config,
-                inputs_dict,
-            ) = self.model_tester.prepare_config_and_inputs_for_common()
+            (config, inputs_dict) = self.model_tester.prepare_config_and_inputs_for_common()
 
             if "head_mask" in inputs_dict:
                 del inputs_dict["head_mask"]
@@ -591,10 +567,7 @@ class ModelTesterMixin:
             inputs_dict["output_attentions"] = True
             config.output_hidden_states = False
 
-            heads_to_prune = {
-                0: list(range(1, self.model_tester.num_attention_heads)),
-                -1: [0],
-            }
+            heads_to_prune = {0: list(range(1, self.model_tester.num_attention_heads)), -1: [0]}
             config.pruned_heads = heads_to_prune
 
             model = model_class(config=config)
@@ -614,10 +587,7 @@ class ModelTesterMixin:
             return
 
         for model_class in self.all_model_classes:
-            (
-                config,
-                inputs_dict,
-            ) = self.model_tester.prepare_config_and_inputs_for_common()
+            (config, inputs_dict) = self.model_tester.prepare_config_and_inputs_for_common()
 
             if "head_mask" in inputs_dict:
                 del inputs_dict["head_mask"]
@@ -692,10 +662,7 @@ class ModelTesterMixin:
             else:
                 seq_length = self.model_tester.seq_length
 
-            self.assertListEqual(
-                list(hidden_states[0].shape[-2:]),
-                [seq_length, self.model_tester.hidden_size],
-            )
+            self.assertListEqual(list(hidden_states[0].shape[-2:]), [seq_length, self.model_tester.hidden_size])
 
             if config.is_encoder_decoder:
                 hidden_states = outputs.decoder_hidden_states
@@ -706,8 +673,7 @@ class ModelTesterMixin:
                 decoder_seq_length = getattr(self.model_tester, "decoder_seq_length", seq_len)
 
                 self.assertListEqual(
-                    list(hidden_states[0].shape[-2:]),
-                    [decoder_seq_length, self.model_tester.hidden_size],
+                    list(hidden_states[0].shape[-2:]), [decoder_seq_length, self.model_tester.hidden_size]
                 )
 
         config, inputs_dict = self.model_tester.prepare_config_and_inputs_for_common()
@@ -775,10 +741,7 @@ class ModelTesterMixin:
             self.assertIsNotNone(attentions.grad)
 
     def test_feed_forward_chunking(self):
-        (
-            original_config,
-            inputs_dict,
-        ) = self.model_tester.prepare_config_and_inputs_for_common()
+        (original_config, inputs_dict) = self.model_tester.prepare_config_and_inputs_for_common()
         for model_class in self.all_model_classes:
             torch.manual_seed(0)
             config = copy.deepcopy(original_config)
@@ -798,10 +761,7 @@ class ModelTesterMixin:
             self.assertTrue(torch.allclose(hidden_states_no_chunk, hidden_states_with_chunk, atol=1e-3))
 
     def test_resize_tokens_embeddings(self):
-        (
-            original_config,
-            inputs_dict,
-        ) = self.model_tester.prepare_config_and_inputs_for_common()
+        (original_config, inputs_dict) = self.model_tester.prepare_config_and_inputs_for_common()
         if not self.test_resize_embeddings:
             return
 
@@ -850,10 +810,7 @@ class ModelTesterMixin:
             self.assertTrue(models_equal)
 
     def test_resize_embeddings_untied(self):
-        (
-            original_config,
-            inputs_dict,
-        ) = self.model_tester.prepare_config_and_inputs_for_common()
+        (original_config, inputs_dict) = self.model_tester.prepare_config_and_inputs_for_common()
         if not self.test_resize_embeddings:
             return
 

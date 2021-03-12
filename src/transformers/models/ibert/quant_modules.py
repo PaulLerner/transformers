@@ -769,13 +769,7 @@ class FixedPointMul(Function):
 
     @staticmethod
     def forward(
-        ctx,
-        pre_act,
-        pre_act_scaling_factor,
-        bit_num,
-        z_scaling_factor,
-        identity=None,
-        identity_scaling_factor=None,
+        ctx, pre_act, pre_act_scaling_factor, bit_num, z_scaling_factor, identity=None, identity_scaling_factor=None
     ):
 
         if len(pre_act_scaling_factor.shape) == 3:

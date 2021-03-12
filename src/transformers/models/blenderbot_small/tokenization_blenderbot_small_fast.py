@@ -42,9 +42,7 @@ PRETRAINED_VOCAB_FILES_MAP = {
     },
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "facebook/blenderbot_small-90M": 512,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"facebook/blenderbot_small-90M": 512}
 
 
 class BlenderbotSmallTokenizerFast(PreTrainedTokenizerFast):
@@ -70,7 +68,7 @@ class BlenderbotSmallTokenizerFast(PreTrainedTokenizerFast):
         eos_token="<|endoftext|>",
         add_prefix_space=False,
         trim_offsets=True,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             ByteLevelBPETokenizer(

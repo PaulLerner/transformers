@@ -27,9 +27,7 @@ from ...file_utils import (
 )
 
 
-_import_structure = {
-    "configuration_camembert": ["CAMEMBERT_PRETRAINED_CONFIG_ARCHIVE_MAP", "CamembertConfig"],
-}
+_import_structure = {"configuration_camembert": ["CAMEMBERT_PRETRAINED_CONFIG_ARCHIVE_MAP", "CamembertConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_camembert"] = ["CamembertTokenizer"]

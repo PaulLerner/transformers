@@ -25,10 +25,7 @@ from utils import ROUGE_KEYS
 
 # A table of supported tasks and the list of scores in the order of importance to be sorted by.
 # To add a new task, simply list the score names that `run_eval.run_generate()` returns
-task_score_names = {
-    "translation": ["bleu"],
-    "summarization": ROUGE_KEYS,
-}
+task_score_names = {"translation": ["bleu"], "summarization": ROUGE_KEYS}
 
 
 def parse_search_arg(search):

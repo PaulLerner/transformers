@@ -21,9 +21,7 @@ from typing import TYPE_CHECKING
 from ...file_utils import _BaseLazyModule, is_sentencepiece_available, is_torch_available
 
 
-_import_structure = {
-    "configuration_bert_generation": ["BertGenerationConfig"],
-}
+_import_structure = {"configuration_bert_generation": ["BertGenerationConfig"]}
 
 if is_sentencepiece_available():
     _import_structure["tokenization_bert_generation"] = ["BertGenerationTokenizer"]

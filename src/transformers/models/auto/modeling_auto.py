@@ -586,7 +586,7 @@ MODEL_FOR_QUESTION_ANSWERING_MAPPING = OrderedDict(
 MODEL_FOR_TABLE_QUESTION_ANSWERING_MAPPING = OrderedDict(
     [
         # Model for Table Question Answering mapping
-        (TapasConfig, TapasForQuestionAnswering),
+        (TapasConfig, TapasForQuestionAnswering)
     ]
 )
 
@@ -641,10 +641,7 @@ MODEL_FOR_MULTIPLE_CHOICE_MAPPING = OrderedDict(
 )
 
 MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING = OrderedDict(
-    [
-        (BertConfig, BertForNextSentencePrediction),
-        (MobileBertConfig, MobileBertForNextSentencePrediction),
-    ]
+    [(BertConfig, BertForNextSentencePrediction), (MobileBertConfig, MobileBertForNextSentencePrediction)]
 )
 
 AUTO_MODEL_PRETRAINED_DOCSTRING = r"""
@@ -1751,9 +1748,7 @@ class AutoModelForMultipleChoice:
         raise ValueError(
             "Unrecognized configuration class {} for this kind of AutoModel: {}.\n"
             "Model type should be one of {}.".format(
-                config.__class__,
-                cls.__name__,
-                ", ".join(c.__name__ for c in MODEL_FOR_MULTIPLE_CHOICE_MAPPING.keys()),
+                config.__class__, cls.__name__, ", ".join(c.__name__ for c in MODEL_FOR_MULTIPLE_CHOICE_MAPPING.keys())
             )
         )
 
@@ -1796,9 +1791,7 @@ class AutoModelForMultipleChoice:
         raise ValueError(
             "Unrecognized configuration class {} for this kind of AutoModel: {}.\n"
             "Model type should be one of {}.".format(
-                config.__class__,
-                cls.__name__,
-                ", ".join(c.__name__ for c in MODEL_FOR_MULTIPLE_CHOICE_MAPPING.keys()),
+                config.__class__, cls.__name__, ", ".join(c.__name__ for c in MODEL_FOR_MULTIPLE_CHOICE_MAPPING.keys())
             )
         )
 

@@ -478,9 +478,7 @@ class TFFlaubertMainLayer(tf.keras.layers.Layer):
         if self.n_langs > 1 and self.use_lang_emb:
             with tf.name_scope("lang_embeddings"):
                 self.lang_embeddings = self.add_weight(
-                    name="embeddings",
-                    shape=[self.n_langs, self.dim],
-                    initializer=get_initializer(self.embed_init_std),
+                    name="embeddings", shape=[self.n_langs, self.dim], initializer=get_initializer(self.embed_init_std)
                 )
 
         super().build(input_shape)

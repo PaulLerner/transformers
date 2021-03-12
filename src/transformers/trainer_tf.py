@@ -22,10 +22,7 @@ from .file_utils import ENV_VARS_TRUE_VALUES
 
 
 # Integrations must be imported before ML frameworks:
-from .integrations import (  # isort: split
-    is_comet_available,
-    is_wandb_available,
-)
+from .integrations import is_comet_available, is_wandb_available  # isort: split
 
 import numpy as np
 import tensorflow as tf
@@ -658,8 +655,7 @@ class TFTrainer:
 
                 features = {
                     k: tf.concat(
-                        [ft[self.args.train_batch_size // self.args.n_replicas :], reduced_features[k]],
-                        axis=0,
+                        [ft[self.args.train_batch_size // self.args.n_replicas :], reduced_features[k]], axis=0
                     )
                     for k, ft in features.items()
                 }
@@ -671,8 +667,7 @@ class TFTrainer:
                 elif isinstance(labels, dict):
                     labels = {
                         k: tf.concat(
-                            [lbl[self.args.train_batch_size // self.args.n_replicas :], reduced_labels[k]],
-                            axis=0,
+                            [lbl[self.args.train_batch_size // self.args.n_replicas :], reduced_labels[k]], axis=0
                         )
                         for k, lbl in labels.items()
                     }

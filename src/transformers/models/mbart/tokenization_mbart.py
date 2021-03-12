@@ -33,10 +33,7 @@ PRETRAINED_VOCAB_FILES_MAP = {
     }
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "facebook/mbart-large-en-ro": 1024,
-    "facebook/mbart-large-cc25": 1024,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"facebook/mbart-large-en-ro": 1024, "facebook/mbart-large-cc25": 1024}
 
 FAIRSEQ_LANGUAGE_CODES = [
     "ar_AR",

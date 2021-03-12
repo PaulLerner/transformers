@@ -21,9 +21,7 @@ from ...utils import logging
 
 logger = logging.get_logger(__name__)
 
-LXMERT_PRETRAINED_CONFIG_ARCHIVE_MAP = {
-    "unc-nlp/lxmert-base-uncased": "",
-}
+LXMERT_PRETRAINED_CONFIG_ARCHIVE_MAP = {"unc-nlp/lxmert-base-uncased": ""}
 
 
 class LxmertConfig(PretrainedConfig):

@@ -60,14 +60,8 @@ class TensorFlowBenchmarkArguments(BenchmarkArguments):
         self.use_xla = kwargs.pop("use_xla", self.use_xla)
         super().__init__(**kwargs)
 
-    tpu_name: str = field(
-        default=None,
-        metadata={"help": "Name of TPU"},
-    )
-    device_idx: int = field(
-        default=0,
-        metadata={"help": "CPU / GPU device index. Defaults to 0."},
-    )
+    tpu_name: str = field(default=None, metadata={"help": "Name of TPU"})
+    device_idx: int = field(default=0, metadata={"help": "CPU / GPU device index. Defaults to 0."})
     eager_mode: bool = field(default=False, metadata={"help": "Benchmark models in eager model."})
     use_xla: bool = field(
         default=False,

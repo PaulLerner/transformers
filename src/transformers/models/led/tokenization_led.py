@@ -20,20 +20,14 @@ from ..bart.tokenization_bart import BartTokenizer
 logger = logging.get_logger(__name__)
 
 PRETRAINED_VOCAB_FILES_MAP = {
-    "vocab_file": {
-        "allenai/led-base-16384": "https://huggingface.co/allenai/led-base-16384/resolve/main/vocab.json",
-    },
-    "merges_file": {
-        "allenai/led-base-16384": "https://huggingface.co/allenai/led-base-16384/resolve/main/merges.txt",
-    },
+    "vocab_file": {"allenai/led-base-16384": "https://huggingface.co/allenai/led-base-16384/resolve/main/vocab.json"},
+    "merges_file": {"allenai/led-base-16384": "https://huggingface.co/allenai/led-base-16384/resolve/main/merges.txt"},
     "tokenizer_file": {
-        "allenai/led-base-16384": "https://huggingface.co/allenai/led-base-16384/resolve/main/tokenizer.json",
+        "allenai/led-base-16384": "https://huggingface.co/allenai/led-base-16384/resolve/main/tokenizer.json"
     },
 }
 
-PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {
-    "allenai/led-base-16384": 16384,
-}
+PRETRAINED_POSITIONAL_EMBEDDINGS_SIZES = {"allenai/led-base-16384": 16384}
 
 
 class LEDTokenizer(BartTokenizer):

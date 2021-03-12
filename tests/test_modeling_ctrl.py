@@ -36,10 +36,7 @@ if is_torch_available():
 
 
 class CTRLModelTester:
-    def __init__(
-        self,
-        parent,
-    ):
+    def __init__(self, parent):
         self.parent = parent
         self.batch_size = 14
         self.seq_length = 7

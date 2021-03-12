@@ -91,26 +91,16 @@ class GenerationTesterMixin:
         }
         logits_processor = LogitsProcessorList(
             (
-                [
-                    HammingDiversityLogitsProcessor(diversity_penalty, num_beams=2, num_beam_groups=2),
-                ]
+                [HammingDiversityLogitsProcessor(diversity_penalty, num_beams=2, num_beam_groups=2)]
                 if diversity_penalty is not None
                 else []
             )
             + (
-                [
-                    MinLengthLogitsProcessor(process_kwargs["min_length"], eos_token_id),
-                ]
+                [MinLengthLogitsProcessor(process_kwargs["min_length"], eos_token_id)]
                 if eos_token_id is not None
                 else []
             )
-            + (
-                [
-                    ForcedBOSTokenLogitsProcessor(forced_bos_token_id),
-                ]
-                if forced_bos_token_id is not None
-                else []
-            )
+            + ([ForcedBOSTokenLogitsProcessor(forced_bos_token_id)] if forced_bos_token_id is not None else [])
             + (
                 [ForcedEOSTokenLogitsProcessor(max_length, forced_eos_token_id)]
                 if forced_eos_token_id is not None
@@ -932,10 +922,7 @@ class GenerationTesterMixin:
             model = model_class(config).to(torch_device)
             model.eval()
 
-            output_ids_generate = model.generate(
-                do_sample=False,
-                max_length=max_length,
-            )
+            output_ids_generate = model.generate(do_sample=False, max_length=max_length)
 
             self.assertIsNotNone(output_ids_generate)
 
@@ -1142,12 +1129,7 @@ class GenerationTesterMixin:
             tgt_len = min_length + idx if not use_cache else 1
             src_len = min_length + idx
 
-            expected_shape = (
-                batch_size * num_beam_groups,
-                config.num_attention_heads,
-                tgt_len,
-                src_len,
-            )
+            expected_shape = (batch_size * num_beam_groups, config.num_attention_heads, tgt_len, src_len)
             # check attn size
             self.assertListEqual(
                 [layer_attention.shape for layer_attention in iter_attentions], [expected_shape] * len(iter_attentions)
@@ -1157,8 +1139,7 @@ class GenerationTesterMixin:
         encoder_expected_shape = (batch_size, config.num_attention_heads, seq_length, seq_length)
         self.assertIsInstance(attentions, tuple)
         self.assertListEqual(
-            [layer_attentions.shape for layer_attentions in attentions],
-            [encoder_expected_shape] * len(attentions),
+            [layer_attentions.shape for layer_attentions in attentions], [encoder_expected_shape] * len(attentions)
         )
 
     def _check_hidden_states_for_generate(
@@ -1197,68 +1178,68 @@ class UtilsFunctionsTest(unittest.TestCase):
         logits = torch.tensor(
             [
                 [
-                    8.2220991,  # 3rd highest value; idx. 0
-                    -0.5620044,
-                    5.23229752,
-                    4.0386393,
-                    -6.8798378,
-                    -0.54785802,
-                    -3.2012153,
-                    2.92777176,
-                    1.88171953,
-                    7.35341276,
-                    8.43207833,  # 2nd highest value; idx. 10
-                    -9.85711836,
-                    -5.96209236,
-                    -1.13039161,
-                    -7.1115294,
-                    -0.8369633,
-                    -5.3186408,
-                    7.06427407,
-                    0.81369344,
-                    -0.82023817,
-                    -5.9179796,
-                    0.58813443,
-                    -6.99778438,
-                    4.71551189,
-                    -0.18771637,
-                    7.44020759,  # 4th highest value; idx. 25
-                    9.38450987,  # 1st highest value; idx. 26
-                    2.12662941,
-                    -9.32562038,
-                    2.35652522,
+                    8.222_099_1,  # 3rd highest value; idx. 0
+                    -0.562_004_4,
+                    5.232_297_52,
+                    4.038_639_3,
+                    -6.879_837_8,
+                    -0.547_858_02,
+                    -3.201_215_3,
+                    2.927_771_76,
+                    1.881_719_53,
+                    7.353_412_76,
+                    8.432_078_33,  # 2nd highest value; idx. 10
+                    -9.857_118_36,
+                    -5.962_092_36,
+                    -1.130_391_61,
+                    -7.111_529_4,
+                    -0.836_963_3,
+                    -5.318_640_8,
+                    7.064_274_07,
+                    0.813_693_44,
+                    -0.820_238_17,
+                    -5.917_979_6,
+                    0.588_134_43,
+                    -6.997_784_38,
+                    4.715_511_89,
+                    -0.187_716_37,
+                    7.440_207_59,  # 4th highest value; idx. 25
+                    9.384_509_87,  # 1st highest value; idx. 26
+                    2.126_629_41,
+                    -9.325_620_38,
+                    2.356_525_22,
                 ],  # cummulative prob of 4 highest values <= 0.6
                 [
-                    0.58425518,
-                    4.53139238,
-                    -5.57510464,
-                    -6.28030699,
-                    -7.19529503,
-                    -4.02122551,
-                    1.39337037,
-                    -6.06707057,
-                    1.59480517,
-                    -9.643119,
-                    0.03907799,
-                    0.67231762,
-                    -8.88206726,
-                    6.27115922,  # 4th highest value; idx. 13
-                    2.28520723,
-                    4.82767506,
-                    4.30421368,
-                    8.8275313,  # 2nd highest value; idx. 17
-                    5.44029958,
-                    -4.4735794,
-                    7.38579536,  # 3rd highest value; idx. 20
-                    -2.91051663,
-                    2.61946077,
-                    -2.5674762,
-                    -9.48959302,
-                    -4.02922645,
-                    -1.35416918,
-                    9.67702323,  # 1st highest value; idx. 27
-                    -5.89478553,
-                    1.85370467,
+                    0.584_255_18,
+                    4.531_392_38,
+                    -5.575_104_64,
+                    -6.280_306_99,
+                    -7.195_295_03,
+                    -4.021_225_51,
+                    1.393_370_37,
+                    -6.067_070_57,
+                    1.594_805_17,
+                    -9.643_119,
+                    0.039_077_99,
+                    0.672_317_62,
+                    -8.882_067_26,
+                    6.271_159_22,  # 4th highest value; idx. 13
+                    2.285_207_23,
+                    4.827_675_06,
+                    4.304_213_68,
+                    8.827_531_3,  # 2nd highest value; idx. 17
+                    5.440_299_58,
+                    -4.473_579_4,
+                    7.385_795_36,  # 3rd highest value; idx. 20
+                    -2.910_516_63,
+                    2.619_460_77,
+                    -2.567_476_2,
+                    -9.489_593_02,
+                    -4.029_226_45,
+                    -1.354_169_18,
+                    9.677_023_23,  # 1st highest value; idx. 27
+                    -5.894_785_53,
+                    1.853_704_67,
                 ],  # cummulative prob of 4 highest values <= 0.6
             ],
             dtype=torch.float,

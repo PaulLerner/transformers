@@ -429,11 +429,7 @@ class TFBartDecoderLayer(tf.keras.layers.Layer):
         hidden_states = residual + hidden_states
         hidden_states = self.final_layer_norm(hidden_states)
 
-        return (
-            hidden_states,
-            self_attn_weights,
-            present_key_value,
-        )
+        return (hidden_states, self_attn_weights, present_key_value)
 
 
 class TFBartPretrainedModel(TFPreTrainedModel):
@@ -630,9 +626,7 @@ class TFBartEncoder(tf.keras.layers.Layer):
 
         self.embed_tokens = embed_tokens
         self.embed_positions = TFBartLearnedPositionalEmbedding(
-            config.max_position_embeddings,
-            config.d_model,
-            name="embed_positions",
+            config.max_position_embeddings, config.d_model, name="embed_positions"
         )
         self.layers = [TFBartEncoderLayer(config, name=f"layers.{i}") for i in range(config.encoder_layers)]
         self.layernorm_embedding = tf.keras.layers.LayerNormalization(epsilon=1e-5, name="layernorm_embedding")
@@ -754,9 +748,7 @@ class TFBartEncoder(tf.keras.layers.Layer):
                 continue
 
             hidden_states, attn = encoder_layer(
-                hidden_states,
-                attention_mask,
-                inputs["head_mask"][idx] if inputs["head_mask"] is not None else None,
+                hidden_states, attention_mask, inputs["head_mask"][idx] if inputs["head_mask"] is not None else None
             )
 
             if inputs["output_attentions"]:
@@ -790,9 +782,7 @@ class TFBartDecoder(tf.keras.layers.Layer):
         self.embed_tokens = embed_tokens
         self.layerdrop = config.decoder_layerdrop
         self.embed_positions = TFBartLearnedPositionalEmbedding(
-            config.max_position_embeddings,
-            config.d_model,
-            name="embed_positions",
+            config.max_position_embeddings, config.d_model, name="embed_positions"
         )
         self.embed_scale = tf.math.sqrt(float(config.d_model)) if config.scale_embedding else 1.0
         self.layers = [TFBartDecoderLayer(config, name=f"layers.{i}") for i in range(config.decoder_layers)]
@@ -1066,7 +1056,7 @@ class TFBartMainLayer(tf.keras.layers.Layer):
         output_hidden_states=None,
         return_dict=None,
         training=False,
-        **kwargs
+        **kwargs,
     ):
         inputs = input_processing(
             func=self.call,
@@ -1156,8 +1146,7 @@ class TFBartMainLayer(tf.keras.layers.Layer):
 
 
 @add_start_docstrings(
-    "The bare BART Model outputting raw hidden-states without any specific head on top.",
-    BART_START_DOCSTRING,
+    "The bare BART Model outputting raw hidden-states without any specific head on top.", BART_START_DOCSTRING
 )
 class TFBartModel(TFBartPretrainedModel):
 
@@ -1198,7 +1187,7 @@ class TFBartModel(TFBartPretrainedModel):
         output_hidden_states=None,
         return_dict=None,
         training=False,
-        **kwargs
+        **kwargs,
     ):
         inputs = input_processing(
             func=self.call,
@@ -1260,14 +1249,10 @@ class TFBartModel(TFBartPretrainedModel):
 
 
 @add_start_docstrings(
-    "The BART Model with a language modeling head. Can be used for summarization.",
-    BART_START_DOCSTRING,
+    "The BART Model with a language modeling head. Can be used for summarization.", BART_START_DOCSTRING
 )
 class TFBartForConditionalGeneration(TFBartPretrainedModel, TFCausalLanguageModelingLoss):
-    _keys_to_ignore_on_load_unexpected = [
-        r"model.encoder.embed_tokens.weight",
-        r"model.decoder.embed_tokens.weight",
-    ]
+    _keys_to_ignore_on_load_unexpected = [r"model.encoder.embed_tokens.weight", r"model.decoder.embed_tokens.weight"]
 
     _requires_load_weight_prefix = True
 
@@ -1417,13 +1402,7 @@ class TFBartForConditionalGeneration(TFBartPretrainedModel, TFCausalLanguageMode
         )
 
     def prepare_inputs_for_generation(
-        self,
-        decoder_input_ids,
-        past,
-        attention_mask,
-        head_mask=None,
-        use_cache=None,
-        **kwargs,
+        self, decoder_input_ids, past, attention_mask, head_mask=None, use_cache=None, **kwargs
     ) -> Dict:
         assert past is not None and len(past) in {1, 2}, f"past has to be an iterable of length 1,2 got {past}"
         if len(past) == 1:

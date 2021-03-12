@@ -187,10 +187,7 @@ class HPSearchBackend(ExplicitEnum):
     RAY = "ray"
 
 
-default_hp_space = {
-    HPSearchBackend.OPTUNA: default_hp_space_optuna,
-    HPSearchBackend.RAY: default_hp_space_ray,
-}
+default_hp_space = {HPSearchBackend.OPTUNA: default_hp_space_optuna, HPSearchBackend.RAY: default_hp_space_ray}
 
 
 def is_main_process(local_rank):
@@ -303,12 +300,7 @@ class TrainerMemoryTracker:
     """
 
     # map trainer methods to metrics prefix
-    stages = {
-        "__init__": "init",
-        "train": "train",
-        "evaluate": "eval",
-        "predict": "test",
-    }
+    stages = {"__init__": "init", "train": "train", "evaluate": "eval", "predict": "test"}
 
     def __init__(self, skip_memory_metrics=False):
         if is_torch_cuda_available():

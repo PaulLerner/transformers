@@ -25,14 +25,7 @@ from packaging import version
 import pkg_resources
 
 
-ops = {
-    "<": operator.lt,
-    "<=": operator.le,
-    "==": operator.eq,
-    "!=": operator.ne,
-    ">=": operator.ge,
-    ">": operator.gt,
-}
+ops = {"<": operator.lt, "<=": operator.le, "==": operator.eq, "!=": operator.ne, ">=": operator.ge, ">": operator.gt}
 
 
 def require_version(requirement: str, hint: Optional[str] = None) -> None:

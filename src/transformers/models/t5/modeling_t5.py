@@ -692,7 +692,9 @@ class T5Block(nn.Module):
         outputs = (hidden_states,)
 
         outputs = outputs + (present_key_value_state,) + attention_outputs
-        return outputs  # hidden-states, present_key_value_states, (self-attention weights), (self-attention position bias), (cross-attention weights), (cross-attention position bias)
+        return (
+            outputs
+        )  # hidden-states, present_key_value_states, (self-attention weights), (self-attention position bias), (cross-attention weights), (cross-attention position bias)
 
 
 class T5PreTrainedModel(PreTrainedModel):
@@ -710,11 +712,7 @@ class T5PreTrainedModel(PreTrainedModel):
     def dummy_inputs(self):
         input_ids = torch.tensor(DUMMY_INPUTS)
         input_mask = torch.tensor(DUMMY_MASK)
-        dummy_inputs = {
-            "decoder_input_ids": input_ids,
-            "input_ids": input_ids,
-            "decoder_attention_mask": input_mask,
-        }
+        dummy_inputs = {"decoder_input_ids": input_ids, "input_ids": input_ids, "decoder_attention_mask": input_mask}
         return dummy_inputs
 
     def _init_weights(self, module):
@@ -1181,12 +1179,9 @@ num_heads)`.
     T5_START_DOCSTRING,
 )
 class T5Model(T5PreTrainedModel):
-    _keys_to_ignore_on_load_missing = [
-        r"encoder\.embed_tokens\.weight",
-        r"decoder\.embed_tokens\.weight",
-    ]
+    _keys_to_ignore_on_load_missing = [r"encoder\.embed_tokens\.weight", r"decoder\.embed_tokens\.weight"]
     _keys_to_ignore_on_load_unexpected = [
-        r"decoder\.block\.0\.layer\.1\.EncDecAttention\.relative_attention_bias\.weight",
+        r"decoder\.block\.0\.layer\.1\.EncDecAttention\.relative_attention_bias\.weight"
     ]
 
     def __init__(self, config: T5Config):
@@ -1370,7 +1365,7 @@ class T5ForConditionalGeneration(T5PreTrainedModel):
         r"lm_head\.weight",
     ]
     _keys_to_ignore_on_load_unexpected = [
-        r"decoder\.block\.0\.layer\.1\.EncDecAttention\.relative_attention_bias\.weight",
+        r"decoder\.block\.0\.layer\.1\.EncDecAttention\.relative_attention_bias\.weight"
     ]
 
     def __init__(self, config):
@@ -1646,9 +1641,7 @@ class T5ForConditionalGeneration(T5PreTrainedModel):
     T5_START_DOCSTRING,
 )
 class T5EncoderModel(T5PreTrainedModel):
-    authorized_missing_keys = [
-        r"encoder\.embed_tokens\.weight",
-    ]
+    authorized_missing_keys = [r"encoder\.embed_tokens\.weight"]
 
     def __init__(self, config: T5Config):
         super().__init__(config)
